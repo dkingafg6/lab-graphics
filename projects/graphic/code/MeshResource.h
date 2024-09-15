@@ -4,7 +4,12 @@
 
 //using namespace std; 
 
+struct Vertex // struct to hold vertex data 
+{
+	float position[3]; // position 
+	float color[3]; // color
 
+};
 
 
 class MeshResource
@@ -19,6 +24,13 @@ private:
 
 	//std::vector<Vertex> vertices; 
 	//std::vector<GLunit> indices;
+
+	GLuint VBO;
+	GLuint IBO;
+	GLuint VAO;
+
+	std::vector<Vertex> vertices;
+	Std::vector<GLunit> indices;
 
 public:
 	// show the order of vertices to form primitives like triangles. 
@@ -56,7 +68,7 @@ public:
 //
 //}
 //// VBO = vertex buffer object 
-//void MeshResource::createVBO(float x, float y)
+//void MeshResource::createVBO(float x, float y);
 //{
 //	float position[] =
 //	{

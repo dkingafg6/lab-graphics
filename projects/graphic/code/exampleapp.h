@@ -28,14 +28,7 @@ public:
 	void Run();
 private:
 
-	GLuint VBO;
-	GLuint IBO;
-	GLuint VAO;
-
-	std::vector<Vertex> vertices; 
-	Std::vector<GLunit> indices; 
-
-
+	
 	GLuint program;
 	GLuint vertexShader;
 	GLuint pixelShader;
