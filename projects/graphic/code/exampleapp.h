@@ -36,3 +36,4 @@ private:
 	Display::Window* window;
 };
 } // namespace Example
+

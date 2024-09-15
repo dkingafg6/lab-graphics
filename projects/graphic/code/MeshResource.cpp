@@ -1,7 +1,9 @@
 #include "MeshResource.h"
 #include <GL/eglew.h>
+#include <GLFW/glfw3.h>
 #include <cstring>
 #include "config.h"
+#include "window.h"
 
 
 
@@ -26,94 +28,214 @@ const GLchar* ps =
 "	Color = color;\n" // set the final pixel color. 
 "}\n";
 
-using namespace std;
+//using namespace std;
+//
+//MeshResource::MeshResource()
+//{
+//	// generate the buffers.
+//	glDeleteBuffers(1, &VBO);
+//	glDeleteBuffers(1, &IBO);
+//	glDeleteVertexArrays(1, &VAO);
+//
+//	//vertexBuffer = 0;
+//	//indexBuffer = 0;
+//}
+//
+//MeshResource::~MeshResource()
+//{
+//	// cleaning the buffers.
+//	glDeleteBuffers(1, &VBO); 
+//	glDeleteBuffers(1, &IBO);
+//	glDeleteVertexArrays(1, &VAO); 
+//
+//}
+//// VBO = vertex buffer object 
+//void MeshResource::createVBO(float x, float y)
+//{
+//	vertices = {
+//		{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}}, // bottom-lft red
+//		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}}, //bottom- right green
+//		{{ 0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 1.0f}}, // top- right blue
+//		{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 0.0f}}, // top- left yellow
+//
+//
+//	}; 
+//
+//	indices = { 0, 1, 2, 2, 3, 0 }; // should b two triangles to from a quad. 
+//
+//	//float position[] =
+//	//{
+//	//	-x, y, // p1
+//	//	0.0f, 0.0f, 0.0f, 0.0f, // color red green blue alfa (alfa == transparency)
+//	//	x, y, // p2
+//	//	0.0f, 0.0f, 0.0f, 0.0f,// color RGBA
+//	//	x,-y, // p3
+//	//	0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
+//	//	-x, -y, //p4
+//	//	0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
+//	//};
+//
+//	// generate buffer for binding vertex
+//
+//	glGenBuffers(1, &vertexBuffer);
+//	// bind the openGL array data with vertex buffer. 
+//	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+//	// take the information from what type, what size and what position and draw. 
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+//
+//
+//}
+//// IBO = index buffer object
+//void MeshResource::createIBO()
+//{
+//	// connecting the points to gather. 
+//	int indices[] =
+//	{
+//		0, 1, 2, // front 
+//		2, 3, 0,
+//
+//	};
+//	// generate buffer for binding indexes. 
+//	glGenBuffers(1, &indexBuffer);
+//	// bind the openGL element array data with index buffer. 
+//	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+//	// take the information from what type, what size and what indexes and draw. 
+//	glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+//
+//	glEnableVertexAttribArray(0);  // position
+//	glEnableVertexAttribArray(1);  // color 
+//
+//	glEnableVertexAttribArray(2); // uv
+//
+//	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 9, NULL);
+//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 3));
+//	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 7));*/
+//
+//	//buffersCreated = true
+//
+//
+//}
+//
+//inline void MeshResource::createVAO()
+//{
+//}
 
-MeshResource::MeshResource()
+// example to test 
+
+bool MeshResource::Open()
 {
-	// generate the buffers.
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &IBO);
-	glDeleteVertexArrays(1, &VAO);
+	MeshResource::Open();
+	this->window = new Display::Window;
+	window->SetKeyPressFunctio([this](int32, int32, int32, int32)
+		{
+			this->window->Close();
+		});
 
-	//vertexBuffer = 0;
-	//indexBuffer = 0;
-}
-
-MeshResource::~MeshResource()
-{
-	// cleaning the buffers.
-	glDeleteBuffers(1, &VBO); 
-	glDeleteBuffers(1, &IBO);
-	glDeleteVertexArrays(1, &VAO); 
-
-}
-// VBO = vertex buffer object 
-void MeshResource::createVBO(float x, float y)
-{
-	vertices = {
-		{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}}, // bottom-lft red
-		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}}, //bottom- right green
-		{{ 0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 1.0f}}, // top- right blue
-		{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 0.0f}}, // top- left yellow
-
-
-	}; 
-
-	indices = { 0, 1, 2, 2, 3, 0 }; // should b two triangles to from a quad. 
-
-	//float position[] =
-	//{
-	//	-x, y, // p1
-	//	0.0f, 0.0f, 0.0f, 0.0f, // color red green blue alfa (alfa == transparency)
-	//	x, y, // p2
-	//	0.0f, 0.0f, 0.0f, 0.0f,// color RGBA
-	//	x,-y, // p3
-	//	0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
-	//	-x, -y, //p4
-	//	0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
-	//};
-
-	// generate buffer for binding vertex
-
-	glGenBuffers(1, &vertexBuffer);
-	// bind the openGL array data with vertex buffer. 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	// take the information from what type, what size and what position and draw. 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-
-}
-// IBO = index buffer object
-void MeshResource::createIBO()
-{
-	// connecting the points to gather. 
-	int indices[] =
+	GLfloat buf[] =
 	{
-		0, 1, 2, // front 
-		2, 3, 0,
-
+		-0.5f,	-0.5f,	-1,			// pos 0
+		1,		0,		0,		1,	// color 0
+		0,		0.5f,	-1,			// pos 1
+		0,		1,		0,		1,	// color 0
+		0.5f,	-0.5f,	-1,			// pos 2
+		0,		0,		1,		1	// color 0
 	};
-	// generate buffer for binding indexes. 
-	glGenBuffers(1, &indexBuffer);
-	// bind the openGL element array data with index buffer. 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	// take the information from what type, what size and what indexes and draw. 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-	glEnableVertexAttribArray(0);  // position
-	glEnableVertexAttribArray(1);  // color 
+	if (this->window->Open())
+	{
+		// set clear color to gray
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	glEnableVertexAttribArray(2); // uv
+		// setup vertex shader
+		this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		GLint length = static_cast<GLint>(std::strlen(vs));
+		glShaderSource(this->vertexShader, 1, &vs, &length);
+		glCompileShader(this->vertexShader);
 
-	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 9, NULL);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 3));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 7));*/
+		// get error log
+		GLint shaderLogSize;
+		glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
+			printf("[SHADER COMPILE ERROR]: %s", buf);
+			delete[] buf;
+		}
 
-	//buffersCreated = true
+		// setup pixel shader
+		this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
+		length = static_cast<GLint>(std::strlen(ps));
+		glShaderSource(this->pixelShader, 1, &ps, &length);
+		glCompileShader(this->pixelShader);
 
+		// get error log
+		shaderLogSize;
+		glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
+			printf("[SHADER COMPILE ERROR]: %s", buf);
+			delete[] buf;
+		}
 
+		// create a program object
+		this->program = glCreateProgram();
+		glAttachShader(this->program, this->vertexShader);
+		glAttachShader(this->program, this->pixelShader);
+		glLinkProgram(this->program);
+		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
+			printf("[PROGRAM LINK ERROR]: %s", buf);
+			delete[] buf;
+		}
+
+		// setup vbo
+		glGenBuffers(1, &this->triangle);
+		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		return true;
+	}
+	return false;
 }
 
-inline void MeshResource::createVAO()
+void MeshResource::Close()
 {
+	if (this->window->IsOpen())
+		this->window->Close();
+
+	MeshResource::Close();
+}
+
+
+void MeshResource::Run()
+{
+	while (this->window->IsOpen())
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+		this->window->Update();
+
+		// do stuff
+		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		glUseProgram(this->program);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, NULL);
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 7, (GLvoid*)(sizeof(GLfloat) * 3));
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		this->window->SwapBuffers();
+
+#ifdef CI_TEST
+		// if we're running CI, we want to return and exit the application after one frame
+		// break the loop and hopefully exit gracefully
+		break;
+#endif
+	}
 }

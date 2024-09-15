@@ -2,6 +2,8 @@
 #include <vector>
 #include <GL/eglew.h>
 
+using namespace std; 
+
 //using namespace std; 
 
 struct Vertex // struct to hold vertex data 
@@ -10,7 +12,6 @@ struct Vertex // struct to hold vertex data
 	float color[3]; // color
 
 };
-
 
 class MeshResource
 {
@@ -29,8 +30,17 @@ private:
 	GLuint IBO;
 	GLuint VAO;
 
-	std::vector<Vertex> vertices;
-	Std::vector<GLunit> indices;
+	vector<Vertex> vertices;
+	
+	vector<GLunit> indices;
+
+	// example to test 
+
+	GLuint program;
+	GLuint vertexShader;
+	GLuint pixelShader;
+	GLuint triangle;
+	Display::Window* window;
 
 public:
 	// show the order of vertices to form primitives like triangles. 
@@ -43,6 +53,15 @@ public:
 	void createIBO(); 
 	// vertex array object.
 	void createVAO();
+
+	// exaple to test 
+
+	/// open app
+	bool Open();
+	/// close app
+	void Close();
+	/// run app
+	void Run();
 
 
 };
