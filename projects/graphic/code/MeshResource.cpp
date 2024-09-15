@@ -30,13 +30,18 @@ using namespace std;
 
 MeshResource::MeshResource()
 {
-	vertexBuffer = 0;
-	indexBuffer = 0;
+	// generate the buffers.
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &IBO);
+	glDeleteVertexArrays(1, &VAO);
+
+	//vertexBuffer = 0;
+	//indexBuffer = 0;
 }
 
 MeshResource::~MeshResource()
 {
-	// cleaning the buffers
+	// cleaning the buffers.
 	glDeleteBuffers(1, &VBO); 
 	glDeleteBuffers(1, &IBO);
 	glDeleteVertexArrays(1, &VAO); 
@@ -45,17 +50,28 @@ MeshResource::~MeshResource()
 // VBO = vertex buffer object 
 void MeshResource::createVBO(float x, float y)
 {
-	float position[] =
-	{
-		-x, y, // p1
-		0.0f, 0.0f, 0.0f, 0.0f, // color red green blue alfa (alfa == transparency)
-		x, y, // p2
-		0.0f, 0.0f, 0.0f, 0.0f,// color RGBA
-		x,-y, // p3
-		0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
-		-x, -y, //p4
-		0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
-	};
+	vertices = {
+		{{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}}, // bottom-lft red
+		{{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}}, //bottom- right green
+		{{ 0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 1.0f}}, // top- right blue
+		{{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 0.0f}}, // top- left yellow
+
+
+	}; 
+
+	indices = { 0, 1, 2, 2, 3, 0 }; // should b two triangles to from a quad. 
+
+	//float position[] =
+	//{
+	//	-x, y, // p1
+	//	0.0f, 0.0f, 0.0f, 0.0f, // color red green blue alfa (alfa == transparency)
+	//	x, y, // p2
+	//	0.0f, 0.0f, 0.0f, 0.0f,// color RGBA
+	//	x,-y, // p3
+	//	0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
+	//	-x, -y, //p4
+	//	0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
+	//};
 
 	// generate buffer for binding vertex
 
@@ -63,7 +79,7 @@ void MeshResource::createVBO(float x, float y)
 	// bind the openGL array data with vertex buffer. 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	// take the information from what type, what size and what position and draw. 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(position), position, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 
 }
@@ -71,7 +87,7 @@ void MeshResource::createVBO(float x, float y)
 void MeshResource::createIBO()
 {
 	// connecting the points to gather. 
-	int indexes[] =
+	int indices[] =
 	{
 		0, 1, 2, // front 
 		2, 3, 0,
@@ -82,7 +98,7 @@ void MeshResource::createIBO()
 	// bind the openGL element array data with index buffer. 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	// take the information from what type, what size and what indexes and draw. 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);  // position
 	glEnableVertexAttribArray(1);  // color 

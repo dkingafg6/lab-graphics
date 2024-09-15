@@ -1,4 +1,5 @@
 #pragma once
+using namespace std; 
 //------------------------------------------------------------------------------
 /**
 	Application class used for example application.
@@ -26,6 +27,14 @@ public:
 	/// run app
 	void Run();
 private:
+
+	GLuint VBO;
+	GLuint IBO;
+	GLuint VAO;
+
+	std::vector<Vertex> vertices; 
+	Std::vector<GLunit> indices; 
+
 
 	GLuint program;
 	GLuint vertexShader;
