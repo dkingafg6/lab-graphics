@@ -1,29 +1,32 @@
 #include "MeshResource.h"
 #include <GL/eglew.h>
+#include <cstring>
+#include "config.h"
 
 
 
-
+// vertex shader source code( GLSL) 
 const GLchar* vs =
-"#version 430\n"
-"layout(location=0) in vec3 pos;\n"
-"layout(location=1) in vec4 color;\n"
-"layout(location=0) out vec4 Color;\n"
+"#version 430\n"// specify openGL version 
+"layout(location=0) in vec3 pos;\n" // input: vertex position ( 3D vectors) 
+"layout(location=1) in vec4 color;\n" // input: vertex color ( 4D vector) 
+"layout(location=0) out vec4 Color;\n" // output; color passed to the fragment shader. 
 "void main()\n"
 "{\n"
-"	gl_Position = vec4(pos, 1);\n"
-"	Color = color;\n"
+"	gl_Position = vec4(pos, 1);\n" // set vertex position, converting vec3 to vev4 by adding w = 1.0
+"	Color = color;\n" // pass the vertex color to the fragment shader. 
 "}\n";
 
 const GLchar* ps =
-"#version 430\n"
-"layout(location=0) in vec4 color;\n"
-"out vec4 Color;\n"
+"#version 430\n"                     // specify openGL version 4.3 
+"layout(location=0) in vec4 color;\n" // input: color from vertex shader. 
+"out vec4 Color;\n"                   // output: final pixel color. 
 "void main()\n"
 "{\n"
-"	Color = color;\n"
+"	Color = color;\n" // set the final pixel color. 
 "}\n";
 
+using namespace std;
 
 MeshResource::MeshResource()
 {
@@ -33,6 +36,10 @@ MeshResource::MeshResource()
 
 MeshResource::~MeshResource()
 {
+	// cleaning the buffers
+	glDeleteBuffers(1, &VBO); 
+	glDeleteBuffers(1, &IBO);
+	glDeleteVertexArrays(1, &VAO); 
 
 }
 // VBO = vertex buffer object 
