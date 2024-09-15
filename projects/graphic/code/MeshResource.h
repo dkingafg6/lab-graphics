@@ -1,5 +1,8 @@
 #pragma once
+#include <vector>
 #include <GL/eglew.h>
+
+//using namespace std; 
 
 
 
@@ -7,17 +10,24 @@
 class MeshResource
 {
 private: 
+	// for vertex data like position and col0rs. 
 	GLuint vertexBuffer;
+	// show the order of vertices to form primitives like triangles. 
 	GLuint indexBuffer;
+	// show the structure of each vertex like position and color.
+	GLuint vertexAttributes;
 
 public:
-
+	// show the order of vertices to form primitives like triangles. 
 	MeshResource();
 	~MeshResource(); 
 
-
+	// vertex buffer object.
 	void createVBO(float x, float y); 
+	// index buffer object.
 	void createIBO(); 
+	// vertex array object.
+	void createVAO();
 
 
 };
@@ -63,7 +73,7 @@ void MeshResource::createIBO()
 	// connecting the points to gather. 
 	int indexes[] =
 	{
-		0, 1, 2,
+		0, 1, 2, // front 
 		2, 3, 0,
 
 	};
@@ -86,8 +96,8 @@ void MeshResource::createIBO()
 	//buffersCreated = true
 		
 
-	
-	
+}
 
-
+inline void MeshResource::createVAO()
+{
 }
