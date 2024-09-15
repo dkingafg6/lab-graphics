@@ -1,44 +1,12 @@
-#pragma once
-#include <vector>
+#include "MeshResource.h"
 #include <GL/eglew.h>
 
-//using namespace std; 
 
-
-
-
-class MeshResource
-{
-private: 
-	// for vertex data like position and col0rs. 
-	GLuint vertexBuffer;
-	// show the order of vertices to form primitives like triangles. 
-	GLuint indexBuffer;
-	// show the structure of each vertex like position and color.
-	GLuint vertexAttributes;
-
-	//std::vector<Vertex> vertices; 
-	//std::vector<GLunit> indices;
-
-public:
-	// show the order of vertices to form primitives like triangles. 
-	MeshResource();
-	~MeshResource(); 
-
-	// vertex buffer object.
-	void createVBO(float x, float y); 
-	// index buffer object.
-	void createIBO(); 
-	// vertex array object.
-	void createVAO();
-
-
-};
 
 MeshResource::MeshResource()
 {
-	vertexBuffer = 0; 
-	indexBuffer = 0; 
+	vertexBuffer = 0;
+	indexBuffer = 0;
 }
 
 MeshResource::~MeshResource()
@@ -62,9 +30,9 @@ void MeshResource::createVBO(float x, float y)
 
 	// generate buffer for binding vertex
 
-	glGenBuffers(1, &vertexBuffer); 
+	glGenBuffers(1, &vertexBuffer);
 	// bind the openGL array data with vertex buffer. 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	// take the information from what type, what size and what position and draw. 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(position), position, GL_STATIC_DRAW);
 
@@ -97,7 +65,7 @@ void MeshResource::createIBO()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 7));*/
 
 	//buffersCreated = true
-		
+
 
 }
 
