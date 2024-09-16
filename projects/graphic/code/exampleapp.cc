@@ -5,6 +5,8 @@
 #include "config.h"
 #include "exampleapp.h"
 #include <cstring>
+#include "MeshResource.h"
+#include "core/mat4.h"
 
 const GLchar* vs =
 "#version 430\n"
@@ -59,15 +61,15 @@ ExampleApp::Open()
 		this->window->Close();
 	});
 
-	GLfloat buf[] =
-	{
-		-0.5f,	-0.5f,	-1,			// pos 0
-		1,		0,		0,		1,	// color 0
-		0,		0.5f,	-1,			// pos 1
-		0,		1,		0,		1,	// color 0
-		0.5f,	-0.5f,	-1,			// pos 2
-		0,		0,		1,		1	// color 0
-	};
+	//GLfloat buf[] =
+	//{
+	//	-0.5f,	-0.5f,	-1,			// pos 0
+	//	1,		0,		0,		1,	// color 0
+	//	0,		0.5f,	-1,			// pos 1
+	//	0,		1,		0,		1,	// color 0
+	//	0.5f,	-0.5f,	-1,			// pos 2
+	//	0,		0,		1,		1	// color 0
+	//};
 
 	if (this->window->Open())
 	{
@@ -123,11 +125,13 @@ ExampleApp::Open()
 		}
 
 		// setup vbo
-		glGenBuffers(1, &this->triangle);
+		/*glGenBuffers(1, &this->triangle);
 		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		*/
 		return true;
+
 	}
 	return false;
 }
@@ -150,19 +154,28 @@ ExampleApp::Close()
 void
 ExampleApp::Run()
 {
+	MeshResource mesresource;
+	mat4 mat;
+	mesresource.createVBO();
+	mesresource.createIBO();
 	while (this->window->IsOpen())
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 		this->window->Update();
 
 		// do stuff
-		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		//glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		mesresource.bindVBO();
+		mesresource.bindIBO();
+
 		glUseProgram(this->program);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+
+
+		glEnableVertexAttribArray(0); // pos
+		glEnableVertexAttribArray(1); // color
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, NULL);
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, (GLvoid*)(sizeof(float32) * 3));
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		this->window->SwapBuffers();

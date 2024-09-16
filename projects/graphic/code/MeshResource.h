@@ -1,147 +1,102 @@
 #pragma once
-#include <vector>
-#include <GL/eglew.h>
+#include <GL/glew.h>
+#include <config.h>
 
-using namespace std; 
-
-//using namespace std; 
-
-struct Vertex // struct to hold vertex data 
-{
-	float position[3]; // position 
-	float color[3]; // color
-
-};
+using namespace std;
 
 class MeshResource
 {
-private: 
+private:
 	// for vertex data like position and col0rs. 
 	GLuint vertexBuffer;
 	// show the order of vertices to form primitives like triangles. 
 	GLuint indexBuffer;
-	// show the structure of each vertex like position and color.
-	GLuint vertexAttributes;
-
-	//std::vector<Vertex> vertices; 
-	//std::vector<GLunit> indices;
-
-	GLuint VBO;
-	GLuint IBO;
-	GLuint VAO;
-
-	vector<Vertex> vertices;
-	
-	vector<GLunit> indices;
-
-	// example to test 
-
-	GLuint program;
-	GLuint vertexShader;
-	GLuint pixelShader;
-	GLuint triangle;
-	Display::Window* window;
 
 public:
 	// show the order of vertices to form primitives like triangles. 
 	MeshResource();
-	~MeshResource(); 
+	~MeshResource();
 
 	// vertex buffer object.
-	void createVBO(float x, float y); 
-	// index buffer object.
-	void createIBO(); 
-	// vertex array object.
-	void createVAO();
-
-	// exaple to test 
-
-	/// open app
-	bool Open();
-	/// close app
-	void Close();
-	/// run app
-	void Run();
-
-
+	void createVBO();
+	void createIBO();
+	void bindVBO();
+	void bindIBO();
+	//static MeshResource* CreateSquare(float x, float y);
+	/*void bind(unsigned int unit = 0);*/
 };
 
+MeshResource::MeshResource()
+{
+	vertexBuffer = 0;
+	indexBuffer = 0;
+}
 
+MeshResource::~MeshResource()
+{
 
+}
+// VBO = vertex buffer object 
+void MeshResource::createVBO()
+{
+	float position[] =
+	{
+		-0.5, 0.5, 0, // p1
+		1.0f, 0.0f, 0.0f, 1.0f, // color red green blue alfa (alfa == trancparenci)
+		0.5, 0.5, 0, // p2
+		0.0f, 1.0f, 0.0f, 1.0f,// color RGBA
+		0.5,-0.5, 0, // p3
+		0.0f, 0.0f, 1.0f, 1.0f, // color RGBA
+		-0.5, -0.5, 0, //p4
+		0.0f, 1.0f, 0.0f, 1.0f, // color RGBA
+	};
 
+	// generate buffer for binding vertex
 
+	glGenBuffers(1, &vertexBuffer);
+	// bind the openGL array data with vertextbuffer. 
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	// take the information from what type, what size and what position and draw. 
+	glBufferData(GL_ARRAY_BUFFER, sizeof(position), position, GL_STATIC_DRAW);
 
+}
+// IBO = index buffer object
+void MeshResource::createIBO()
+{
+	// coneccting the points to gather. 
+	int indexes[] =
+	{
+		0, 1, 2,
+		2, 3, 0,
 
+	};
+	// generate buffer for binding indexes. 
+	glGenBuffers(1, &indexBuffer);
+	// bind the openGL element array data with indexbuffer. 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+	// take the information from what type, what size and what indexes and draw. 
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
+}
 
+void MeshResource::bindVBO()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+}
+void MeshResource::bindIBO()
+{
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+}
 
+/*MeshResource* MeshResource::CreateSquare(float x, float y)
+{
+	MeshResource* squareMesh = new MeshResource();
+	squareMesh->createVBO(x, y);
+	squareMesh->createIBO();
+	return squareMesh;
+}*/
 
-//
-//MeshResource::MeshResource()
+//void MeshResource::bind(unsigned int unit = 0)
 //{
-//	vertexBuffer = 0; 
-//	indexBuffer = 0; 
-//}
-//
-//MeshResource::~MeshResource()
-//{
-//
-//}
-//// VBO = vertex buffer object 
-//void MeshResource::createVBO(float x, float y);
-//{
-//	float position[] =
-//	{
-//		-x, y, // p1
-//		0.0f, 0.0f, 0.0f, 0.0f, // color red green blue alfa (alfa == transparency)
-//		x, y, // p2
-//		0.0f, 0.0f, 0.0f, 0.0f,// color RGBA
-//		x,-y, // p3
-//		0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
-//		-x, -y, //p4
-//		0.0f, 0.0f, 0.0f, 0.0f, // color RGBA
-//	};
-//
-//	// generate buffer for binding vertex
-//
-//	glGenBuffers(1, &vertexBuffer); 
-//	// bind the openGL array data with vertex buffer. 
-//	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
-//	// take the information from what type, what size and what position and draw. 
-//	glBufferData(GL_ARRAY_BUFFER, sizeof(position), position, GL_STATIC_DRAW);
-//
-//
-//}
-//// IBO = index buffer object
-//void MeshResource::createIBO()
-//{
-//	// connecting the points to gather. 
-//	int indexes[] =
-//	{
-//		0, 1, 2, // front 
-//		2, 3, 0,
-//
-//	};
-//	// generate buffer for binding indexes. 
-//	glGenBuffers(1, &indexBuffer);
-//	// bind the openGL element array data with index buffer. 
-//	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-//	// take the information from what type, what size and what indexes and draw. 
-//	glBufferData(GL_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
-//
-//	glEnableVertexAttribArray(0);  // position
-//	glEnableVertexAttribArray(1);  // color 
-//
-//	glEnableVertexAttribArray(2); // uv
-//
-//	/*glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 9, NULL);
-//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 3));
-//	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 9, (GLvoid*)(sizeof(float32) * 7));*/
-//
-//	//buffersCreated = true
-//		
-//
-//}
-//
-//inline void MeshResource::createVAO()
-//{
+//	glActiveTexture(GL_TEXTURE + unit);
+//	glBindTexture(GL_TEXTURE_2D, template);
 //}
