@@ -2,7 +2,11 @@
 // exampleapp.cc
 // (C) 2015-2022 Individual contributors, see AUTHORS file
 //------------------------------------------------------------------------------
+#include "math.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "config.h"
+
 #include "exampleapp.h"
 #include <cstring>
 #include "MeshResource.h"
@@ -13,9 +17,10 @@ const GLchar* vs =
 "layout(location=0) in vec3 pos;\n"
 "layout(location=1) in vec4 color;\n"
 "layout(location=0) out vec4 Color;\n"
+"uniform mat4 rotation;\n"
 "void main()\n"
 "{\n"
-"	gl_Position = vec4(pos, 1);\n"
+"	gl_Position = vec4(pos, 1) * rotation;\n"
 "	Color = color;\n"
 "}\n";
 
@@ -155,19 +160,45 @@ void
 ExampleApp::Run()
 {
 	MeshResource mesresource;
-	mat4 mat;
+	float time = 0.0f;
+	//get the loacation of the rotation uniform variable in the shader program. 
+	GLint rotation = glGetUniformLocation(this->program, "rotation");
+
+	// create vertex buffer object vbo and index buffer object ibo for the mesh. 
 	mesresource.createVBO();
 	mesresource.createIBO();
+
+	// 
 	while (this->window->IsOpen())
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		this->window->Update();
+		mat4 mat4thingy; // decalre a matrix for transformations 
+		time += 0.03f;//increment time for continuous rotation. 
+		glClear(GL_COLOR_BUFFER_BIT);// clear the color buffer to propare for the frame. 
+		this->window->Update(); // update the window 
 
 		// do stuff
 		//glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		//Bind the vbo and ibo for rendering. 
 		mesresource.bindVBO();
 		mesresource.bindIBO();
 
+		// compute the rotation matrix bease on the elapsed time. 
+		mat4thingy = rotationz(time); // roation matrix around the z-axis. 
+		/*mat4thingy = rotationx(time);
+		mat4thingy = rotationy(time);*/
+
+		
+		//mat4 rotationMat = mat4::rotationz(time);
+		// compute the translation matrix for left-right movement. 
+		//mat4 translationMat = mat4::translation(sinf(time) * 0.5f, 0.0f, 0.0f); 
+
+		// combining transformation matrix to the shader. 
+		//mat4 transformMat = translationMat * rotationMat;
+		
+		// send the rotatio matrix to the shader. 
+		glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&mat4thingy);
+
+		// use the the shader for rendering. 
 		glUseProgram(this->program);
 
 
@@ -178,6 +209,7 @@ ExampleApp::Run()
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+		//swap buffers to display the renderred frame. 
 		this->window->SwapBuffers();
 
 #ifdef CI_TEST

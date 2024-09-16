@@ -157,6 +157,7 @@ public:
 		{
 			for (int j = 0; j < 4; j++)
 			{
+				//result[i] = this->m[i].x * rhs.x + this->m[i].y * rhs.y + this->m[i].z * rhs.z + this->m[i].w * rhs.w; // jus
 				result[i] += this->m[j][i] * rhs[j];
 			}
 		}

@@ -22,6 +22,9 @@ public:
 	void createIBO();
 	void bindVBO();
 	void bindIBO();
+	// draw the mesh 
+	void draw(); 
+	
 	//static MeshResource* CreateSquare(float x, float y);
 	/*void bind(unsigned int unit = 0);*/
 };
@@ -86,17 +89,6 @@ void MeshResource::bindIBO()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 }
-
-/*MeshResource* MeshResource::CreateSquare(float x, float y)
+inline void MeshResource::draw()
 {
-	MeshResource* squareMesh = new MeshResource();
-	squareMesh->createVBO(x, y);
-	squareMesh->createIBO();
-	return squareMesh;
-}*/
-
-//void MeshResource::bind(unsigned int unit = 0)
-//{
-//	glActiveTexture(GL_TEXTURE + unit);
-//	glBindTexture(GL_TEXTURE_2D, template);
-//}
+}
