@@ -23,7 +23,7 @@ public:
 	void bindVBO();
 	void bindIBO();
 	// draw the mesh 
-	void draw(); 
+	
 	
 	//static MeshResource* CreateSquare(float x, float y);
 	/*void bind(unsigned int unit = 0);*/
@@ -88,7 +88,4 @@ void MeshResource::bindVBO()
 void MeshResource::bindIBO()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-}
-inline void MeshResource::draw()
-{
 }

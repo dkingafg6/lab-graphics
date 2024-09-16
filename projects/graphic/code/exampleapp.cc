@@ -204,8 +204,20 @@ ExampleApp::Run()
 
 		glEnableVertexAttribArray(0); // pos
 		glEnableVertexAttribArray(1); // color
+
+		// 0 = the position attribute in the vertex shader. 3 = each pos has 3 float(x,y,z) 
+		// sizeof(floate 32 * 7 = says to openGL each vertex has total 7 floats. 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, NULL);
+
+		// 1 = color atrebute   4 ) each color has 4 floats ( r, g, b, a) 
+		// (GLvoid*)(sizeof(float32) * 3 = color data starts afoter the first 3 floats 
+		// like x=0, y=1, z=2, r=3, g=4, b=5, a=6, 
+		// 7 = shows the total number of float in a single vertex( 3 for position + 4 for color) 
+
+		// 3 floats = (x,y,z) positon 
+		// 4 floats = (r,g,b,a) color
 		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, (GLvoid*)(sizeof(float32) * 3));
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
