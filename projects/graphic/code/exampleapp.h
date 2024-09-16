@@ -1,4 +1,5 @@
 #pragma once
+using namespace std; 
 //------------------------------------------------------------------------------
 /**
 	Application class used for example application.
@@ -27,6 +28,7 @@ public:
 	void Run();
 private:
 
+	
 	GLuint program;
 	GLuint vertexShader;
 	GLuint pixelShader;
@@ -34,3 +36,4 @@ private:
 	Display::Window* window;
 };
 } // namespace Example
+
