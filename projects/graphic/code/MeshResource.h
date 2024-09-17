@@ -18,13 +18,14 @@ public:
 	~MeshResource();
 
 	// vertex buffer object.
+	void creatCube(float width, float height, float depth); 
 	void createVBO();
 	void createIBO();
 	void bindVBO();
 	void bindIBO();
 	// draw the mesh 
 	
-	
+	void draw(); 
 	//static MeshResource* CreateSquare(float x, float y);
 	/*void bind(unsigned int unit = 0);*/
 };
@@ -38,6 +39,9 @@ MeshResource::MeshResource()
 MeshResource::~MeshResource()
 {
 
+}
+inline void MeshResource::creatCube(float width, float height, float depth)
+{
 }
 // VBO = vertex buffer object 
 void MeshResource::createVBO()
@@ -88,4 +92,8 @@ void MeshResource::bindVBO()
 void MeshResource::bindIBO()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+}
+
+inline void MeshResource::draw()
+{
 }
