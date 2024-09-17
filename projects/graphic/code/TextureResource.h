@@ -6,13 +6,16 @@
 
 class TextureResource
 {
+private:
+	GLuint textureID;
 public:
 	TextureResource();
 	~TextureResource();
+
 	bool loadFromFile(const char* filename); 
-	void Bind(unsigned int textureUnit); 
-	void Clearup(); 
+	void Bind(unsigned int unit = 0); 
+	void Cleanup(); 
 
 
-	GLuint textureID;	
+	//GLuint textureID;	
 };

@@ -140,7 +140,7 @@ void MeshResource::draw()
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
 }
 
-inline void MeshResource::cleanup()
+void MeshResource::cleanup()
 {
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &indexBuffer);

@@ -27,10 +27,13 @@ public:
 	void Run();
 private:
 
+	Display::Window* window;
 	GLuint program;
 	GLuint vertexShader;
 	GLuint pixelShader;
 	GLuint triangle;
-	Display::Window* window;
+	// adding member
+	MeshResource* meshResource; 
+	
 };
 } // namespace Example
