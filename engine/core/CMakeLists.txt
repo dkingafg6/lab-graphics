@@ -4,7 +4,11 @@
 
 SET(files_core
 	app.h
-	app.cc vec3.h vec4.h mat4.h util.h)
+	app.cc 
+	vec3.h 
+	vec4.h 
+	mat4.h 
+	util.h)
 
 SOURCE_GROUP("core" FILES ${files_core})
 	

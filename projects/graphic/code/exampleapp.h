@@ -8,6 +8,9 @@
 //------------------------------------------------------------------------------
 #include "core/app.h"
 #include "render/window.h"
+#include "render/MeshResource.h"
+#include "render/Camera.h"
+#include "render/TextureResource.h"
 
 namespace Example
 {
@@ -34,6 +37,7 @@ private:
 	GLuint triangle;
 	// adding member
 	MeshResource* meshResource; 
+	TextureResource texture; 
 	
 };
 } // namespace Example

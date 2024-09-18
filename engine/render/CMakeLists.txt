@@ -7,9 +7,14 @@ SET(files_render_display
 	window.cc
 	grid.h
 	grid.cc
+	Camera.h
+	Camera.cpp
+	Meshresource.h
+	stb_image.h
+	TextureResource.h
+	TextureResource.cpp
 	)
 SOURCE_GROUP("display" FILES ${files_render_display})
-
 
 SET(files_render
 	${files_render_display}

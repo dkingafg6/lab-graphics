@@ -3,7 +3,7 @@
 
 #include <GL/glew.h>
 #include <config.h>
-#include <core/stb_image.h>
+#include <render/stb_image.h>
 
 using namespace std;
 
