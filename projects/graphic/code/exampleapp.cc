@@ -6,304 +6,309 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "config.h"
-#include "render/TextureResource.h"
+#include "TextureResource.h"
 #include "exampleapp.h"
 #include <cstring>
-#include "render/Camera.h"
-#include "render/MeshResource.h"
+#include "Camera.h"
+#include "MeshResource.h"
 #include "core/mat4.h"
-#include "core/vec2.h"
 
-// 
-// vertex shader = generate direction (forwards, right, up)
+// vertex shader vs
 const GLchar* vs =
 "#version 430\n"
-"layout(location=0) in vec3 pos;\n"       // attribute for pos
-"layout(location=1) in vec2 texCoord;\n"  // attribute for texture coordinates
-"layout(location=2) in vec4 color;\n"     // color attribute 
-
-"out vec2 TexCoord;\n"    // pass texture coordinate to the fragment shader. 
-"out vec4 vertexColor;\n" // pass color to the fragment shader. 
+"layout(location=0) in vec3 pos;\n"
+"layout(location=1) in vec2 texCoord;\n"
+"out vec2 TexCoor;\n"
 //"layout(location=0) out vec2 TexCoord;\n"
 
-//"layout(location=1) in vec4 color;\n"
-//"layout(location=0) out vec4 Color;\n"
-
-"uniform mat4 model;\n"       // model matrix
-"uniform mat4 view;\n"        // view matrix
-"uniform mat4 projection;\n"  // projection matrix. 
-
-
+"uniform mat4 model;\n"
+"uniform mat4 view;\n"
+"uniform mat4 projection;\n"
 
 "void main()\n"
 "{\n"
-"	gl_Position = projection * view * model * vec4(pos, 1.0);;\n" // calculate pos in world space. 
-"	TexCoord = texCoord;\n" // pass texture to shader
-"	vertexColor = color;\n" // pass input color to fragment shader. 
+"	gl_Position = projection * view * model * vec4(pos, 1.0);;\n"
+"	TexCoord = texCoord;\n"
 "}\n";
 
- //Fragment shader  = generate color and cub map texture 
+ //Fragment shader ps
 const GLchar* ps =
 "#version 430\n"
-//"layout(location=0) in vec4 color;\n"
-//"out vec4 Color;\n"
-
-"in vec2 TexCoord;\n"    // texture coordinates from vertex shader. 
-"in vec4 vertexColor;\n" // color from vertex shader. 
-"out vec4 Color;\n"      // output color
-
-//"uniform sampler2D texture; \n"
-"uniform sampler2D textureSampler; \n" // texture sampler. 
+"in vec2 TexCoord;\n"
+"out vec4 Color;\n"
+"uniform sampler2D texture; \n"
+//"uniform sampler2D textureSampler; \n" // texture sampler. 
 
 "void main()\n"
 "{\n"
-"	vec4 textureColor = texture(textureSampler, TexCoord);\n" // sampler the texture 
-"	Color = textureColor * vertexColor;\n" // fix the color from the texture.
-//"	Color = color;\n" if this line activate it will be overwritint for color 
-
+"	Color = texture(textureSampler, TexCoord);\n" // fix the color from the texture.
 "}\n";
 
 
 using namespace Display;
-
 namespace Example
 {
 
-	//------------------------------------------------------------------------------
-	/**
-	*/
+//------------------------------------------------------------------------------
+/**
+*/
 	ExampleApp::ExampleApp()
-	{
-		// empty
-	}
+	
+{
+	// empty
+}
 
-	//------------------------------------------------------------------------------
-	/**
-	*/
-	ExampleApp::~ExampleApp()
-	{
-		// empty
-	}
+//------------------------------------------------------------------------------
+/**
+*/
+ExampleApp::~ExampleApp()
+{
+	// empty
+}
 
-	//------------------------------------------------------------------------------
-	/**
-	*/
-	bool
-		ExampleApp::Open()
+//------------------------------------------------------------------------------
+/**
+*/
+bool
+ExampleApp::Open()
+{
+	App::Open();
+	this->window = new Display::Window;
+	/*window->SetKeyPressFunction([this](int32, int32, int32, int32)
 	{
-
-		App::Open();
-		this->window = new Display::Window;
-		window->SetKeyPressFunction([this](int32, int32, int32, int32)
-		{
 		this->window->Close();
-		});
+	});*/
 
-		GLfloat buf[] =
-		{
-			-0.5f,	-0.5f,	-1,			// pos 0
-			1,		0,		0,		1,	// color 0
-			0,		0.5f,	-1,			// pos 1
-			0,		1,		0,		1,	// color 0
-			0.5f,	-0.5f,	-1,			// pos 2
-			0,		0,		1,		1	// color 0
-		};
+	//GLfloat buf[] =
+	//{
+	//	-0.5f,	-0.5f,	-1,			// pos 0
+	//	1,		0,		0,		1,	// color 0
+	//	0,		0.5f,	-1,			// pos 1
+	//	0,		1,		0,		1,	// color 0
+	//	0.5f,	-0.5f,	-1,			// pos 2
+	//	0,		0,		1,		1	// color 0
+	//};
 
-		if (this->window->Open())
-		{
-			// set clear color to gray
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-			// setup vertex shader
-			this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			GLint length = static_cast<GLint>(std::strlen(vs));
-			glShaderSource(this->vertexShader, 1, &vs, &length);
-			glCompileShader(this->vertexShader);
-
-			// get error log
-			GLint shaderLogSize;
-			glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-			if (shaderLogSize > 0)
-			{
-				GLchar* buf = new GLchar[shaderLogSize];
-				glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
-				printf("[SHADER COMPILE ERROR]: %s", buf);
-				delete[] buf;
-			}
-
-			// setup pixel shader
-			this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
-			length = static_cast<GLint>(std::strlen(ps));
-			glShaderSource(this->pixelShader, 1, &ps, &length);
-			glCompileShader(this->pixelShader);
-
-			// get error log
-			shaderLogSize;
-			glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-			if (shaderLogSize > 0)
-			{
-				GLchar* buf = new GLchar[shaderLogSize];
-				glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
-				printf("[SHADER COMPILE ERROR]: %s", buf);
-				delete[] buf;
-			}
-
-			// create a program object
-			this->program = glCreateProgram();
-			glAttachShader(this->program, this->vertexShader);
-			glAttachShader(this->program, this->pixelShader);
-			glLinkProgram(this->program);
-			glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
-			if (shaderLogSize > 0)
-			{
-				GLchar* buf = new GLchar[shaderLogSize];
-				glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
-				printf("[PROGRAM LINK ERROR]: %s", buf);
-				delete[] buf;
-			}
-
-			// create cueb mesh and set up its buffers. 
-			mesh = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
-			mesh->createVBO();// create vbo 
-			mesh->createIBO(); // create ibo 
-
-			texture.loadFromFile("../projects/graphic/texture/lizard.png");
-			// load texture from file that we have it ready. 
-			if (!texture.loadFromFile("../projects/graphic/texture/lizard.png")) 
-			{
-				// check to see if the looding was successful.
-				printf("Failed to load texture from file.\n"); 
-				return false; // handeling the error. 
-			}
-
-			// set up camera projection and view matrices
-			camera.SetPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f); // set perspective
-			camera.SetView(vec3(0, 0, 5), vec3(0, 0, 0), vec3(0, 1, 0)); // set view 
-
-			//get unifor locations from shader program 
-			GLuint texLoc = glGetUniformLocation(this->program, "textureSampler");
-			GLuint modelLoc = glGetUniformLocation(this->program, "model");
-			GLuint viewLoc = glGetUniformLocation(this->program, "view");
-			GLuint projLoc = glGetUniformLocation(this->program, "projection");
-
-
-			// checking for all uniform location. 
-			if (texLoc == -1) {
-				printf("Error: textureSampler uniform no found in shader program. \n");
-			}
-			if (modelLoc == -1) {
-				printf("Error: model uniform not found in shader program. \n");
-			}
-
-			if (viewLoc == -1) {
-				printf("Error: view uniform no found in shader program. \n");
-			}
-			if (projLoc == -1) {
-				printf("Error: projection uniform no found in shader program. \n");
-			}
-
-			return true; // return doen when window and resource initialized. 
-
-		}
-		return false; // return fail if window cannat be openen. 
-
-
-	}
-
-
-	void
-		ExampleApp::Close()
+	if (this->window->Open())
 	{
-		mesh->cleanup();
-		texture.Cleanup();
+		// ...inial   the MeshResource object, 
+		//this->meshResource = new MeshResource(); 
+		// set clear color to gray
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-		if (this->window->IsOpen())
+		// setup vertex shader
+		vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		GLint length = static_cast<GLint>(std::strlen(vs));
+		glShaderSource(vertexShader, 1, &vs, &length);
+		glCompileShader(vertexShader);
+
+		// get error log
+		GLint shaderLogSize;
+		/*glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
 		{
-			this->window->Close();
-		}
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
+			printf("[SHADER COMPILE ERROR]: %s", buf);
+			delete[] buf;
+		}*/
 
-		Core::App::Close();
+		// setup pixel shader
+		pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
+		length = static_cast<GLint>(std::strlen(ps));
+		glShaderSource(pixelShader, 1, &ps, &length);
+		glCompileShader(pixelShader);
+
+		// get error log
+		//shaderLogSize;
+		/*glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
+			printf("[SHADER COMPILE ERROR]: %s", buf);
+			delete[] buf;
+		}*/
+
+		// create a program object link
+		program = glCreateProgram();
+		glAttachShader(program, vertexShader);
+		glAttachShader(program, pixelShader);
+		glLinkProgram(program);
+
+		mesh = MeshResource::CreatCube(1.0f, 1.0f, 1.0f); 
+		mesh->creatVBO(); 
+		mesh->creatIBO();
+
+		texture.LoadFromFile("path_to_texture.png"); 
+
+		camera.SetPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
+		camera.SetView(vec3(0, 0, 5), vec3(0, 0, 0), vec3(0, 1, 0));
+
+		//glGetProgramiv(program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		//if (shaderLogSize > 0)
+		//{
+		//	GLchar* buf = new GLchar[shaderLogSize];
+		//	glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
+		//	printf("[PROGRAM LINK ERROR]: %s", buf);
+		//	delete[] buf;
+		//}
+
+		//GLint texLoc = glGetUniformLocation(this->program, " textureSampler"); 
+		//GLint rotationLoc = glGetUniformLocation(this->program, " rotation"); 
+
+		//if (texLoc == -1) {
+		//	printf(" textureSampler uniform not found in shader program. \n"); 
+		//}
+		//if (rotationLoc == -1) {
+		//	printf(" rotation  uniform not found in shader program. \n");
+		//}
+
+		//this->texture = new TextureResource(); 
+		//if (!this->texture->loadFromFile("path your texture ")) 
+		//{
+		//	printf(" Error load texture faild \n"); 
+		//	return false; 
+		//}
+
+		// setup vbo
+		/*glGenBuffers(1, &this->triangle);
+		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		*/
+		return true;
+
 	}
+	return false;
+}
 
-	//------------------------------------------------------------------------------
-	/**
-	*/
+//------------------------------------------------------------------------------
+/**
+*/
+void
+ExampleApp::Close()
+{
+	mesh->cleanup(); 
+	texture.Cleanup(); 
+	//if(this->meshResource != nullptr)
+	//{
+	//		this->meshResource->cleanup(); 
+	//		delete this->meshResource; 
+	//		// cleanup 
+	//		this->meshResource = nullptr; 
+
+	//}
+
+	//if (this->window->IsOpen()) 
+	//{
+	//	this->window->Close();
+	//}
+		
+	Core::App::Close();
+}
+
+//------------------------------------------------------------------------------
+/**
+*/
 	void
 		ExampleApp::Run()
 	{
 
-		// set up cube mesh and texture
-		MeshResource* cube = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
-		TextureResource texture; 
-		texture.loadFromFile("../projects/graphic/texture/lizard.png"); 
+		glUseProgram(this->program); 
 
-		// creat camera
-		Camera camera(vec3(0.0f, 0.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), 45.0f, 800.0f / 600.0f, 0.0f, 100.0f);
-		//run time checking before using shader program to check if it's in a valid state. 
-		if (this->program == 0)
-		{
-			printf("Error: Program object is not valid. \n"); 
-			return; // exit when program is invalid. 
-		}
+		GLuint modelLoc = glGetUniformLocation(program, "model");
+		GLuint viewLoc = glGetUniformLocation(program, "view");
+		GLuint projLoc = glGetUniformLocation(program, "projection");
 
-		// for new camera test 
-		//camera camera(width, height mat4::vec3(0.0f, 0.0f, 2.0f)); 
-		glUseProgram(this->program); // shader program 
-		// rendering loop 
-		while (this->window->IsOpen())
-		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// clear the screen. 
-			this->window->Update(); // update 
-			camera.update(); 
+		while (this->window->IsOpen()) {
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			this->window->Update();
 
-			// get view and projection matrices.
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
+			mat4 model = mat4::rotationz(glfwGetTime());  // Rotate the cube over time
+			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, (GLfloat*)&model);
+			glUniformMatrix4fv(viewLoc, 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
+			glUniformMatrix4fv(projLoc, 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
 
-			// to clear screen 
-			glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT); 
-			cube->draw(); 
+			texture.Bind(0);
+			mesh->bindVBO();
+			mesh->bindIBO();
+			mesh->draw();
 
-			glfwSwapBuffers(window); 
-			glfwPollEvents(); 
-			
-			// for new camera test 
-			//camera.GetProjectionMatrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix"); 
-			
-			//// do stuff
-			//glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
-			//glUseProgram(this->program);
-			//glEnableVertexAttribArray(0);
-			//glEnableVertexAttribArray(1);
-			//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, NULL);
-			//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, (GLvoid*)(sizeof(float32) * 3));
-			//glDrawArrays(GL_TRIANGLES, 0, 3);
-			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+			this->window->SwapBuffers();
 
+		//float time = 0.0f;
+		////get the location of the rotation uniform variable in the shader program. 
+		//GLint rotation = glGetUniformLocation(this->program, "rotation");
 
-			// here: model, view and projection matrix, biding to the texture smpler 
-			// Rotate the cube over time
-			//mat4 model = rotationz(glfwGetTime());  
-			//glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_TRUE, (GLfloat*)&model);
-			//glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
-			//glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
-			
-			//bind and set texture uniform 
-			//texture.Bind(0);
-			// assigned to the fragment shader.
-			//glUniform1i(glGetUniformLocation(this->program, "textureSampler"), 0);
-			//glUniform1i(texLoc, 0);
+		//// create vertex buffer object vbo and index buffer object ibo for the mesh. 
+		//this->meshResource->createVBO();
+		//this->meshResource->createIBO();
 
-			// bind and draw mesh. 
-			//mesh->bindVBO();
-			//mesh->bindIBO();
-			//mesh->draw();
+		//// 
+		//while (this->window->IsOpen())
+		//{
+		//	mat4 mat4thingy; // declare a matrix for transformations 
+		//	time += 0.03f;//increment time for continuous rotation. 
+		//	glClear(GL_COLOR_BUFFER_BIT);// clear the color buffer to propare for the frame. 
+		//	this->window->Update(); // update the window 
 
-			// swap the buffers and display rendered from that. 
-			//this->window->SwapBuffers();
+		//	// do stuff
+		//	//glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		//	//Bind the vbo and ibo for rendering. 
+		//	this->meshResource->createVBO();
+		//	this->meshResource->createIBO();
+
+		//	/*meshResource.bindVBO();
+		//	meshResource.bindIBO();*/
+
+		//	// compute the rotation matrix base on the elapsed time. 
+		//	mat4thingy = rotationz(time); // rotation matrix around the z-axis. 
+		//	/*mat4thingy = rotationx(time);
+		//	mat4thingy = rotationy(time);*/
 
 
+		//	//mat4 rotationMat = mat4::rotationz(time);
+		//	// compute the translation matrix for left-right movement. 
+		//	//mat4 translationMat = mat4::translation(sinf(time) * 0.5f, 0.0f, 0.0f); 
 
+		//	// combining transformation matrix to the shader. 
+		//	//mat4 transformMat = translationMat * rotationMat;
+
+		//	// send the rotatio matrix to the shader. 
+		//	glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&mat4thingy);
+
+		//	// use the the shader for rendering. 
+		//	glUseProgram(this->program);
+
+		//	// attributes 
+		//	glEnableVertexAttribArray(0); // pos
+		//	glEnableVertexAttribArray(1); // color
+
+		//	// 0 = the position attribute in the vertex shader. 3 = each pos has 3 float(x,y,z) 
+		//	// sizeof(floate 32 * 7 = says to openGL each vertex has total 7 floats. 
+		//	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 5, NULL);
+
+		//	// 1 = color atrebute   4 ) each color has 4 floats ( r, g, b, a) 
+		//	// (GLvoid*)(sizeof(float32) * 3 = color data starts afoter the first 3 floats 
+		//	// like x=0, y=1, z=2, r=3, g=4, b=5, a=6, 
+		//	// 7 = shows the total number of float in a single vertex( 3 for position + 4 for color) 
+
+		//	// 3 floats = (x,y,z) position 
+		//	// 4 floats = (r,g,b,a) color
+		//	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, (GLvoid*)(sizeof(float32) * 3));
+
+		//	// binding the texture set uniform 
+		//	texture.Bind(0);
+		//	glUniform1i(texLoc, 0);
+
+
+		//	// drawing element 
+		//	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+		//	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		//	//swap buffers to display the rendered frame. 
+		//	this->window->SwapBuffers();
 
 #ifdef CI_TEST
 			// if we're running CI, we want to return and exit the application after one frame
@@ -311,15 +316,8 @@ namespace Example
 			break;
 
 #endif
-
-		}
-		delete cube; 
-	}
-	// massage callback function be called when there is e debug message from opengl. 
-	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-	{
-		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
 		
 	}
 }
+
  // namespace Example
