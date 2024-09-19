@@ -111,7 +111,7 @@ public:
 				result[i][j] = 0; 
 				for (int k = 0; k < 4; k++) 
 				{
-					result[i][j] += this->m[k][j] * rhs.m[i][k];
+					result[i][j] += this->m[i][k] * rhs.m[k][j];
 
 				}
 
@@ -127,18 +127,10 @@ public:
 	vec4 operator*(const vec4& rhs) const 
 	{
 		vec4 result;
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; ++i)
 		{
-			result[i] = this->m[0][i] * rhs[0] + 
-				this->m[0][1] * rhs[1] +
-				this->m[0][2] * rhs[2] +
-				this->m[0][3] * rhs[3];
+			result[i] = this->m[i].x * rhs.x + this->m[i].y * rhs.y + this->m[i].z * rhs.z + this->m[i].w * rhs.w; 
 				
-			//for (int j = 0; j < 4; j++)
-			//{
-			//	//result[i] = this->m[i].x * rhs.x + this->m[i].y * rhs.y + this->m[i].z * rhs.z + this->m[i].w * rhs.w; // jus
-			//	result[i] += this->m[j][i] * rhs[j];
-			//}
 		}
 
 		return result;
@@ -164,21 +156,21 @@ public:
 			return os; 
 		}
 
-		// function 
-		static mat4 rotationz(float angle) 
-		{
-			mat4 result; 
-			float cosAngle = cos(angle); 
-			float sinAngle = sin(angle); 
+		//// function 
+		//static mat4 rotationz(float angle) 
+		//{
+		//	mat4 result; 
+		//	float cosAngle = cos(angle); 
+		//	float sinAngle = sin(angle); 
 
-			result[0] = vec4(cosAngle - sinAngle, 0.0f, 0.0f); 
-			result[1] = vec4(sinAngle, cosAngle, 0.0f, 0.0f); 
-			result[2] = vec4(0.0f, 0.0f, 1.0f, 0.0f);
-			result[3] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-			return result; 
+		//	result[0] = vec4(cosAngle - sinAngle, 0.0f, 0.0f); 
+		//	result[1] = vec4(sinAngle, cosAngle, 0.0f, 0.0f); 
+		//	result[2] = vec4(0.0f, 0.0f, 1.0f, 0.0f);
+		//	result[3] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+		//	return result; 
 
 
-		}
+		//}
 
 };
 

@@ -126,6 +126,32 @@ public:
 
 };
 
+// normalize vec3 
+
+vec3 normalize(const vec3 v) {
+	float length = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+	if (length == 0.0f) return vec3(0.0f, 0.0f, 0.0f);
+	return vec3(v.x / length, v.y / length, v.z / length);
+}
+//
+//vec3 cross(const vec3& a, const vec3& b) {
+//	return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * a.x);
+//}
+//
+//
+//
+//// normalize vec3 
+//vec3 Normalizevec3(const vec3& v)
+//{
+//	float len = length(v);
+//	if (len > 0.0f)
+//	{
+//		return vec3(v.x / len, v.y / len, v.z / len);
+//	}
+//	return vec3(0.0f, 0.0f, 0.0f); // if length is 0 return the vector is 0.
+//
+//}
+
 // to calculate the dot product of two vev3 vectors 
 float dot(const vec3& a, const vec3& b) 
 {
@@ -147,14 +173,14 @@ vec3 cross(const vec3& a, const vec3& b)
 
 }
 
-// normalize vec3 
-vec3 Normalizevec3(const vec3& v)
-{
-	float len = length(v);
-	if (len > 0.0f)
-	{
-		return vec3(v.x / len, v.y / len, v.z / len);
-	}
-	return vec3(0.0f, 0.0f, 0.0f); // if length is 0 return the vector is 0.
-
-}
+//// normalize vec3 
+//vec3 Normalizevec3(const vec3& v)
+//{
+//	float len = length(v);
+//	if (len > 0.0f)
+//	{
+//		return vec3(v.x / len, v.y / len, v.z / len);
+//	}
+//	return vec3(0.0f, 0.0f, 0.0f); // if length is 0 return the vector is 0.
+//
+//}

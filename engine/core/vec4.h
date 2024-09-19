@@ -143,6 +143,27 @@ public:
 		//}
 
 	}
+
+	// normalize vec3 
+
+	vec4 normalize(const vec4 v) {
+		float length = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
+		if (length == 0.0f) return vec4(0.0f, 0.0f, 0.0f, 0.0f);
+		return vec4(v.x / length, v.y / length, v.z / length, v.w / length);
+	}
+	// normalize vec4 to use on camera calculation. 
+	//vec4 normalize() const 
+	//{
+	//	float len = std::sqrt(x * x + y * y + z * z + w * w); 
+	//	if (len > 0.0f) 
+	//	{
+	//		return vec4(x / len, y / len, z / len, w / len); 
+
+	//	}
+	//	// if the lenth = 0, return ziro. 
+	//	return vec4(0.0f, 0.0f, 0.0f, 0.0f); 
+
+	//}
 	// overload the operator for printing a vec4 object to the ou
 	friend std::ostream& operator<<(std::ostream& os, const vec4& v) 
 	{
@@ -169,15 +190,15 @@ float length(const vec4& v)
 }
 
 // normalize vector each one 
-vec4 normalize(const vec4& v)
-{
-	float len = length(v);
-	if (len > 0.0f)
-	{
-		return vec4(v.x / len, v.y / len, v.z / len, v.w / len);
-	}
-	return vec4(0.0f, 0.0f, 0.0f, 0.0f); // if length is 0 return the vector is 0.
-
-
-}
+//vec4 normalize(const vec4& v)
+//{
+//	float len = length(v);
+//	if (len > 0.0f)
+//	{
+//		return vec4(v.x / len, v.y / len, v.z / len, v.w / len);
+//	}
+//	return vec4(0.0f, 0.0f, 0.0f, 0.0f); // if length is 0 return the vector is 0.
+//
+//
+//}
 
