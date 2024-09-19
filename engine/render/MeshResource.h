@@ -1,6 +1,5 @@
 #pragma once
-#define STB_IMAGE_IMPLEMENTATION
-
+//#define STB_IMAGE_IMPLEMENTATION
 #include <GL/glew.h>
 #include <config.h>
 #include <render/stb_image.h>
@@ -25,7 +24,14 @@ public:
 	~MeshResource();
 
 	// vertex buffer object.
-	static MeshResource* CreatCube(float width, float height, float depth);
+	static MeshResource* CreatCube(float width, float height, float depth)
+	{
+		MeshResource* mesh = new MeshResource();
+		// call function 
+		mesh->createVBO();
+		mesh->createIBO();
+		return mesh;
+	}
 	void createVBO();
 	void createIBO();
 	void bindVBO();
@@ -51,14 +57,6 @@ MeshResource::~MeshResource()
 {
 	cleanup(); 
 
-}
-
-MeshResource* MeshResource::CreatCube(float width, float height, float depth)
-{
-	MeshResource* mesh = new MeshResource();
-	mesh->createVBO; 
-	mesh->createIBO; 
-	return mesh;
 }
 
 // VBO = vertex buffer object 

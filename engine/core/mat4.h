@@ -1,6 +1,6 @@
-  
-#include <iostream>
 #pragma once
+#include <iostream>
+
 #include "vec3.h"
 #include "vec4.h"
 #include <cmath> 
@@ -10,8 +10,7 @@
 using namespace std; 
 
 
-
-
+namespace Core { }
 
 // matrix operations 
 // 
@@ -23,7 +22,7 @@ using namespace std;
 // class a matrix 4*4
 class mat4 {
 public:
-	vec4 m[4]; // matrix by 4 vec4 columns. 
+	vec4 m[4]; // matrix by 4x4 vec4 columns. 
 
 	// constructor with identity matrix. all columns 
 	
@@ -112,38 +111,13 @@ public:
 				result[i][j] = 0; 
 				for (int k = 0; k < 4; k++) 
 				{
-					result[i][j] += this->m[k][j] * rhs[i][k];
+					result[i][j] += this->m[k][j] * rhs.m[i][k];
 
 				}
 
 			}
 
 		}
-		/*mat4 thisTrans;*/
-	/*	for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				thisTrans[i][j] = this->m[j][i];
-			}
-		}*/
-
-		//for (int i = 0; i < 4; i++) 
-		//{
-		//	
-		//	for (int j = 0; j < 4; j++) 
-		//	{
-		//		result[i][j] = 0.0f; // ini... result to zero. 
-		//		for (int k = 0; k < 4; k++)
-		//		{
-		//			result[i][j] += this->m[i][k] * rhs.m[k][j];
-
-		//		}
-		//			
-		//	}
-
-		//}
-
 		
 		return result; 
 
@@ -152,32 +126,25 @@ public:
 	// multiples the matrix by vec4; 
 	vec4 operator*(const vec4& rhs) const 
 	{
-		vec4 result = vec4();
+		vec4 result;
 		for (int i = 0; i < 4; i++)
 		{
-			for (int j = 0; j < 4; j++)
-			{
-				//result[i] = this->m[i].x * rhs.x + this->m[i].y * rhs.y + this->m[i].z * rhs.z + this->m[i].w * rhs.w; // jus
-				result[i] += this->m[j][i] * rhs[j];
-			}
+			result[i] = this->m[0][i] * rhs[0] + 
+				this->m[0][1] * rhs[1] +
+				this->m[0][2] * rhs[2] +
+				this->m[0][3] * rhs[3];
+				
+			//for (int j = 0; j < 4; j++)
+			//{
+			//	//result[i] = this->m[i].x * rhs.x + this->m[i].y * rhs.y + this->m[i].z * rhs.z + this->m[i].w * rhs.w; // jus
+			//	result[i] += this->m[j][i] * rhs[j];
+			//}
 		}
 
-		/*for (int i = 0; i < 4; i++)
-		{
-			result[i] = dot(m[i], rhs);
-		}*/
 		return result;
-		//return vec4(
-		//	dot(m[0], rhs), // 1a row of the matrix dot product with vector
-		//	dot(m[1], rhs), // 2a row of the matrix dot product with vector
-		//	dot(m[2], rhs), // 3a row of the matrix dot product with vector
-		//	dot(m[3], rhs) // 4a row of the matrix dot product with vector
-		//);
-
+		
 	}
 
-	
-	public: 
 		mat4 operator*(float scalar) const // scalar multication 
 		{
 			return mat4(
@@ -193,31 +160,27 @@ public:
 			for (int i = 0; i < 4; ++i) 
 			{
 				os << mat.m[i] << std::endl;
-
 			}
 			return os; 
+		}
+
+		// function 
+		static mat4 rotationz(float angle) 
+		{
+			mat4 result; 
+			float cosAngle = cos(angle); 
+			float sinAngle = sin(angle); 
+
+			result[0] = vec4(cosAngle - sinAngle, 0.0f, 0.0f); 
+			result[1] = vec4(sinAngle, cosAngle, 0.0f, 0.0f); 
+			result[2] = vec4(0.0f, 0.0f, 1.0f, 0.0f);
+			result[3] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+			return result; 
+
 
 		}
 
 };
-
-
-
-
-// return the transpese of a mat4 swapping rows and columns 
-static mat4 transpose(const mat4& mat) // transpose matrix
-{
-	return mat4(
-		vec4(mat.m[0].x, mat.m[1].x, mat.m[2].x, mat.m[3].x),
-		vec4(mat.m[0].y, mat.m[1].y, mat.m[2].y, mat.m[3].y),
-		vec4(mat.m[0].z, mat.m[1].z, mat.m[2].z, mat.m[3].z),
-		vec4(mat.m[0].w, mat.m[1].w, mat.m[2].w, mat.m[3].w)
-
-
-	);
-}
-
-
 
 
 // static fun to create a rotation matrix for a rotation around the x axis. 
@@ -253,13 +216,14 @@ static mat4 rotationy(float radians)
 
 
 // static fun to create a rotation matrix for a rotation around the z axis. 
-static mat4 rotationz(float radians)
+static mat4 rotationz(float angle)
 {
-	float c = std::cos(radians);
-	float s = std::sin(radians);
+	float cosAngle = std::cos(angle);
+	float singAngle = std::sin(angle);
+
 	return mat4(
-		vec4(c, s, 0.0f, 0.0f),
-		vec4(-s, c, 0.0f, 0.0f),
+		vec4(cosAngle, -singAngle, 0.0f, 0.0f),
+		vec4(singAngle, cosAngle, 0.0f, 0.0f),
 		vec4(0.0f, 0.0f, 1.0f, 0.0f),
 		vec4(0.0f, 0.0f, 0.0f, 1.0f)
 	);
@@ -282,6 +246,19 @@ static mat4 rotationaxis(const vec3& axis, float radians)
 
 }
 
+// return the transpese of a mat4 swapping rows and columns 
+static mat4 transpose(const mat4& mat) // transpose matrix
+{
+	return mat4(
+		vec4(mat.m[0].x, mat.m[1].x, mat.m[2].x, mat.m[3].x),
+		vec4(mat.m[0].y, mat.m[1].y, mat.m[2].y, mat.m[3].y),
+		vec4(mat.m[0].z, mat.m[1].z, mat.m[2].z, mat.m[3].z),
+		vec4(mat.m[0].w, mat.m[1].w, mat.m[2].w, mat.m[3].w)
+
+
+	);
+}
+
 
 // calculate the confactor of the matrix. 
 static float cofactor(const mat4& mat, int row, int col)
@@ -298,14 +275,6 @@ static float cofactor(const mat4& mat, int row, int col)
 			submatrix.m[sub_i][sub_k] = mat.m[i][k]; 
 			++sub_k; 
 
-		//	if (k == col) continue; // accessing matrix components, assign each ideividual component.
-		//	if (sub_k == 0) submatrix.m[sub_i].x = mat.m[i][k];
-		//	if (sub_k == 1) submatrix.m[sub_i].y = mat.m[i][k];
-		//	if (sub_k == 2) submatrix.m[sub_i].z = mat.m[i][k];
-		//	if (sub_k == 3) submatrix.m[sub_i].w = mat.m[i][k];
-		//	submatrix.m[sub_i][sub_k] = mat.m[i][k];
-		//	++sub_k;
-
 		}
 		++sub_i;
 
@@ -319,18 +288,6 @@ static float cofactor(const mat4& mat, int row, int col)
 	
 	return ((row + col) % 2 == 0) ? det_submatrix : -det_submatrix; 
 
-
-	/*float det_submatrix =
-		submatrix.m[0].x * (submatrix.m[1].y * submatrix.m[2].z - submatrix.m[1].z * submatrix.m[2].y) -
-		submatrix.m[0].y * (submatrix.m[1].x * submatrix.m[2].z - submatrix.m[1].z * submatrix.m[2].x) +
-		submatrix.m[0].z * (submatrix.m[1].x * submatrix.m[2].y - submatrix.m[1].y * submatrix.m[2].x);
-	if ((row + col) % 2 == 1) det_submatrix = -det_submatrix;
-	return det_submatrix;*/
-
-	// with this function can calculate cofactor matriz given row and col in both 3*3 and 4*4 marix 
-	// 
-	//return 1.0f;  // plaaceholder return value
-
 }
 
 
@@ -340,14 +297,14 @@ static mat4 adjoint(const mat4& mat)
 	mat4 adj;
 	for (int i = 0; i < 4; ++i)
 	{
-		for (int k = 0; k < 4; ++k)
+		for (int j = 0; j < 4; ++j)
 		{
-			adj.m[i][k] = cofactor(mat, i, k);
+			adj.m[i][j] = cofactor(mat, i, j);
 
 		}
 
 	}
-	return transpose(adj);
+	return adj;
 	// compute the adjugate means transpose of the cofactor matrix 
 	//return mat4(); // placeholder return value. 
 
@@ -360,15 +317,9 @@ static float determinant(const mat4& mat)
 		mat.m[0][1] * cofactor(mat, 0, 1) +
 		mat.m[0][2] * cofactor(mat, 0, 2) -
 		mat.m[0][3] * cofactor(mat, 0, 3);
-	//float det = 0.0f; // calculate for a 4*4 matrix. 
+	
 
-	//det += mat.m[0].x * cofactor(mat, 0, 0);
-	//det -= mat.m[1].x * cofactor(mat, 0, 1);
-	//det += mat.m[2].x * cofactor(mat, 0, 2);
-	//det -= mat.m[3].x * cofactor(mat, 0, 3);
-	//return det;
-
-}
+};
 
 // static fun to returns the invers of  mat4 or identify if not invertible. 
 static mat4 inverse(const mat4& mat)
@@ -417,11 +368,67 @@ bool matnearequal(const mat4& a, const mat4& b, float epsilon)
 	return true; 
 
 }
-// function after the mat4 class definition. 
-//extern float dot(const vec4& a, const vec4& b) 
-//{
-//	return(a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w); 
-//
-//}
+
+
+
+
+// need to comment the code. 
+
+mat4 perspective(float fov, float aspect, float nearPlane, float farPlane) 
+{
+	float tanHalfFovy = std::tan(fov / 2.0f); 
+	float range = farPlane - nearPlane; 
+
+	mat4 Calculated(
+		vec4(1.0f / (aspect * tanHalfFovy), 0.0f, 0.0f, 0.0f),
+		vec4(0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f),
+		vec4(0.0f, 0.0f, -(farPlane + nearPlane) / range, -1.0f),
+		vec4(0.0f, 0.0f, 2.0f * farPlane * nearPlane / range, 0.0f)
+
+	); 
+	return Calculated; 
+}
+
+vec3 vec4ToVec3(const vec4& v) 
+{
+	return vec3(v.x, v.y, v.z); 
+
+}
+
+mat4 lookAt(const vec3& position, const vec3& target, const vec3& up) 
+{
+	vec3 view = normalize(position - target); 
+
+	vec3 right = normalize(cross(up, view)); 
+
+	vec3 secondUp = cross(view, right); 
+
+	mat4 cameraCalculate(
+		vec4(right.x, right.y, right.z, 0.0f),
+		vec4(secondUp.x, secondUp.y, secondUp.z, 0.0f),
+		vec4(view.x, view.y, view.z, 0.0f),
+		vec4(0.0f, 0.0f, 1.0f)
+	);
+
+	mat4 translation(
+		vec4(1.0f, 0.0f, 0.0f, -position.x),
+		vec4(0.0f, 1.0f, 0.0f, -position.y),
+		vec4(0.0f, 0.0f, 1.0f, -position.z),
+		vec4(0.0f, 0.0f, 0.0f, 1.0f)
+	); 
+
+	return cameraCalculate * translation; 
+
+}
+
+vec3 normalize(const vec3 v) {
+	float length = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z); 
+	if (length == 0.0f) return vec3(0.0f, 0.0f, 0.0f); 
+	return vec3(v.x / length, v.y / length, v.z / length); 
+}
+
+vec3 cross(const vec3& a, const vec3& b) {
+	return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * a.x);
+}
 
 

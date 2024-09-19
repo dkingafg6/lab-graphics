@@ -23,6 +23,9 @@ public:
 	~ExampleApp();
 
 	/// open app
+	//------------------------------------------------------------------------------
+	/**
+	*/
 	bool Open();
 	/// close app
 	void Close();
@@ -30,14 +33,26 @@ public:
 	void Run();
 private:
 
-	Display::Window* window;
-	GLuint program;
-	GLuint vertexShader;
-	GLuint pixelShader;
-	GLuint triangle;
-	// adding member
-	MeshResource* meshResource; 
-	TextureResource texture; 
-	
+	// point to window 
+	Display::Window* window{ nullptr };
+
+	// all IDs 
+	GLuint program{ 0 };
+	GLuint vertexShader{ 0 };
+	GLuint pixelShader{ 0 };
+	GLuint triangle{ 0 };
+
+	// point to meshrecsource
+	MeshResource* mesh{ nullptr };
+	TextureResource texture; // resource for texture. 
+	Camera camera; 
+
+	GLuint texLoc; 
+	GLuint modelLoc; 
+	GLuint viewLoc;
+	GLuint projLoc; 
+
+
+
 };
 } // namespace Example

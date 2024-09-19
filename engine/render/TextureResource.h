@@ -1,29 +1,25 @@
 #pragma once
 #include <GL/glew.h>
-<<<<<<<< HEAD:projects/graphic/code/TextureResource.h
-#define STB_IMAGE_IMPLEMENTATION
-#include <core/stb_image.h>
-========
 #include <string>
 #include <render/stb_image.h>
 #include <iostream>
 
 using namespace std;
->>>>>>>> 352aaaf (update many stb errors):engine/render/TextureResource.h
 
 
 class TextureResource
 {
-private:
-	GLuint textureID;
 public:
-	TextureResource();
-	~TextureResource();
+	GLuint textureID;
+	//GLuint textureID;
 
-	bool loadFromFile(const char* filename); 
-	void Bind(unsigned int unit = 0); 
+	TextureResource();
+    ~TextureResource();
+
+	bool loadFromFile(const std::string& filename);
+	void Bind(unsigned int unit);
+                                    
 	void Cleanup(); 
 
-
-	//GLuint textureID;	
+		
 };

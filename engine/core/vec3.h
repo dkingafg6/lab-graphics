@@ -148,7 +148,7 @@ vec3 cross(const vec3& a, const vec3& b)
 }
 
 // normalize vec3 
-vec3 normalize(const vec3& v)
+vec3 Normalizevec3(const vec3& v)
 {
 	float len = length(v);
 	if (len > 0.0f)
