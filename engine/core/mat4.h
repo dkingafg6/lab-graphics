@@ -26,7 +26,7 @@ public:
 
 	// constructor with identity matrix. all columns 
 	
-	mat4() 
+	inline mat4()
 	{
 		m[0] = vec4(1.0f, 0.0f, 0.0f, 0.0f);
 		m[1] = vec4(0.0f, 1.0f, 0.0f, 0.0f);
@@ -36,7 +36,7 @@ public:
 
 	}
 	 // ini...matrix with 4 vec4 rows. 
-	mat4(const vec4& c0, const vec4& c1, const vec4& c2, const vec4& c3)
+	inline mat4(const vec4& c0, const vec4& c1, const vec4& c2, const vec4& c3)
 	{
 		m[0] = c0;
 		m[1] = c1;
@@ -45,7 +45,7 @@ public:
 
 
 	}
-	mat4(const mat4& rhs) // copy the constructor 
+	inline mat4(const mat4& rhs) // copy the constructor 
 	{
 		for (int i = 0; i < 4; ++i) 
 		{
@@ -54,7 +54,7 @@ public:
 	}
 
 	// copies values from another mat4
-	mat4& operator=(const mat4& rhs) 
+	inline mat4& operator=(const mat4& rhs)
 	{
 		if (this != &rhs) 
 		{
@@ -67,7 +67,7 @@ public:
 		return *this; 
 	}
 	// check if two mat4 matrices are equal.
-	bool operator==(const mat4& rhs) const 
+	inline bool operator==(const mat4& rhs) const
 	{
 		for (int i = 0; i < 4; ++i)
 		{
@@ -77,27 +77,27 @@ public:
 	}
 
 	// check if two mat4 matrices are not equal 
-	bool operator!=(const mat4& rhs) const 
+	inline bool operator!=(const mat4& rhs) const
 	{
 		return !(*this == rhs); 
 	}
 
 	// provides access to matrix columns bu i 0 to 3
-	vec4& operator[](const uint32_t i) 
+	inline vec4& operator[](const uint32_t i)
 	{
 		if (i < 4) return m[i]; 
 		throw std::out_of_range("Index out of range. valid range is [0, 3],");
 	}
 
 	// provides const access to matrix columns bu i 0 to 3
-	const vec4& operator[](const uint32_t i) const
+	inline const vec4& operator[](const uint32_t i) const
 	{
 		if (i < 4) return m[i];
 		throw std::out_of_range("Index out of range. valid range is [0, 3],");
 	}
 
 	// multiples two mat4 matrices 
-	mat4 operator*(const mat4& rhs) const 
+	inline mat4 operator*(const mat4& rhs) const
 	{
 		std::cout << " Matrix A:\n" << this->m[0][0] << std::endl; 
 		std::cout << " Matrix B:\n"; for (int i = 0; i < 4; ++i)
@@ -124,7 +124,7 @@ public:
 	}
 
 	// multiples the matrix by vec4; 
-	vec4 operator*(const vec4& rhs) const 
+	inline vec4 operator*(const vec4& rhs) const
 	{
 		vec4 result;
 		for (int i = 0; i < 4; ++i)
@@ -137,7 +137,7 @@ public:
 		
 	}
 
-		mat4 operator*(float scalar) const // scalar multication 
+	inline mat4 operator*(float scalar) const // scalar multication 
 		{
 			return mat4(
 				m[0] * scalar,
@@ -147,7 +147,7 @@ public:
 			); 
 
 		}
-		friend std::ostream& operator<<(std::ostream& os, const mat4& mat) 
+		inline friend std::ostream& operator<<(std::ostream& os, const mat4& mat) 
 		{
 			for (int i = 0; i < 4; ++i) 
 			{
@@ -176,7 +176,7 @@ public:
 
 
 // static fun to create a rotation matrix for a rotation around the x axis. 
-static mat4 rotationx(float radians)
+inline static mat4 rotationx(float radians)
 {
 	float c = std::cos(radians);
 	float s = std::sin(radians);
@@ -193,7 +193,7 @@ static mat4 rotationx(float radians)
 }
 
 // static fun to create a rotation matrix for a rotation around the y axis. 
-static mat4 rotationy(float radians)
+inline static mat4 rotationy(float radians)
 {
 	float c = std::cos(radians);
 	float s = std::sin(radians);
@@ -208,7 +208,7 @@ static mat4 rotationy(float radians)
 
 
 // static fun to create a rotation matrix for a rotation around the z axis. 
-static mat4 rotationz(float angle)
+inline static mat4 rotationz(float angle)
 {
 	float cosAngle = std::cos(angle);
 	float singAngle = std::sin(angle);
@@ -223,7 +223,7 @@ static mat4 rotationz(float angle)
 }
 
 // static fun.. create a rotation matrix around an arbitrary axis, 
-static mat4 rotationaxis(const vec3& axis, float radians)
+inline static mat4 rotationaxis(const vec3& axis, float radians)
 {
 	float c = std::cos(radians);
 	float s = std::sin(radians);
@@ -239,7 +239,7 @@ static mat4 rotationaxis(const vec3& axis, float radians)
 }
 
 // return the transpese of a mat4 swapping rows and columns 
-static mat4 transpose(const mat4& mat) // transpose matrix
+inline static mat4 transpose(const mat4& mat) // transpose matrix
 {
 	return mat4(
 		vec4(mat.m[0].x, mat.m[1].x, mat.m[2].x, mat.m[3].x),
@@ -253,7 +253,7 @@ static mat4 transpose(const mat4& mat) // transpose matrix
 
 
 // calculate the confactor of the matrix. 
-static float cofactor(const mat4& mat, int row, int col)
+inline static float cofactor(const mat4& mat, int row, int col)
 {
 	mat4 submatrix;
 	int sub_i = 0;
@@ -284,7 +284,7 @@ static float cofactor(const mat4& mat, int row, int col)
 
 
 // that fun.. to compute adjugate matrix 
-static mat4 adjoint(const mat4& mat)
+inline static mat4 adjoint(const mat4& mat)
 {
 	mat4 adj;
 	for (int i = 0; i < 4; ++i)
@@ -303,7 +303,7 @@ static mat4 adjoint(const mat4& mat)
 }
 
 // compute the determinant of a mat4
-static float determinant(const mat4& mat)
+inline static float determinant(const mat4& mat)
 {
 	return mat.m[0][0] * cofactor(mat, 0, 0) -
 		mat.m[0][1] * cofactor(mat, 0, 1) +
@@ -314,7 +314,7 @@ static float determinant(const mat4& mat)
 };
 
 // static fun to returns the invers of  mat4 or identify if not invertible. 
-static mat4 inverse(const mat4& mat)
+inline static mat4 inverse(const mat4& mat)
 {
 	float det = determinant(mat);
 	if (std::abs(det) < 1e-6f)
@@ -335,7 +335,7 @@ static mat4 inverse(const mat4& mat)
 
 //
 //// matnearequal fun... check if two matrics a and b are approximitly within specified tolerance. 
-bool nearequal(const vec4& a, const vec4& b, float epsilon)
+inline bool nearequal(const vec4& a, const vec4& b, float epsilon)
 {
 	return std::fabs(a.x - b.x) < epsilon &&
 		std::fabs(a.y - b.y) < epsilon &&
@@ -346,7 +346,7 @@ bool nearequal(const vec4& a, const vec4& b, float epsilon)
 }
 // check if  two mat4 vectors a and b are approximately equal within a specified torelransce.
 // epsilon is the tolaerance value within which two cectors are concidered equal. 
-bool matnearequal(const mat4& a, const mat4& b, float epsilon) 
+inline bool matnearequal(const mat4& a, const mat4& b, float epsilon)
 {
 	for (int i = 0; i < 4; ++i) 
 	{
@@ -366,7 +366,7 @@ bool matnearequal(const mat4& a, const mat4& b, float epsilon)
 
 // need to comment the code. 
 
-mat4 perspective(float fov, float aspect, float nearPlane, float farPlane) 
+inline mat4 perspective(float fov, float aspect, float nearPlane, float farPlane)
 {
 	float tanHalfFovy = std::tan(fov / 2.0f); 
 	float range = farPlane - nearPlane; 
@@ -381,13 +381,13 @@ mat4 perspective(float fov, float aspect, float nearPlane, float farPlane)
 	return Calculated; 
 }
 
-vec3 vec4ToVec3(const vec4& v) 
+inline vec3 vec4ToVec3(const vec4& v)
 {
 	return vec3(v.x, v.y, v.z); 
 
 }
 
-mat4 lookAt(const vec3& position, const vec3& target, const vec3& up) 
+inline mat4 lookAt(const vec3& position, const vec3& target, const vec3& up) 
 {
 	vec3 view = normalize(position - target); 
 
@@ -411,16 +411,6 @@ mat4 lookAt(const vec3& position, const vec3& target, const vec3& up)
 
 	return cameraCalculate * translation; 
 
-}
-
-vec3 normalize(const vec3 v) {
-	float length = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z); 
-	if (length == 0.0f) return vec3(0.0f, 0.0f, 0.0f); 
-	return vec3(v.x / length, v.y / length, v.z / length); 
-}
-
-vec3 cross(const vec3& a, const vec3& b) {
-	return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * a.x);
 }
 
 

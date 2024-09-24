@@ -3,30 +3,47 @@
 // (C) 2015-2022 Individual contributors, see AUTHORS file
 //------------------------------------------------------------------------------
 #include "config.h"
+#include "render/Camera.h"
+#include "render/MeshResource.h"
+#include "render/TextureResource.h"
 #include "exampleapp.h"
 #include <cstring>
 #include "imgui.h"
-
 #define STRING_BUFFER_SIZE 8192
 
+
+// vertx Shader 
 const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec3 pos;\n"
-"layout(location=1) in vec4 color;\n"
-"layout(location=0) out vec4 Color;\n"
+"layout(location=1) in vec2 texCoord;\n"
+//"layout(location=1) in vec4 color;\n"
+
+//"layout(location=0) out vec4 Color;\n"
+"uniform mat4 model;\n"
+"uniform mat4 viewProj;\n"
+
+"out vec2 TexCoord;\n"
+
 "void main()\n"
 "{\n"
-"	gl_Position = vec4(pos, 1);\n"
-"	Color = color;\n"
+"	gl_Position = viewProj * model * vec4(pos, 1.0);\n"
+"	TexCoord = texCoord;\n"
 "}\n";
 
+//Fragment Shader 
 const GLchar* ps =
 "#version 430\n"
-"layout(location=0) in vec4 color;\n"
-"out vec4 Color;\n"
+"in vec2 TexCoord;\n"
+"out vec4 FragColor;\n"
+
+//"layout(location=0) in vec4 color;\n"
+"uniform sampler2D textureSampler;\n"
+
+//"out vec4 Color;\n"
 "void main()\n"
 "{\n"
-"	Color = color;\n"
+"	FragColor = texture(textureSampler, TexCoord;\n"
 "}\n";
 
 using namespace Display;

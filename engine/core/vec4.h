@@ -176,14 +176,14 @@ public:
 };
 
 // calculate the dot product for vectors 
-float dot(const vec4& a, const vec4& b)
+inline float dot(const vec4& a, const vec4& b)
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 
 }
 
 // calculate the length of vectors 
-float length(const vec4& v)
+inline float length(const vec4& v)
 {
 	return std::sqrt(dot(v, v));
 

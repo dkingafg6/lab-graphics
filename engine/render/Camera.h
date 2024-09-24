@@ -2,12 +2,14 @@
 #include"render/Camera.h"
 #include "core/mat4.h"
 #include "core/vec3.h"
+#include "core/vec2.h"
 
 class Camera
 {
 public:
 	mat4 viewMatrix;
 	mat4 projectionMatrix;
+
 	Camera();
 	~Camera();
 
@@ -20,8 +22,10 @@ public:
 	const mat4& GetViewMatrix() const;
 	const mat4& GetProjectionMatrix() const; 
 
-	/*const mat4& GetViewMatrix() const { return viewMatrix; }
+	//const mat4& GetViewMatrix() const;
+	//{ return viewMatrix; }
 
-	const mat4& GetProjectionMatrix() const { return projectionMatrix; }*/	
+	//const mat4& GetProjectionMatrix() const; 
+	//{ return projectionMatrix; }
 };
 

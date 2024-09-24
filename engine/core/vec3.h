@@ -18,7 +18,7 @@ public:
 	vec3(const vec3& v) : x(v.x), y(v.y), z(v.z) {}
 
 	// operators 
-	vec3 operator=(const vec3& rhs) // copies values from another vec3
+	inline vec3 operator=(const vec3& rhs) // copies values from another vec3
 	{
 		if (this != &rhs) 
 		{
@@ -28,17 +28,17 @@ public:
 		}
 		return *this; 
 	}
-	vec3 operator-() const // return the negative of the vector. 
+	inline vec3 operator-() const // return the negative of the vector. 
 	{
 		return vec3(-x, -y, -z); 
 	}
 
-	vec3 operator+(const vec3& rhs) const // adds two vec3 vectors return result. 
+	inline vec3 operator+(const vec3& rhs) const // adds two vec3 vectors return result. 
 	{
 		return vec3(x + rhs.x, y + rhs.y, z + rhs.z); 
 	}
 
-	vec3 operator+=(const vec3& rhs)// adds another vector to the current one
+	inline vec3 operator+=(const vec3& rhs)// adds another vector to the current one
 	{
 		x += rhs.x;
 		y += rhs.y;
@@ -47,12 +47,12 @@ public:
 		
 	}
 
-	vec3 operator-(const vec3& rhs) const // subtracts one vec3 from another. 
+	inline vec3 operator-(const vec3& rhs) const // subtracts one vec3 from another. 
 	{
 		return vec3(x - rhs.x, y - rhs.y, z - rhs.z);
 	}
 
-	vec3 operator-=(const vec3& rhs) // subtracts another vector from the current one
+	inline vec3 operator-=(const vec3& rhs) // subtracts another vector from the current one
 	{
 		x -= rhs.x;
 		y -= rhs.y;
@@ -61,7 +61,7 @@ public:
 
 	}
 
-	vec3 operator*=(const float scalar)// multiple scalar the vector by a scalar. 
+	inline vec3 operator*=(const float scalar)// multiple scalar the vector by a scalar. 
 	{
 		x *= scalar;
 		y *= scalar;
@@ -69,22 +69,22 @@ public:
 		return *this;
 	}
 
-	vec3 operator* (const float scalar) const // multiple the vector by a scalar return the result 
+	inline vec3 operator* (const float scalar) const // multiple the vector by a scalar return the result 
 	{
 		return vec3(x * scalar, y * scalar, z * scalar);
 	}
 
-	bool operator==(const vec3& rhs) const // check if two vec3 vectors are equal 
+	inline bool operator==(const vec3& rhs) const // check if two vec3 vectors are equal 
 	{
 		return x == rhs.x && y == rhs.y && z == rhs.z; 
 	}
 
-	bool operator!=(const vec3& rhs) const//  check if two vec3 vectors are not equal. 
+	inline bool operator!=(const vec3& rhs) const//  check if two vec3 vectors are not equal. 
 	{
 		return !(*this == rhs); 
 	}
 	// provides access to x,y,z by i    i= index 
-	float& operator[](const uint32_t i)
+	inline float& operator[](const uint32_t i)
 	{
 
 		if (i == 0) return x;
@@ -103,7 +103,7 @@ public:
 	}
 	 
 	// provides const access to x,y,x by i
-	const float& operator[](const uint32_t i) const
+	inline const float& operator[](const uint32_t i) const
 	{
 
 		if (i == 0) return x;
@@ -128,7 +128,7 @@ public:
 
 // normalize vec3 
 
-vec3 normalize(const vec3 v) {
+inline vec3 normalize(const vec3 v) {
 	float length = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 	if (length == 0.0f) return vec3(0.0f, 0.0f, 0.0f);
 	return vec3(v.x / length, v.y / length, v.z / length);
@@ -153,21 +153,21 @@ vec3 normalize(const vec3 v) {
 //}
 
 // to calculate the dot product of two vev3 vectors 
-float dot(const vec3& a, const vec3& b) 
+inline float dot(const vec3& a, const vec3& b)
 {
 	return a.x * b.x + a.y * b.y + a.z * b.z; 
 
 }
 
 // calculate the length of a vec2 
-float length(const vec3& v) 
+inline float length(const vec3& v)
 {
 	return std::sqrt(dot(v, v)); 
 
 }
 
 // calculate the cross procuct of two vec3 vector 
-vec3 cross(const vec3& a, const vec3& b) 
+inline vec3 cross(const vec3& a, const vec3& b)
 {
 	return vec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x); 
 

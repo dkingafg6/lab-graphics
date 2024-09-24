@@ -1,7 +1,6 @@
 #pragma once
 #include <GL/glew.h>
 #include <string>
-#include <render/stb_image.h>
 #include <iostream>
 
 using namespace std;

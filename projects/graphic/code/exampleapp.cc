@@ -217,7 +217,7 @@ namespace Example
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			this->window->Update();
 
-			mat4 model = mat4::rotationz(glfwGetTime());  // Rotate the cube over time
+			mat4 model = rotationz(glfwGetTime());  // Rotate the cube over time
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, (GLfloat*)&model);
 			glUniformMatrix4fv(viewLoc, 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
 			glUniformMatrix4fv(projLoc, 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
