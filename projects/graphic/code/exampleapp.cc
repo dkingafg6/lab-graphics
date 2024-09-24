@@ -12,6 +12,7 @@
 #include "render/Camera.h"
 #include "render/MeshResource.h"
 #include "core/mat4.h"
+#include "core/vec2.h"
 
 // vertex shader vs
 const GLchar* vs =

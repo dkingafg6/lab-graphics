@@ -8,6 +8,7 @@ SET(files_core
 	vec3.h 
 	vec4.h 
 	mat4.h 
+	vec2.h
 	util.h)
 
 SOURCE_GROUP("core" FILES ${files_core})
