@@ -1,14 +1,18 @@
 #pragma once
-//#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
 #include <GL/glew.h>
 #include <config.h>
+#include "core/vec2.h"
+#include "core/vec3.h"
+#include <vector>
+
 #include <render/stb_image.h>
 
 using namespace std;
 
 class MeshResource
 {
-private:
+public:
 	// for vertex data like position and col0rs. 
 	GLuint vertexBuffer;
 	// show the order of vertices to form primitives like triangles. 
@@ -16,20 +20,23 @@ private:
 	// openGle textur indentifire. 
 	//GLuint TextureID; 
 
-	GLuint vertexarray; 
+	GLuint vertexArray; 
+	std::vector<vec3> vertices; 
+	//std::vector<vec2> vertices; // there is no vec2 in librery 
 
-public:
+
 	// show the order of vertices to form primitives like triangles. 
 	MeshResource();
 	~MeshResource();
 
-	// vertex buffer object.
+	// create the vertices with pos and texture cooordinate for each face of the cube.
 	static MeshResource* CreatCube(float width, float height, float depth)
 	{
+		// set texture coordinates for each vertex. 
 		MeshResource* mesh = new MeshResource();
 		// call function 
-		mesh->createVBO();
-		mesh->createIBO();
+		mesh->createVBO();// create VBO for the cub's vertex data. 
+		mesh->createIBO(); // create IBO for the cub's index data. 
 		return mesh;
 	}
 	void createVBO();
@@ -50,12 +57,38 @@ MeshResource::MeshResource()
 {
 	vertexBuffer = 0;
 	indexBuffer = 0;
-	vertexarray = 0; 
+	vertexArray = 0; 
 }
 
 MeshResource::~MeshResource()
 {
 	cleanup(); 
+
+}
+
+MeshResource* MeshResource::CreatCube(float width, float height, float depth) 
+{
+	MeshResource* cube = new MeshResource(); 
+
+	cube->vertices =
+	{
+		// front face
+		vec3(-width, -height, depth), vec3(width, -height, depth), vec3(width, height, depth), vec3(-width, height, depth),
+		// back face.
+		vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, height, -depth), vec3(-width, height, -depth)
+
+	}; 
+
+	// texture coodinates for cube. 
+	/*cube.textCoords =
+	{
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f),
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f)
+
+	};*/
+
+	//indices for the cube. each face = two triangle. 
+	// cube->indexBuffer
 
 }
 
@@ -140,8 +173,19 @@ void MeshResource::draw()
 
 void MeshResource::cleanup()
 {
-	glDeleteBuffers(1, &vertexBuffer);
-	glDeleteBuffers(1, &indexBuffer);
+	if (vertexBuffer != 0) 
+	{
+		glDeleteBuffers(1, &vertexBuffer);
+
+	}
+	if (indexBuffer != 0) {
+		glDeleteBuffers(1, &indexBuffer);
+	}
+	if (vertexArray != 0) {
+		glDeleteBuffers(1, &vertexArray);
+	}
+	//glDeleteBuffers(1, &vertexBuffer);
+	//glDeleteBuffers(1, &indexBuffer);
 }
 
 

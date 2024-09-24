@@ -5,18 +5,24 @@
 #include "config.h"
 #include "exampleapp.h"
 #include <cstring>
-
+// Vertex Shader 
 const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec3 pos;\n"
+"layout(location=1) in vec2 texCoord;\n"
+"out vec2 TexCoord;"
+
 "layout(location=1) in vec4 color;\n"
 "layout(location=0) out vec4 Color;\n"
 "void main()\n"
 "{\n"
 "	gl_Position = vec4(pos, 1);\n"
+"   gl_Position = projection * view * model * vec4(pos, 1.0);\n"
 "	Color = color;\n"
+"	TexCoord = texCoord;\n"
 "}\n";
 
+// Fragment Shader. 
 const GLchar* ps =
 "#version 430\n"
 "layout(location=0) in vec4 color;\n"
@@ -58,7 +64,7 @@ ExampleApp::Open()
 	{
 		this->window->Close();
 	});
-
+	// hello
 	GLfloat buf[] =
 	{
 		-0.5f,	-0.5f,	-1,			// pos 0

@@ -15,6 +15,7 @@ public:
 	void SetPerspective(float fov, float aspect, float nearPalne, float farPlane); 
 
 	void SetView(const vec3& positin, const vec3& target, const vec3& up);
+	void SetOrbit(float radius, float angle); 
 
 	const mat4& GetViewMatrix() const;
 	const mat4& GetProjectionMatrix() const; 
