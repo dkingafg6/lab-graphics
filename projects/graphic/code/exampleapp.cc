@@ -17,26 +17,26 @@
 // vertex shader vs
 const GLchar* vs =
 "#version 430\n"
-"layout(location=0) in vec3 pos;\n"
-"layout(location=1) in vec2 texCoord;\n"
-"out vec2 TexCoor;\n"
+"layout(location=0) in vec3 pos;\n" // attribute for pos
+"layout(location=1) in vec2 texCoord;\n" // attribute for texture coordinates
+"out vec2 TexCoor;\n" // pass texture to shader. 
 //"layout(location=0) out vec2 TexCoord;\n"
 
-"uniform mat4 model;\n"
-"uniform mat4 view;\n"
-"uniform mat4 projection;\n"
+"uniform mat4 model;\n" // model 
+"uniform mat4 view;\n" // view
+"uniform mat4 projection;\n"// projection matrix. 
 
 "void main()\n"
 "{\n"
-"	gl_Position = projection * view * model * vec4(pos, 1.0);;\n"
-"	TexCoord = texCoord;\n"
+"	gl_Position = projection * view * model * vec4(pos, 1.0);;\n" // calculate pos 
+"	TexCoord = texCoord;\n" // pass texture to shader
 "}\n";
 
  //Fragment shader ps
 const GLchar* ps =
 "#version 430\n"
-"in vec2 TexCoord;\n"
-"out vec4 Color;\n"
+"in vec2 TexCoord;\n" // texture coordinates from vertex shader. 
+"out vec4 Color;\n" // color 
 //"uniform sampler2D texture; \n"
 "uniform sampler2D textureSampler; \n" // texture sampler. 
 
@@ -99,11 +99,15 @@ namespace Example
 			// set clear color to gray
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
+			// enable openGl debug output. 
+			glEnable(GL_DEBUG_OUTPUT); 
+			glDebugMessageCallback(MessageCallback, 0); // register the callback function. 
+
 			// setup vertex shader
-			vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			GLint length = static_cast<GLint>(std::strlen(vs));
-			glShaderSource(vertexShader, 1, &vs, &length);
-			glCompileShader(vertexShader);
+			vertexShader = glCreateShader(GL_VERTEX_SHADER); // create  shader object 
+			GLint length = static_cast<GLint>(std::strlen(vs)); // source length. 
+			glShaderSource(vertexShader, 1, &vs, &length); // set source 
+			glCompileShader(vertexShader); // compile shader 
 
 			// get error log
 			GLint vertexshaderLogSize;
@@ -112,16 +116,16 @@ namespace Example
 			{
 				GLchar* buf = new GLchar[vertexshaderLogSize];
 				glGetShaderInfoLog(vertexShader, vertexshaderLogSize, NULL, buf);
-				printf("[VERTEX SHADER COMPILE ERROR]: %s", buf);
+				printf("[VERTEX SHADER COMPILE ERROR]: %s\n", buf);
 				delete[] buf;
 			}
 
 
-			// setup pixel shader
-			pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
-			length = static_cast<GLint>(std::strlen(ps));
-			glShaderSource(pixelShader, 1, &ps, &length);
-			glCompileShader(pixelShader);
+			// setup Fragment pixel shader
+			pixelShader = glCreateShader(GL_FRAGMENT_SHADER); // create ...object. 
+			length = static_cast<GLint>(std::strlen(ps)); // get source length
+			glShaderSource(pixelShader, 1, &ps, &length); // set source
+			glCompileShader(pixelShader); // compile 
 
 			// get error log
 			//shaderLogSize;
@@ -136,32 +140,41 @@ namespace Example
 			}
 
 			// create a program object link
-			program = glCreateProgram();
-			glAttachShader(program, vertexShader);
-			glAttachShader(program, pixelShader);
-			glLinkProgram(program);
+			program = glCreateProgram(); // create object. 
+			glAttachShader(program, vertexShader); // attach vertex
+			glAttachShader(program, pixelShader); // attach fragment 
+			glLinkProgram(program); // linke shader into program 
 
+			// get and print for any program linking to errors. 
 			GLint programLogSize;
 			glGetShaderiv(program, GL_INFO_LOG_LENGTH, &programLogSize);
 			if (programLogSize > 0)
 			{
 				GLchar* buf = new GLchar[programLogSize];
-				glGetShaderInfoLog(this->program, programLogSize, NULL, buf);
-				printf("[PROGRAM ERROR]: %s", buf);
+				glGetShaderInfoLog(program, programLogSize, NULL, buf);
+				printf("[PROGRAM LINKING ERROR]: %s\n", buf);
 				delete[] buf;
 			}
 
-
+			// create cueb mesh and set up its buffers. 
 			mesh = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
-			mesh->createVBO();
-			mesh->createIBO();
+			mesh->createVBO();// create vbo 
+			mesh->createIBO(); // create ibo 
 
-			texture.loadFromFile("path_to_texture.png");
+			// load texture from file that we have it ready. 
+			if (texture.loadFromFile("path_to_texture.png")) 
+			{
+				// check to see if the looding was successful.
+				printf("Failed to load texture from file.\n"); 
+				return false; // handeling the error. 
+			}
 
-			camera.SetPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
-			camera.SetView(vec3(0, 0, 5), vec3(0, 0, 0), vec3(0, 1, 0));
+			// set up camera projection and view matrices
+			camera.SetPerspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f); // set perspective
+			camera.SetView(vec3(0, 0, 5), vec3(0, 0, 0), vec3(0, 1, 0)); // set view 
 
-			GLuint texLoc = glGetUniformLocation(program, "textureSamler");
+			//get unifor locations from shader program 
+			GLuint texLoc = glGetUniformLocation(program, "textureSampler");
 			GLuint modelLoc = glGetUniformLocation(program, "model");
 			GLuint viewLoc = glGetUniformLocation(program, "view");
 			GLuint projLoc = glGetUniformLocation(program, "projection");
@@ -169,23 +182,23 @@ namespace Example
 
 			// checking for all uniform location. 
 			if (texLoc == -1) {
-				printf(" textureSampler uniform no found in shader program. \n");
+				printf("Error: textureSampler uniform no found in shader program. \n");
 			}
 			if (modelLoc == -1) {
-				printf(" model uniform not found in shader program. \n");
+				printf("Error: model uniform not found in shader program. \n");
 			}
 
 			if (viewLoc == -1) {
-				printf(" view uniform no found in shader program. \n");
+				printf("Error: view uniform no found in shader program. \n");
 			}
 			if (projLoc == -1) {
-				printf(" projection uniform no found in shader program. \n");
+				printf("Error: projection uniform no found in shader program. \n");
 			}
 
-			return true;
+			return true; // return doen when window and resource initialized. 
 
 		}
-		return false;
+		return false; // return fail if window cannat be openen. 
 
 
 	}
@@ -211,24 +224,34 @@ namespace Example
 	void
 		ExampleApp::Run()
 	{
-		glUseProgram(program);
+		//run time checking before using shader program to check if it's in a valid state. 
+		if (program == 0) 
+		{
+			printf("Error: Program object is not valid. \n"); 
+		}
+		glUseProgram(program); // shader program 
+		// rendering loop 
 		while (this->window->IsOpen())
 		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			this->window->Update();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// clear the screen. 
+			this->window->Update(); // update 
 
-			mat4 model = rotationz(glfwGetTime());  // Rotate the cube over time
+			// Rotate the cube over time
+			mat4 model = rotationz(glfwGetTime());  
 			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, (GLfloat*)&model);
 			glUniformMatrix4fv(viewLoc, 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
 			glUniformMatrix4fv(projLoc, 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
 
+			//bind and set texture uniform 
 			texture.Bind(0);
 			glUniform1i(texLoc, 0);
 
+			// bind and draw mesh. 
 			mesh->bindVBO();
 			mesh->bindIBO();
 			mesh->draw();
 
+			// swap the buffers and display rendered from that. 
 			this->window->SwapBuffers();
 
 
@@ -242,6 +265,12 @@ namespace Example
 #endif
 
 		}
+	}
+	// massage callback function be called when there is e debug message from opengl. 
+	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum tpye, GLuint id, GLenum serverity, GLsizei length, const GLchar* message, const void* userParam)
+	{
+		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, Message: %s\n", (tpye == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), tpye, serverity, message);
+		
 	}
 }
  // namespace Example

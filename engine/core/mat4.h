@@ -25,8 +25,13 @@ public:
 	vec4 m[4]; // matrix by 4x4 vec4 columns. 
 
 	// constructor with identity matrix. all columns 
-	
-	inline mat4()
+	inline mat4() 
+	{
+		*this = identity(); // constructor to identity matrix. 
+
+
+	}
+	/*inline mat4()
 	{
 		m[0] = vec4(1.0f, 0.0f, 0.0f, 0.0f);
 		m[1] = vec4(0.0f, 1.0f, 0.0f, 0.0f);
@@ -34,7 +39,7 @@ public:
 		m[3] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		
 
-	}
+	}*/
 	 // ini...matrix with 4 vec4 rows. 
 	inline mat4(const vec4& c0, const vec4& c1, const vec4& c2, const vec4& c3)
 	{
@@ -65,6 +70,18 @@ public:
 			}
 		}
 		return *this; 
+	}
+
+	// static function for indentity matrix
+	inline static mat4 identity() 
+	{
+		return mat4(
+			vec4(1.0f, 0.0f, 0.0f, 0.0f),
+			vec4(0.0f, 1.0f, 0.0f, 0.0f),
+			vec4(0.0f, 0.0f, 1.0f, 0.0f),
+			vec4(0.0f, 0.0f, 0.0f, 1.0f)
+		);
+
 	}
 	// check if two mat4 matrices are equal.
 	inline bool operator==(const mat4& rhs) const
@@ -156,6 +173,49 @@ public:
 			return os; 
 		}
 
+		// lookAt matrix function 
+		inline static mat4 lookAt(const vec3& position, const vec3& target, const vec3& up)
+		{
+			vec3 view = normalize(position - target);
+
+			vec3 right = normalize(cross(up, view));
+
+			vec3 secondUp = cross(view, right);
+
+			mat4 cameraCalculate(
+				vec4(right.x, right.y, right.z, 0.0f),
+				vec4(secondUp.x, secondUp.y, secondUp.z, 0.0f),
+				vec4(view.x, view.y, view.z, 0.0f),
+				vec4(0.0f, 0.0f, 1.0f)
+			);
+
+			mat4 translation(
+				vec4(1.0f, 0.0f, 0.0f, -position.x),
+				vec4(0.0f, 1.0f, 0.0f, -position.y),
+				vec4(0.0f, 0.0f, 1.0f, -position.z),
+				vec4(0.0f, 0.0f, 0.0f, 1.0f)
+			);
+
+			return cameraCalculate * translation;
+
+		}
+
+		// perspective projection matrix
+
+		inline static mat4 perspective(float fov, float aspect, float nearPlane, float farPlane)
+		{
+			float tanHalfFovy = std::tan(fov / 2.0f);
+			float range = farPlane - nearPlane;
+
+			mat4 Calculated(
+				vec4(1.0f / (aspect * tanHalfFovy), 0.0f, 0.0f, 0.0f),
+				vec4(0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f),
+				vec4(0.0f, 0.0f, -(farPlane + nearPlane) / range, -1.0f),
+				vec4(0.0f, 0.0f, 2.0f * farPlane * nearPlane / range, 0.0f)
+
+			);
+			return Calculated;
+		}
 		//// function 
 		//static mat4 rotationz(float angle) 
 		//{
@@ -222,6 +282,21 @@ inline static mat4 rotationz(float angle)
 
 }
 
+
+// return the transpese of a mat4 swapping rows and columns 
+inline static mat4 transpose(const mat4& mat) // transpose matrix
+{
+	return mat4(
+		vec4(mat.m[0].x, mat.m[1].x, mat.m[2].x, mat.m[3].x),
+		vec4(mat.m[0].y, mat.m[1].y, mat.m[2].y, mat.m[3].y),
+		vec4(mat.m[0].z, mat.m[1].z, mat.m[2].z, mat.m[3].z),
+		vec4(mat.m[0].w, mat.m[1].w, mat.m[2].w, mat.m[3].w)
+
+
+	);
+}
+
+
 // static fun.. create a rotation matrix around an arbitrary axis, 
 inline static mat4 rotationaxis(const vec3& axis, float radians)
 {
@@ -237,20 +312,6 @@ inline static mat4 rotationaxis(const vec3& axis, float radians)
 	);
 
 }
-
-// return the transpese of a mat4 swapping rows and columns 
-inline static mat4 transpose(const mat4& mat) // transpose matrix
-{
-	return mat4(
-		vec4(mat.m[0].x, mat.m[1].x, mat.m[2].x, mat.m[3].x),
-		vec4(mat.m[0].y, mat.m[1].y, mat.m[2].y, mat.m[3].y),
-		vec4(mat.m[0].z, mat.m[1].z, mat.m[2].z, mat.m[3].z),
-		vec4(mat.m[0].w, mat.m[1].w, mat.m[2].w, mat.m[3].w)
-
-
-	);
-}
-
 
 // calculate the confactor of the matrix. 
 inline static float cofactor(const mat4& mat, int row, int col)
@@ -360,57 +421,4 @@ inline bool matnearequal(const mat4& a, const mat4& b, float epsilon)
 	return true; 
 
 }
-
-
-
-
-// need to comment the code. 
-
-inline mat4 perspective(float fov, float aspect, float nearPlane, float farPlane)
-{
-	float tanHalfFovy = std::tan(fov / 2.0f); 
-	float range = farPlane - nearPlane; 
-
-	mat4 Calculated(
-		vec4(1.0f / (aspect * tanHalfFovy), 0.0f, 0.0f, 0.0f),
-		vec4(0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f),
-		vec4(0.0f, 0.0f, -(farPlane + nearPlane) / range, -1.0f),
-		vec4(0.0f, 0.0f, 2.0f * farPlane * nearPlane / range, 0.0f)
-
-	); 
-	return Calculated; 
-}
-
-inline vec3 vec4ToVec3(const vec4& v)
-{
-	return vec3(v.x, v.y, v.z); 
-
-}
-
-inline mat4 lookAt(const vec3& position, const vec3& target, const vec3& up) 
-{
-	vec3 view = normalize(position - target); 
-
-	vec3 right = normalize(cross(up, view)); 
-
-	vec3 secondUp = cross(view, right); 
-
-	mat4 cameraCalculate(
-		vec4(right.x, right.y, right.z, 0.0f),
-		vec4(secondUp.x, secondUp.y, secondUp.z, 0.0f),
-		vec4(view.x, view.y, view.z, 0.0f),
-		vec4(0.0f, 0.0f, 1.0f)
-	);
-
-	mat4 translation(
-		vec4(1.0f, 0.0f, 0.0f, -position.x),
-		vec4(0.0f, 1.0f, 0.0f, -position.y),
-		vec4(0.0f, 0.0f, 1.0f, -position.z),
-		vec4(0.0f, 0.0f, 0.0f, 1.0f)
-	); 
-
-	return cameraCalculate * translation; 
-
-}
-
 

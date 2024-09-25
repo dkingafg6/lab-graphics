@@ -12,38 +12,38 @@
 #define STRING_BUFFER_SIZE 8192
 
 
-// vertx Shader 
+// vertx Shader source code
 const GLchar* vs =
 "#version 430\n"
-"layout(location=0) in vec3 pos;\n"
-"layout(location=1) in vec2 texCoord;\n"
+"layout(location=0) in vec3 pos;\n" // position. 
+"layout(location=1) in vec2 texCoord;\n" // coordinate. 
 //"layout(location=1) in vec4 color;\n"
 
 //"layout(location=0) out vec4 Color;\n"
-"uniform mat4 model;\n"
-"uniform mat4 viewProj;\n"
+"uniform mat4 model;\n" // mode. 
+"uniform mat4 viewProj;\n" // view
 
-"out vec2 TexCoord;\n"
+"out vec2 TexCoord;\n" // output coordinate
 
 "void main()\n"
 "{\n"
-"	gl_Position = viewProj * model * vec4(pos, 1.0);\n"
-"	TexCoord = texCoord;\n"
+"	gl_Position = viewProj * model * vec4(pos, 1.0);\n" // calculate the final position. 
+"	TexCoord = texCoord;\n" // pass textur coordinate to fragment shader. 
 "}\n";
 
-//Fragment Shader 
+//Fragment Shader source code.
 const GLchar* ps =
 "#version 430\n"
-"in vec2 TexCoord;\n"
-"out vec4 FragColor;\n"
+"in vec2 TexCoord;\n" // input texture coordinate 
+"out vec4 FragColor;\n" // ouput color of the fragment 
 
 //"layout(location=0) in vec4 color;\n"
-"uniform sampler2D textureSampler;\n"
+"uniform sampler2D textureSampler;\n" // sampler for the texture. 
 
 //"out vec4 Color;\n"
 "void main()\n"
 "{\n"
-"	FragColor = texture(textureSampler, TexCoord;\n"
+"	FragColor = texture(textureSampler, TexCoord;\n" // sample the texture. 
 "}\n";
 
 using namespace Display;
@@ -84,15 +84,18 @@ ImGuiExampleApp::Close()
 bool
 ImGuiExampleApp::Open()
 {
-	App::Open();
-	this->window = new Display::Window;
+	App::Open(); // call open function 
+	this->window = new Display::Window; // create a new window
+	// set a key func  to close the window when a key is pressed. 
 	window->SetKeyPressFunction([this](int32, int32, int32, int32)
 	{
 		this->window->Close();
 	});
 
+	// buffer for triagle vertix data. 
 	GLfloat buf[] =
 	{
+		// all vertices pos 
 		-0.5f,	-0.5f,	-1,			// pos 0
 		1,		0,		0,		1,	// color 0
 		0,		0.5f,	-1,			// pos 1
@@ -123,15 +126,15 @@ ImGuiExampleApp::Open()
 		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		// set ui rendering function
+		// set UI  rendering function for window
 		this->window->SetUiRender([this]()
 		{
-			this->RenderUI();
+			this->RenderUI(); // render UI elements. 
 		});
 
-		return true;
+		return true; // opne 
 	}
-	return false;
+	return false; // failed to open. 
 }
 
 

@@ -31,6 +31,8 @@ public:
 	void Close();
 	/// run app
 	void Run();
+	// massage callback function be called when there is e debug message from opengl .
+	static void GLAPIENTRY MessageCallback(GLenum, GLenum tpye, GLuint id, GLenum serverity, GLsizei length, const GLchar* message, const void* userParam); 
 private:
 
 	// point to window 

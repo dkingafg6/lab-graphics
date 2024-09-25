@@ -22,10 +22,6 @@ public:
 	const mat4& GetViewMatrix() const;
 	const mat4& GetProjectionMatrix() const; 
 
-	//const mat4& GetViewMatrix() const;
-	//{ return viewMatrix; }
-
-	//const mat4& GetProjectionMatrix() const; 
-	//{ return projectionMatrix; }
+	
 };
 
