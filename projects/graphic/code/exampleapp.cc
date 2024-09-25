@@ -19,7 +19,7 @@ const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec3 pos;\n" // attribute for pos
 "layout(location=1) in vec2 texCoord;\n" // attribute for texture coordinates
-"out vec2 TexCoor;\n" // pass texture to shader. 
+"out vec2 TexCoord;\n" // pass texture to shader. 
 //"layout(location=0) out vec2 TexCoord;\n"
 
 "uniform mat4 model;\n" // model 
@@ -109,7 +109,7 @@ namespace Example
 			glShaderSource(vertexShader, 1, &vs, &length); // set source 
 			glCompileShader(vertexShader); // compile shader 
 
-			// get error log
+			// check for vertex shader compile errors 
 			GLint vertexshaderLogSize;
 			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &vertexshaderLogSize);
 			if (vertexshaderLogSize > 0)
@@ -117,7 +117,8 @@ namespace Example
 				GLchar* buf = new GLchar[vertexshaderLogSize];
 				glGetShaderInfoLog(vertexShader, vertexshaderLogSize, NULL, buf);
 				printf("[VERTEX SHADER COMPILE ERROR]: %s\n", buf);
-				delete[] buf;
+				delete[] buf; // 
+				return false; // if there is not error ther program exit. 
 			}
 
 
@@ -127,7 +128,7 @@ namespace Example
 			glShaderSource(pixelShader, 1, &ps, &length); // set source
 			glCompileShader(pixelShader); // compile 
 
-			// get error log
+			// check for fragment shader compile errors 
 			//shaderLogSize;
 			GLint fragmentShaderLogSize;
 			glGetShaderiv(pixelShader, GL_INFO_LOG_LENGTH, &fragmentShaderLogSize);
@@ -137,23 +138,25 @@ namespace Example
 				glGetShaderInfoLog(pixelShader, fragmentShaderLogSize, NULL, buf);
 				printf("[FRAGMENT SHADER COMPILE ERROR]: %s", buf);
 				delete[] buf;
+				return false; // if there is not error ther program exit. 
 			}
 
-			// create a program object link
+			// create a program object link shaders
 			program = glCreateProgram(); // create object. 
 			glAttachShader(program, vertexShader); // attach vertex
 			glAttachShader(program, pixelShader); // attach fragment 
 			glLinkProgram(program); // linke shader into program 
 
-			// get and print for any program linking to errors. 
+			// check for program's linking to errors. 
 			GLint programLogSize;
-			glGetShaderiv(program, GL_INFO_LOG_LENGTH, &programLogSize);
+			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &programLogSize);
 			if (programLogSize > 0)
 			{
 				GLchar* buf = new GLchar[programLogSize];
 				glGetShaderInfoLog(program, programLogSize, NULL, buf);
 				printf("[PROGRAM LINKING ERROR]: %s\n", buf);
 				delete[] buf;
+				return false; // if there is not error ther program exit. 
 			}
 
 			// create cueb mesh and set up its buffers. 
@@ -162,7 +165,7 @@ namespace Example
 			mesh->createIBO(); // create ibo 
 
 			// load texture from file that we have it ready. 
-			if (texture.loadFromFile("path_to_texture.png")) 
+			if (!texture.loadFromFile("valid_path_to_texture.png")) 
 			{
 				// check to see if the looding was successful.
 				printf("Failed to load texture from file.\n"); 
@@ -228,6 +231,7 @@ namespace Example
 		if (program == 0) 
 		{
 			printf("Error: Program object is not valid. \n"); 
+			return; // exit when program is invalid. 
 		}
 		glUseProgram(program); // shader program 
 		// rendering loop 
@@ -238,13 +242,14 @@ namespace Example
 
 			// Rotate the cube over time
 			mat4 model = rotationz(glfwGetTime());  
-			glUniformMatrix4fv(modelLoc, 1, GL_TRUE, (GLfloat*)&model);
-			glUniformMatrix4fv(viewLoc, 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
-			glUniformMatrix4fv(projLoc, 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
+			glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (GLfloat*)&model);
+			glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
+			glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
 
 			//bind and set texture uniform 
 			texture.Bind(0);
-			glUniform1i(texLoc, 0);
+			glUniform1i(glGetUniformLocation(program, "textureSampler"), 0);
+			//glUniform1i(texLoc, 0);
 
 			// bind and draw mesh. 
 			mesh->bindVBO();
@@ -267,9 +272,9 @@ namespace Example
 		}
 	}
 	// massage callback function be called when there is e debug message from opengl. 
-	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum tpye, GLuint id, GLenum serverity, GLsizei length, const GLchar* message, const void* userParam)
+	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
-		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, Message: %s\n", (tpye == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), tpye, serverity, message);
+		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
 		
 	}
 }

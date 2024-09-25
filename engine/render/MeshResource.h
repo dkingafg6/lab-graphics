@@ -35,14 +35,7 @@ public:
 
 	// create the vertices with pos and texture cooordinate for each face of the cube.
 	static MeshResource* CreatCube(float width, float height, float depth);
-	//{
-	//	// set texture coordinates for each vertex. 
-	//	MeshResource* mesh = new MeshResource();
-	//	// call function 
-	//	mesh->createVBO();// create VBO for the cub's vertex data. 
-	//	mesh->createIBO(); // create IBO for the cub's index data. 
-	//	return mesh;
-	//}
+	
 	void createVBO();
 	void createIBO();
 	void bindVBO();
@@ -52,9 +45,7 @@ public:
 	void draw(); 
 	void cleanup(); 
 	
-	//bool LaodFromFile(const char* filename); */
-	//static MeshResource* CreateSquare(float x, float y);
-	/*void bind(unsigned int unit = 0);*/
+	
 };
 
 inline MeshResource::MeshResource()
@@ -72,6 +63,7 @@ inline MeshResource::~MeshResource()
 
 inline MeshResource* MeshResource::CreatCube(float width, float height, float depth)
 {
+	// each face of the cube define with vertices. 
 	MeshResource* cube = new MeshResource(); 
 
 	cube->vertices =
@@ -79,15 +71,28 @@ inline MeshResource* MeshResource::CreatCube(float width, float height, float de
 		// front face
 		vec3(-width, -height, depth), vec3(width, -height, depth), vec3(width, height, depth), vec3(-width, height, depth),
 		// back face.
-		vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, height, -depth), vec3(-width, height, -depth)
+		vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, height, -depth), vec3(-width, height, -depth),
+		// left face
+		vec3(-width, -height, -depth), vec3(-width, -height, depth), vec3(-width, height, depth), vec3(-width, height, -depth),
+		// right face 
+		vec3(width, -height, -depth), vec3(width, -height, depth), vec3(width, height, depth), vec3(width, height, -depth),
+		// top face 
+		vec3(-width, height, -depth), vec3(width, height, -depth), vec3(width, height, depth), vec3(-width, height, depth),
+		// bottom face.
+		vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, -height, depth), vec3(-width, -height, depth),
+
 
 	}; 
 
 	// texture coodinates for cube. 
 	cube->texCoords =
 	{
-		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f),
-		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f)
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f),// front 
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f),// back
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f), // left
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f),// right
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f),//top 
+		vec2(0.0f, 0.0f), vec2(1.0f, 0.0f), vec2(1.0f, 1.0f), vec2(0.0f, 1.0f)// bottom 
 
 	};
 
@@ -101,8 +106,15 @@ inline MeshResource* MeshResource::CreatCube(float width, float height, float de
 		// front face.
 		0, 1, 2, 0, 2, 3,
 		// back face
-		4, 5, 6, 4, 6, 7
-		// can draw more face down here!!!!!!!!!!!
+		4, 5, 6, 4, 6, 7,
+		// left face
+		8, 9, 10, 8, 10, 11,
+		// right face
+		12, 13, 14, 12, 14, 15,
+		// top face 
+		16, 17, 18, 16, 18, 19,
+		// battom face
+		20, 12, 22, 20, 22, 23
 
 
 	}; 
@@ -133,42 +145,6 @@ inline void MeshResource::createVBO()
 		
 	}
 
-	//float position[] =
-	//{
-	//	
-	//
-
-	//	// texture and pos coordinate with x, y, z, u and v
-	//	// Front face
-	//	-0.5f, -0.5f, 0.5f,  0.0f, 0.0f,
-	//	 0.5f, -0.5f, 0.5f,  1.0f, 0.0f,
-	//	 0.5f,  0.5f, 0.5f,  1.0f, 1.0f,
-	//	-0.5f,  0.5f, 0.5f,  0.0f, 1.0f,
-	//	// Back face
-	//	-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-	//	 0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-	//	 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-	//	-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
-	////	0.0f, 0.0f,  // lower-left corner  
-	////	1.0f, 0.0f,  // lower-right corner
-	////	0.5f, 1.0f   // top-center corner
-
-	//	//-0.5, 0.5, 0, // p1
-	//	//1.0f, 0.0f, 0.0f, 1.0f, // color red green blue alfa (alfa == trancparenci)
-	//	//0.5, 0.5, 0, // p2
-	//	//0.0f, 1.0f, 0.0f, 1.0f,// color RGBA
-	//	//0.5,-0.5, 0, // p3
-	//	//0.0f, 0.0f, 1.0f, 1.0f, // color RGBA
-	//	//-0.5, -0.5, 0, //p4
-	//	//0.0f, 1.0f, 0.0f, 1.0f, // color RGBA
-	//};
-
-	// generate buffer for binding vertex
-
-	//glGenBuffers(1, &vertexBuffer);
-	// bind the openGL array data with vertextbuffer. 
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	// take the information from what type, what size and what position and draw. 
 	glBufferData(GL_ARRAY_BUFFER, vboData.size() * sizeof(float), vboData.data(),GL_STATIC_DRAW);
 
 }
@@ -183,65 +159,62 @@ inline void MeshResource::createIBO()
 	glBufferData(GL_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
 
 
-	// unsigned int indices[] =
-	//{
-	//	0, 1, 2, 2, 3, 0, // Front
-	//	4, 5, 6, 6, 7, 4, // Back
-	//	0, 4, 7, 7, 3, 0, // Left
-	//	1, 5, 6, 6, 2, 1, // Right
-	//	0, 1, 5, 5, 4, 0, // Bottom
-	//	3, 2, 6, 6, 7, 3  // Top
-
-
-	//	//0, 1, 2,
-	//	//2, 3, 0,
-
-	//};
-	//// generate buffer for binding indexes. 
-	//glGenBuffers(1, &indexBuffer);
-	//// bind the openGL element array data with indexbuffer. 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	//// take the information from what type, what size and what indexes and draw. 
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
 inline void MeshResource::bindVBO()
 {
+	// bind vertex buffer object to GL_ARRAY_BUFFER target. 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+
+	// enable vertex attribute array fo position data. 
 	glEnableVertexAttribArray(0); 
+
+	// positaion be specify the layout of vertex. 
+	// 3 float for pos no normailization 
+	// 5 float stride starting at the beginning of the buffer. 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 *sizeof(float), (void*)0); 
 
+	// the texture coordinate data be enable with attibiute array. 
 	glEnableVertexAttribArray(1);
+
+	// specify layout attribute array 
+	// 2 float for texture coordinat. 
+	// 5 float stride starting after pos data.. with 3 float. 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 *sizeof(float), (void*)(3 * sizeof(float)));
 }
 
 
 inline void MeshResource::bindIBO()
 {
+	// bind index buffer object to GL_ARRAY_BUFFER target.
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
 }
 
 inline void MeshResource::draw()
 {
+	// draw elements like triangle from the bound  index buffer. 
+	// the unsingned int specifies by indeces 
 	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
 }
 
 inline void MeshResource::cleanup()
 {
+	// delete the vertex buffer if that has been created. 
 	if (vertexBuffer != 0) 
 	{
 		glDeleteBuffers(1, &vertexBuffer);
 
 	}
+	// delete the index buffer if that has been created. 
 	if (indexBuffer != 0) {
 		glDeleteBuffers(1, &indexBuffer);
 	}
+	// delete the vertex array object  if it has been created. 
 	if (vertexArray != 0) {
 		glDeleteBuffers(1, &vertexArray);
 	}
-	//glDeleteBuffers(1, &vertexBuffer);
-	//glDeleteBuffers(1, &indexBuffer);
+	
 }
 
 
