@@ -50,6 +50,7 @@ public:
 
 inline MeshResource::MeshResource()
 {
+
 	vertexBuffer = 0;
 	indexBuffer = 0;
 	vertexArray = 0; 
@@ -128,9 +129,23 @@ inline MeshResource* MeshResource::CreatCube(float width, float height, float de
 // VBO = vertex buffer object 
 inline void MeshResource::createVBO()
 {
+	// checking vertices and texture coordinate if  they are populated. 
+	if (vertices.empty() || texCoords.empty()) 
+	{
+		std::cerr << " error: vertices or texCoords are empty " << std::endl;
+		return; 
+
+	}
 	// generate buffer for binding vertex
 
 	glGenBuffers(1, &vertexBuffer);
+	// checking for buffer if it can generation was successful. 
+	if (vertexBuffer == 0) 
+	{
+		std::cerr << " error: failed to gernerate vertex buffer.  " << std::endl;
+		return;
+
+	}
 	// bind the openGL array data with vertextbuffer. 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
@@ -195,7 +210,7 @@ inline void MeshResource::draw()
 {
 	// draw elements like triangle from the bound  index buffer. 
 	// the unsingned int specifies by indeces 
-	glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }
 
 inline void MeshResource::cleanup()

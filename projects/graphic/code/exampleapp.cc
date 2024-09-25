@@ -19,7 +19,7 @@ const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec3 pos;\n" // attribute for pos
 "layout(location=1) in vec2 texCoord;\n" // attribute for texture coordinates
-"out vec2 TexCoord;\n" // pass texture to shader. 
+"layout(location=1) out vec2 TexCoord;\n" // pass texture to shader. 
 //"layout(location=0) out vec2 TexCoord;\n"
 
 "uniform mat4 model;\n" // model 
@@ -94,69 +94,55 @@ namespace Example
 
 		if (this->window->Open())
 		{
-			// ...inial   the MeshResource object, 
-			//this->meshResource = new MeshResource(); 
 			// set clear color to gray
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-			// enable openGl debug output. 
-			glEnable(GL_DEBUG_OUTPUT); 
-			glDebugMessageCallback(MessageCallback, 0); // register the callback function. 
-
 			// setup vertex shader
-			vertexShader = glCreateShader(GL_VERTEX_SHADER); // create  shader object 
-			GLint length = static_cast<GLint>(std::strlen(vs)); // source length. 
-			glShaderSource(vertexShader, 1, &vs, &length); // set source 
-			glCompileShader(vertexShader); // compile shader 
+			this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+			GLint length = static_cast<GLint>(std::strlen(vs));
+			glShaderSource(this->vertexShader, 1, &vs, &length);
+			glCompileShader(this->vertexShader);
 
-			// check for vertex shader compile errors 
-			GLint vertexshaderLogSize;
-			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &vertexshaderLogSize);
-			if (vertexshaderLogSize > 0)
+			// get error log
+			GLint shaderLogSize;
+			glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			if (shaderLogSize > 0)
 			{
-				GLchar* buf = new GLchar[vertexshaderLogSize];
-				glGetShaderInfoLog(vertexShader, vertexshaderLogSize, NULL, buf);
-				printf("[VERTEX SHADER COMPILE ERROR]: %s\n", buf);
-				delete[] buf; // 
-				return false; // if there is not error ther program exit. 
+				GLchar* buf = new GLchar[shaderLogSize];
+				glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
+				printf("[SHADER COMPILE ERROR]: %s", buf);
+				delete[] buf;
 			}
 
+			// setup pixel shader
+			this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
+			length = static_cast<GLint>(std::strlen(ps));
+			glShaderSource(this->pixelShader, 1, &ps, &length);
+			glCompileShader(this->pixelShader);
 
-			// setup Fragment pixel shader
-			pixelShader = glCreateShader(GL_FRAGMENT_SHADER); // create ...object. 
-			length = static_cast<GLint>(std::strlen(ps)); // get source length
-			glShaderSource(pixelShader, 1, &ps, &length); // set source
-			glCompileShader(pixelShader); // compile 
-
-			// check for fragment shader compile errors 
-			//shaderLogSize;
-			GLint fragmentShaderLogSize;
-			glGetShaderiv(pixelShader, GL_INFO_LOG_LENGTH, &fragmentShaderLogSize);
-			if (fragmentShaderLogSize > 0)
+			// get error log
+			shaderLogSize;
+			glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			if (shaderLogSize > 0)
 			{
-				GLchar* buf = new GLchar[fragmentShaderLogSize];
-				glGetShaderInfoLog(pixelShader, fragmentShaderLogSize, NULL, buf);
-				printf("[FRAGMENT SHADER COMPILE ERROR]: %s", buf);
+				GLchar* buf = new GLchar[shaderLogSize];
+				glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
+				printf("[SHADER COMPILE ERROR]: %s", buf);
 				delete[] buf;
-				return false; // if there is not error ther program exit. 
 			}
 
-			// create a program object link shaders
-			program = glCreateProgram(); // create object. 
-			glAttachShader(program, vertexShader); // attach vertex
-			glAttachShader(program, pixelShader); // attach fragment 
-			glLinkProgram(program); // linke shader into program 
-
-			// check for program's linking to errors. 
-			GLint programLogSize;
-			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &programLogSize);
-			if (programLogSize > 0)
+			// create a program object
+			this->program = glCreateProgram();
+			glAttachShader(this->program, this->vertexShader);
+			glAttachShader(this->program, this->pixelShader);
+			glLinkProgram(this->program);
+			glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			if (shaderLogSize > 0)
 			{
-				GLchar* buf = new GLchar[programLogSize];
-				glGetShaderInfoLog(program, programLogSize, NULL, buf);
-				printf("[PROGRAM LINKING ERROR]: %s\n", buf);
+				GLchar* buf = new GLchar[shaderLogSize];
+				glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
+				printf("[PROGRAM LINK ERROR]: %s", buf);
 				delete[] buf;
-				return false; // if there is not error ther program exit. 
 			}
 
 			// create cueb mesh and set up its buffers. 
@@ -164,8 +150,9 @@ namespace Example
 			mesh->createVBO();// create vbo 
 			mesh->createIBO(); // create ibo 
 
+			texture.loadFromFile("../projects/graphic/texture/lizard.png");
 			// load texture from file that we have it ready. 
-			if (!texture.loadFromFile("valid_path_to_texture.png")) 
+			if (!texture.loadFromFile("../projects/graphic/texture/lizard.png")) 
 			{
 				// check to see if the looding was successful.
 				printf("Failed to load texture from file.\n"); 
@@ -177,10 +164,10 @@ namespace Example
 			camera.SetView(vec3(0, 0, 5), vec3(0, 0, 0), vec3(0, 1, 0)); // set view 
 
 			//get unifor locations from shader program 
-			GLuint texLoc = glGetUniformLocation(program, "textureSampler");
-			GLuint modelLoc = glGetUniformLocation(program, "model");
-			GLuint viewLoc = glGetUniformLocation(program, "view");
-			GLuint projLoc = glGetUniformLocation(program, "projection");
+			GLuint texLoc = glGetUniformLocation(this->program, "textureSampler");
+			GLuint modelLoc = glGetUniformLocation(this->program, "model");
+			GLuint viewLoc = glGetUniformLocation(this->program, "view");
+			GLuint projLoc = glGetUniformLocation(this->program, "projection");
 
 
 			// checking for all uniform location. 
@@ -228,12 +215,12 @@ namespace Example
 		ExampleApp::Run()
 	{
 		//run time checking before using shader program to check if it's in a valid state. 
-		if (program == 0) 
+		if (this->program == 0)
 		{
 			printf("Error: Program object is not valid. \n"); 
 			return; // exit when program is invalid. 
 		}
-		glUseProgram(program); // shader program 
+		glUseProgram(this->program); // shader program 
 		// rendering loop 
 		while (this->window->IsOpen())
 		{
@@ -242,13 +229,13 @@ namespace Example
 
 			// Rotate the cube over time
 			mat4 model = rotationz(glfwGetTime());  
-			glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (GLfloat*)&model);
-			glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
-			glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
-
+			glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_TRUE, (GLfloat*)&model);
+			glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
+			glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
+			
 			//bind and set texture uniform 
 			texture.Bind(0);
-			glUniform1i(glGetUniformLocation(program, "textureSampler"), 0);
+			glUniform1i(glGetUniformLocation(this->program, "textureSampler"), 0);
 			//glUniform1i(texLoc, 0);
 
 			// bind and draw mesh. 
