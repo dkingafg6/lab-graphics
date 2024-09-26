@@ -19,8 +19,11 @@ const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec3 pos;\n" // attribute for pos
 "layout(location=1) in vec2 texCoord;\n" // attribute for texture coordinates
-"layout(location=1) out vec2 TexCoord;\n" // pass texture to shader. 
+"out vec2 TexCoord;\n" // pass texture to shader. 
 //"layout(location=0) out vec2 TexCoord;\n"
+
+"layout(location=1) in vec4 color;\n"
+"layout(location=0) out vec4 Color;\n"
 
 "uniform mat4 model;\n" // model 
 "uniform mat4 view;\n" // view
@@ -29,12 +32,16 @@ const GLchar* vs =
 "void main()\n"
 "{\n"
 "	gl_Position = projection * view * model * vec4(pos, 1.0);;\n" // calculate pos 
+"	Color = color;\n"
 "	TexCoord = texCoord;\n" // pass texture to shader
 "}\n";
 
  //Fragment shader ps
 const GLchar* ps =
 "#version 430\n"
+"layout(location=0) in vec4 color;\n"
+"out vec4 Color;\n"
+
 "in vec2 TexCoord;\n" // texture coordinates from vertex shader. 
 "out vec4 Color;\n" // color 
 //"uniform sampler2D texture; \n"
@@ -43,6 +50,8 @@ const GLchar* ps =
 "void main()\n"
 "{\n"
 "	Color = texture(textureSampler, TexCoord);\n" // fix the color from the texture.
+"	Color = color;\n"
+
 "}\n";
 
 
@@ -77,20 +86,20 @@ namespace Example
 
 		App::Open();
 		this->window = new Display::Window;
-		/*window->SetKeyPressFunction([this](int32, int32, int32, int32)
+		window->SetKeyPressFunction([this](int32, int32, int32, int32)
 		{
 		this->window->Close();
-		});*/
+		});
 
-		//GLfloat buf[] =
-		//{
-		//	-0.5f,	-0.5f,	-1,			// pos 0
-		//	1,		0,		0,		1,	// color 0
-		//	0,		0.5f,	-1,			// pos 1
-		//	0,		1,		0,		1,	// color 0
-		//	0.5f,	-0.5f,	-1,			// pos 2
-		//	0,		0,		1,		1	// color 0
-		//};
+		GLfloat buf[] =
+		{
+			-0.5f,	-0.5f,	-1,			// pos 0
+			1,		0,		0,		1,	// color 0
+			0,		0.5f,	-1,			// pos 1
+			0,		1,		0,		1,	// color 0
+			0.5f,	-0.5f,	-1,			// pos 2
+			0,		0,		1,		1	// color 0
+		};
 
 		if (this->window->Open())
 		{
@@ -226,6 +235,17 @@ namespace Example
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// clear the screen. 
 			this->window->Update(); // update 
+
+
+			//// do stuff
+			//glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+			//glUseProgram(this->program);
+			//glEnableVertexAttribArray(0);
+			//glEnableVertexAttribArray(1);
+			//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, NULL);
+			//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, (GLvoid*)(sizeof(float32) * 3));
+			//glDrawArrays(GL_TRIANGLES, 0, 3);
+			//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 			// Rotate the cube over time
 			mat4 model = rotationz(glfwGetTime());  

@@ -36,19 +36,18 @@ public:
 private:
 
 	// point to window 
-	Display::Window* window{ nullptr };
+	Display::Window* window;
 
 	// all IDs 
-	GLuint program{ 0 };
-	GLuint vertexShader{ 0 };
-	GLuint pixelShader{ 0 };
-	GLuint triangle{ 0 };
+	GLuint program;
+	GLuint vertexShader;
+	GLuint pixelShader;
+	GLuint triangle;
 
 	// point to meshrecsource
-	MeshResource* mesh{ nullptr };
+	MeshResource* mesh;
 	TextureResource texture; // resource for texture. 
 	Camera camera; 
-
 	GLuint texLoc; 
 	GLuint modelLoc; 
 	GLuint viewLoc;
