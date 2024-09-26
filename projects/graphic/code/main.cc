@@ -8,7 +8,9 @@
 #include "config.h"
 #include "exampleapp.h"
 #include "render/TextureResource.h"
+#include"render/Camera.h"
 #include <iostream>
+
 //#include "vec4.h"
 //#include "vec3.h"
 

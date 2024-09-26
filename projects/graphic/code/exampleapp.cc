@@ -33,6 +33,8 @@ const GLchar* vs =
 "uniform mat4 view;\n"        // view matrix
 "uniform mat4 projection;\n"  // projection matrix. 
 
+
+
 "void main()\n"
 "{\n"
 "	gl_Position = projection * view * model * vec4(pos, 1.0);;\n" // calculate pos in world space. 
@@ -71,7 +73,6 @@ namespace Example
 	/**
 	*/
 	ExampleApp::ExampleApp()
-
 	{
 		// empty
 	}
@@ -230,20 +231,45 @@ namespace Example
 	void
 		ExampleApp::Run()
 	{
+
+		// set up cube mesh and texture
+		MeshResource* cube = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
+		TextureResource texture; 
+		texture.loadFromFile("../projects/graphic/texture/lizard.png"); 
+
+		// creat camera
+		Camera camera(vec3(0.0f, 0.0f, 5.0f), vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f), 45.0f, 800.0f / 600.0f, 0.0f, 100.0f);
 		//run time checking before using shader program to check if it's in a valid state. 
 		if (this->program == 0)
 		{
 			printf("Error: Program object is not valid. \n"); 
 			return; // exit when program is invalid. 
 		}
+
+		// for new camera test 
+		//camera camera(width, height mat4::vec3(0.0f, 0.0f, 2.0f)); 
 		glUseProgram(this->program); // shader program 
 		// rendering loop 
 		while (this->window->IsOpen())
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// clear the screen. 
 			this->window->Update(); // update 
+			camera.update(); 
 
+			// get view and projection matrices.
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection[0][0]);
 
+			// to clear screen 
+			glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT); 
+			cube->draw(); 
+
+			glfwSwapBuffers(window); 
+			glfwPollEvents(); 
+			
+			// for new camera test 
+			//camera.GetProjectionMatrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix"); 
+			
 			//// do stuff
 			//glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
 			//glUseProgram(this->program);
@@ -257,24 +283,24 @@ namespace Example
 
 			// here: model, view and projection matrix, biding to the texture smpler 
 			// Rotate the cube over time
-			mat4 model = rotationz(glfwGetTime());  
-			glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_TRUE, (GLfloat*)&model);
-			glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
-			glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
+			//mat4 model = rotationz(glfwGetTime());  
+			//glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_TRUE, (GLfloat*)&model);
+			//glUniformMatrix4fv(glGetUniformLocation(this->program, "view"), 1, GL_TRUE, (GLfloat*)&camera.viewMatrix);
+			//glUniformMatrix4fv(glGetUniformLocation(this->program, "projection"), 1, GL_TRUE, (GLfloat*)&camera.projectionMatrix);
 			
 			//bind and set texture uniform 
-			texture.Bind(0);
+			//texture.Bind(0);
 			// assigned to the fragment shader.
-			glUniform1i(glGetUniformLocation(this->program, "textureSampler"), 0);
+			//glUniform1i(glGetUniformLocation(this->program, "textureSampler"), 0);
 			//glUniform1i(texLoc, 0);
 
 			// bind and draw mesh. 
-			mesh->bindVBO();
-			mesh->bindIBO();
-			mesh->draw();
+			//mesh->bindVBO();
+			//mesh->bindIBO();
+			//mesh->draw();
 
 			// swap the buffers and display rendered from that. 
-			this->window->SwapBuffers();
+			//this->window->SwapBuffers();
 
 
 
@@ -287,6 +313,7 @@ namespace Example
 #endif
 
 		}
+		delete cube; 
 	}
 	// massage callback function be called when there is e debug message from opengl. 
 	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)

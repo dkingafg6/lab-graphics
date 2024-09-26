@@ -200,7 +200,7 @@ inline void MeshResource::bindVBO()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 *sizeof(float), (void*)0); 
 
 	// the texture coordinate data be enable with attibiute array. 
-	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(1); // TexCoood
 
 	// specify layout attribute array 
 	// 2 float for texture coordinat. 
@@ -244,8 +244,15 @@ inline void MeshResource::cleanup()
 		glDeleteBuffers(1, &vertexArray);
 		vertexArray = 0; 
 	}
+	// clear all three to release cpu memory. 
+	vertices.clear(); 
+	texCoords.clear(); 
+	indices.clear(); 
+
+	// to delete and clear with shrink any unused memory.
+	vertices.shrink_to_fit(); 
+	texCoords.shrink_to_fit(); 
+	indices.shrink_to_fit(); 
 	
 }
-
-
 
