@@ -14,43 +14,50 @@
 #include "core/mat4.h"
 #include "core/vec2.h"
 
-// vertex shader vs
+// 
+// vertex shader = generate direction (forwards, right, up)
 const GLchar* vs =
 "#version 430\n"
-"layout(location=0) in vec3 pos;\n" // attribute for pos
-"layout(location=1) in vec2 texCoord;\n" // attribute for texture coordinates
-"out vec2 TexCoord;\n" // pass texture to shader. 
+"layout(location=0) in vec3 pos;\n"       // attribute for pos
+"layout(location=1) in vec2 texCoord;\n"  // attribute for texture coordinates
+"layout(location=2) in vec4 color;\n"     // color attribute 
+
+"out vec2 TexCoord;\n"    // pass texture coordinate to the fragment shader. 
+"out vec4 vertexColor;\n" // pass color to the fragment shader. 
 //"layout(location=0) out vec2 TexCoord;\n"
 
-"layout(location=1) in vec4 color;\n"
-"layout(location=0) out vec4 Color;\n"
+//"layout(location=1) in vec4 color;\n"
+//"layout(location=0) out vec4 Color;\n"
 
-"uniform mat4 model;\n" // model 
-"uniform mat4 view;\n" // view
-"uniform mat4 projection;\n"// projection matrix. 
+"uniform mat4 model;\n"       // model matrix
+"uniform mat4 view;\n"        // view matrix
+"uniform mat4 projection;\n"  // projection matrix. 
 
 "void main()\n"
 "{\n"
-"	gl_Position = projection * view * model * vec4(pos, 1.0);;\n" // calculate pos 
-"	Color = color;\n"
+"	gl_Position = projection * view * model * vec4(pos, 1.0);;\n" // calculate pos in world space. 
 "	TexCoord = texCoord;\n" // pass texture to shader
+"	vertexColor = color;\n" // pass input color to fragment shader. 
 "}\n";
 
- //Fragment shader ps
+ //Fragment shader  = generate color and cub map texture 
 const GLchar* ps =
 "#version 430\n"
-"layout(location=0) in vec4 color;\n"
-"out vec4 Color;\n"
+//"layout(location=0) in vec4 color;\n"
+//"out vec4 Color;\n"
 
-"in vec2 TexCoord;\n" // texture coordinates from vertex shader. 
-"out vec4 Color;\n" // color 
+"in vec2 TexCoord;\n"    // texture coordinates from vertex shader. 
+"in vec4 vertexColor;\n" // color from vertex shader. 
+"out vec4 Color;\n"      // output color
+
 //"uniform sampler2D texture; \n"
 "uniform sampler2D textureSampler; \n" // texture sampler. 
 
 "void main()\n"
 "{\n"
-"	Color = texture(textureSampler, TexCoord);\n" // fix the color from the texture.
-"	Color = color;\n"
+"	vec4 textureColor = texture(textureSampler, TexCoord);\n" // sampler the texture 
+"	Color = textureColor * vertexColor;\n" // fix the color from the texture.
+//"	Color = color;\n" if this line activate it will be overwritint for color 
 
 "}\n";
 
@@ -247,6 +254,8 @@ namespace Example
 			//glDrawArrays(GL_TRIANGLES, 0, 3);
 			//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+
+			// here: model, view and projection matrix, biding to the texture smpler 
 			// Rotate the cube over time
 			mat4 model = rotationz(glfwGetTime());  
 			glUniformMatrix4fv(glGetUniformLocation(this->program, "model"), 1, GL_TRUE, (GLfloat*)&model);
@@ -255,6 +264,7 @@ namespace Example
 			
 			//bind and set texture uniform 
 			texture.Bind(0);
+			// assigned to the fragment shader.
 			glUniform1i(glGetUniformLocation(this->program, "textureSampler"), 0);
 			//glUniform1i(texLoc, 0);
 

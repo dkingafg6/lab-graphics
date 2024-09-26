@@ -139,15 +139,21 @@ inline void MeshResource::createVBO()
 	// generate buffer for binding vertex
 
 	glGenBuffers(1, &vertexBuffer);
+	glBindVertexArray(vertexArray); 
+
+	glGenBuffers(1, &vertexBuffer); 
+	// bind the openGL array data with vertextbuffer. 
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	
 	// checking for buffer if it can generation was successful. 
-	if (vertexBuffer == 0) 
+	/*if (vertexBuffer == 0) 
 	{
 		std::cerr << " error: failed to gernerate vertex buffer.  " << std::endl;
 		return;
 
-	}
+	}*/
 	// bind the openGL array data with vertextbuffer. 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
 	std::vector<float> vboData; 
 	for (size_t i = 0; i < vertices.size(); i++) 
@@ -161,6 +167,8 @@ inline void MeshResource::createVBO()
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, vboData.size() * sizeof(float), vboData.data(),GL_STATIC_DRAW);
+	// vertex attribiutes for pos and texCoord in VAO 
+	bindVBO(); 
 
 }
 // IBO = index buffer object
@@ -178,6 +186,8 @@ inline void MeshResource::createIBO()
 
 inline void MeshResource::bindVBO()
 {
+
+	glBindVertexArray(vertexArray); 
 	// bind vertex buffer object to GL_ARRAY_BUFFER target. 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
@@ -208,6 +218,8 @@ inline void MeshResource::bindIBO()
 
 inline void MeshResource::draw()
 {
+	glBindVertexArray(vertexArray);
+
 	// draw elements like triangle from the bound  index buffer. 
 	// the unsingned int specifies by indeces 
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -219,15 +231,18 @@ inline void MeshResource::cleanup()
 	if (vertexBuffer != 0) 
 	{
 		glDeleteBuffers(1, &vertexBuffer);
+		vertexBuffer = 0; 
 
 	}
 	// delete the index buffer if that has been created. 
 	if (indexBuffer != 0) {
 		glDeleteBuffers(1, &indexBuffer);
+		indexBuffer = 0; 
 	}
 	// delete the vertex array object  if it has been created. 
 	if (vertexArray != 0) {
 		glDeleteBuffers(1, &vertexArray);
+		vertexArray = 0; 
 	}
 	
 }
