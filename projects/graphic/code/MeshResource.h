@@ -1,9 +1,6 @@
 #pragma once
-#define STB_IMAGE_IMPLEMENTATION
-
-#include <GL/glew.h>
 #include <config.h>
-#include <core/stb_image.h>
+#include <GL/glew.h>
 
 using namespace std;
 
@@ -17,7 +14,7 @@ private:
 	// openGle textur indentifire. 
 	//GLuint TextureID; 
 
-	GLuint vertexarray; 
+	GLuint vertexArray; 
 
 public:
 	// show the order of vertices to form primitives like triangles. 
@@ -26,7 +23,7 @@ public:
 
 	// vertex buffer object.
 	static MeshResource* CreatCube(float width, float height, float depth);
-	void createVBO();
+	void createVBO(float width, float height, float depth);
 	void createIBO();
 	void bindVBO();
 	void bindIBO();
@@ -40,55 +37,85 @@ public:
 	/*void bind(unsigned int unit = 0);*/
 };
 
-MeshResource::MeshResource()
+inline MeshResource::MeshResource()
 {
 	vertexBuffer = 0;
 	indexBuffer = 0;
-	vertexarray = 0; 
+	vertexArray = 0; 
 }
 
-MeshResource::~MeshResource()
+inline MeshResource::~MeshResource()
 {
 	cleanup(); 
 
 }
 
-MeshResource* MeshResource::CreatCube(float width, float height, float depth)
+inline MeshResource* MeshResource::CreatCube(float width, float height, float depth)
 {
 	MeshResource* mesh = new MeshResource();
-	mesh->createVBO; 
-	mesh->createIBO; 
+	mesh->createVBO(width, height, depth);
+	mesh->createIBO(); 
+
+	glEnableVertexAttribArray(0); // pos
+	glEnableVertexAttribArray(1); // color
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, NULL);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 7, (GLvoid*)(sizeof(float32) * 3));
 	return mesh;
+
+
 }
 
 // VBO = vertex buffer object 
-void MeshResource::createVBO()
+inline void MeshResource::createVBO(float width, float height, float depth)
 {
+	float halfWidth = width / 2.0f;
+	float halfHeight = height / 2.0f;
+	float halfDepth = depth / 2.0f;
+
 	float position[] =
 	{
-		// texture and pos coordinate with x, y, z, u and v
 		// Front face
-		-0.5f, -0.5f, 0.5f,  0.0f, 0.0f,
-		 0.5f, -0.5f, 0.5f,  1.0f, 0.0f,
-		 0.5f,  0.5f, 0.5f,  1.0f, 1.0f,
-		-0.5f,  0.5f, 0.5f,  0.0f, 1.0f,
-		// Back face
-		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
-		 0.5f, -0.5f, -0.5f, 1.0f, 0.0f,
-		 0.5f,  0.5f, -0.5f, 1.0f, 1.0f,
-		-0.5f,  0.5f, -0.5f, 0.0f, 1.0f
-	//	0.0f, 0.0f,  // lower-left corner  
-	//	1.0f, 0.0f,  // lower-right corner
-	//	0.5f, 1.0f   // top-center corner
+	   -halfWidth, -halfHeight, halfDepth, // 0
+		1.0f, 0.0f, 0.0f, 0.0f,
+		halfWidth, -halfHeight, halfDepth, // 1
+		1.0f, 0.0f, 0.0f, 0.0f,
+		halfWidth,  halfHeight, halfDepth, // 2
+		1.0f, 0.0f, 0.0f, 0.0f,
+	   -halfWidth,  halfHeight, halfDepth, // 3
+		1.0f, 0.0f, 0.0f, 0.0f,
+	   // Back face
+	   -halfWidth, -halfHeight, -halfDepth, // 4
+		1.0f, 0.0f, 0.0f, 0.0f,
+		halfWidth, -halfHeight, -halfDepth, // 5
+		1.0f, 0.0f, 0.0f, 0.0f,
+		halfWidth,  halfHeight, -halfDepth, // 6
+		1.0f, 0.0f, 0.0f, 0.0f,
+	   -halfWidth,  halfHeight, -halfDepth, // 7
 
-		//-0.5, 0.5, 0, // p1
-		//1.0f, 0.0f, 0.0f, 1.0f, // color red green blue alfa (alfa == trancparenci)
-		//0.5, 0.5, 0, // p2
-		//0.0f, 1.0f, 0.0f, 1.0f,// color RGBA
-		//0.5,-0.5, 0, // p3
-		//0.0f, 0.0f, 1.0f, 1.0f, // color RGBA
-		//-0.5, -0.5, 0, //p4
-		//0.0f, 1.0f, 0.0f, 1.0f, // color RGBA
+	 //  // Left face
+	 //  halfWidth, -halfHeight, -halfDepth, 0.0f, 0.0f, // 4
+		//halfWidth, -halfHeight, -halfDepth, 1.0f, 0.0f, // 5
+		//halfWidth,  halfHeight, -halfDepth, 1.0f, 1.0f, // 6
+	 //  -halfWidth,  halfHeight, -halfDepth, 0.0f, 1.0f, // 7
+
+	 //  // Right face
+	 //  -halfWidth, -halfHeight, -halfDepth, 0.0f, 0.0f, // 4
+		//halfWidth, -halfHeight, -halfDepth, 1.0f, 0.0f, // 5
+		//halfWidth,  halfHeight, -halfDepth, 1.0f, 1.0f, // 6
+	 //  -halfWidth,  halfHeight, -halfDepth, 0.0f, 1.0f, // 7
+
+	 //  //Top face
+	 //  -halfWidth, -halfHeight, -halfDepth, 0.0f, 0.0f, // 4
+		//halfWidth, -halfHeight, -halfDepth, 1.0f, 0.0f, // 5
+		//halfWidth,  halfHeight, -halfDepth, 1.0f, 1.0f, // 6
+	 //  -halfWidth,  halfHeight, -halfDepth, 0.0f, 1.0f, // 7
+
+	 //  // Bottom face
+	 //  -halfWidth, -halfHeight, -halfDepth, 0.0f, 0.0f, // 4
+		//halfWidth, -halfHeight, -halfDepth, 1.0f, 0.0f, // 5
+		//halfWidth,  halfHeight, -halfDepth, 1.0f, 1.0f, // 6
+	 //  -halfWidth,  halfHeight, -halfDepth, 0.0f, 1.0f, // 7
 	};
 
 	// generate buffer for binding vertex
@@ -101,11 +128,12 @@ void MeshResource::createVBO()
 
 }
 // IBO = index buffer object
-void MeshResource::createIBO()
+inline void MeshResource::createIBO()
 {
 	// coneccting the points to gather. 
 	 unsigned int indices[] =
 	{
+
 		0, 1, 2, 2, 3, 0, // Front
 		4, 5, 6, 6, 7, 4, // Back
 		0, 4, 7, 7, 3, 0, // Left
@@ -126,21 +154,21 @@ void MeshResource::createIBO()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
-void MeshResource::bindVBO()
+inline void MeshResource::bindVBO()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 }
-void MeshResource::bindIBO()
+inline void MeshResource::bindIBO()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 }
 
-void MeshResource::draw()
+inline void MeshResource::draw()
 {
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
 }
 
-void MeshResource::cleanup()
+inline void MeshResource::cleanup()
 {
 	glDeleteBuffers(1, &vertexBuffer);
 	glDeleteBuffers(1, &indexBuffer);

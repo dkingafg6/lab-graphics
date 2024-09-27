@@ -13,6 +13,7 @@ SET(files_render_display
 	stb_image.h
 	TextureResource.h
 	TextureResource.cpp
+	meshResource.cc
 	)
 SOURCE_GROUP("display" FILES ${files_render_display})
 

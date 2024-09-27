@@ -25,13 +25,7 @@ public:
 	vec4 m[4]; // matrix by 4x4 vec4 columns. 
 
 	// constructor with identity matrix. all columns 
-	inline mat4() 
-	{
-		*this = identity(); // constructor to identity matrix. 
-
-
-	}
-	/*inline mat4()
+	inline mat4()
 	{
 		m[0] = vec4(1.0f, 0.0f, 0.0f, 0.0f);
 		m[1] = vec4(0.0f, 1.0f, 0.0f, 0.0f);
@@ -39,7 +33,7 @@ public:
 		m[3] = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 		
 
-	}*/
+	}
 	 // ini...matrix with 4 vec4 rows. 
 	inline mat4(const vec4& c0, const vec4& c1, const vec4& c2, const vec4& c3)
 	{

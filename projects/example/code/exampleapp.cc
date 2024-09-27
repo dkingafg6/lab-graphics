@@ -31,7 +31,6 @@ const GLchar* ps =
 "{\n"
 "	Color = color;\n"
 "}\n";
-
 using namespace Display;
 namespace Example
 {

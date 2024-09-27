@@ -9,9 +9,6 @@
 #include "core/app.h"
 #include "render/window.h"
 #include "MeshResource.h"
-#include "Camera.h"
-#include "TextureResource.h"
-
 namespace Example
 {
 class ExampleApp : public Core::App
@@ -37,7 +34,6 @@ private:
 	GLuint triangle;
 	// adding member
 	MeshResource* meshResource; 
-	TextrueResource texture; 
 	
 };
 } // namespace Example

@@ -36,7 +36,8 @@ public:
 	// create the vertices with pos and texture cooordinate for each face of the cube.
 	static MeshResource* CreatCube(float width, float height, float depth);
 	
-	void createVBO();
+	//void createVBO();
+	void createVBO(float width, float height, float depth);
 	void createIBO();
 	void bindVBO();
 	void bindIBO();
@@ -67,23 +68,7 @@ inline MeshResource* MeshResource::CreatCube(float width, float height, float de
 	// each face of the cube define with vertices. 
 	MeshResource* cube = new MeshResource(); 
 
-	cube->vertices =
-	{
-		// front face
-		vec3(-width, -height, depth), vec3(width, -height, depth), vec3(width, height, depth), vec3(-width, height, depth),
-		// back face.
-		vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, height, -depth), vec3(-width, height, -depth),
-		// left face
-		vec3(-width, -height, -depth), vec3(-width, -height, depth), vec3(-width, height, depth), vec3(-width, height, -depth),
-		// right face 
-		vec3(width, -height, -depth), vec3(width, -height, depth), vec3(width, height, depth), vec3(width, height, -depth),
-		// top face 
-		vec3(-width, height, -depth), vec3(width, height, -depth), vec3(width, height, depth), vec3(-width, height, depth),
-		// bottom face.
-		vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, -height, depth), vec3(-width, -height, depth),
 
-
-	}; 
 
 	// texture coodinates for cube. 
 	cube->texCoords =
@@ -119,16 +104,94 @@ inline MeshResource* MeshResource::CreatCube(float width, float height, float de
 
 
 	}; 
-
-	cube->createVBO(); 
-	cube->createIBO(); 
-
 	return cube; 
 }
 
 // VBO = vertex buffer object 
-inline void MeshResource::createVBO()
+inline void MeshResource::createVBO(float width, float height, float depth)
 {
+	float halfWidth = width / 2.0f; 
+	float halfHeight = height / 2.0f; 
+	float halfDepth = depth / 2.9f; 
+
+	float position[] =
+	{
+		// front face
+		-halfWidth, - halfHeight, -halfDepth,
+		1.0f, 0.0f, 0.0f, 1.0f, 
+		0.0f, 0.0f, // 0
+		halfWidth, - halfHeight, -halfDepth,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, // 1
+		halfWidth,  halfHeight, -halfDepth,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, // 2
+		-halfWidth,  halfHeight, -halfDepth,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 1.0f, // 3
+
+		// back face
+		-halfWidth, -halfHeight, halfDepth,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, // 4
+		halfWidth, -halfHeight, halfDepth,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, // 5
+		halfWidth,  halfHeight, halfDepth,
+		1.0f, 0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, // 6
+		-halfWidth,  halfHeight, halfDepth,
+		1.0f, 0.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, // 7
+
+
+		// right face
+		halfWidth, -halfHeight, -halfDepth,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, // 8
+		halfWidth, halfHeight, -halfDepth,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 1.0f, // 9
+		halfWidth,  -halfHeight, halfDepth,
+		0.0f, 1.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, // 10
+		halfWidth,  halfHeight, halfDepth,
+		1.0f, 0.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, // 11
+
+
+		// left face
+		-halfWidth, -halfHeight, -halfDepth,
+		1.0f, 0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, // 12
+		-halfWidth, halfHeight, -halfDepth,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		1.0f, 1.0f, // 13
+		-halfWidth,  -halfHeight, halfDepth,
+		0.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, // 14
+		-halfWidth,  halfHeight, halfDepth,
+		1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 1.0f, // 15
+
+
+
+
+
+		//vec3(-width, -height, depth),vec3(width, -height, depth), vec3(width, height, depth), vec3(-width, height, depth),
+		//	// back face.
+		//vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, height, -depth), vec3(-width, height, -depth),
+		//	// left face
+		//vec3(-width, -height, -depth), vec3(-width, -height, depth), vec3(-width, height, depth), vec3(-width, height, -depth),
+		//	// right face 
+		//vec3(width, -height, -depth), vec3(width, -height, depth), vec3(width, height, depth), vec3(width, height, -depth),
+		//	// top face 
+		//vec3(-width, height, -depth), vec3(width, height, -depth), vec3(width, height, depth), vec3(-width, height, depth),
+		//	// bottom face.  
+		//vec3(-width, -height, -depth), vec3(width, -height, -depth), vec3(width, -height, depth), vec3(-width, -height, depth),
+
+
+	};
 	// checking vertices and texture coordinate if  they are populated. 
 	if (vertices.empty() || texCoords.empty()) 
 	{
@@ -137,23 +200,10 @@ inline void MeshResource::createVBO()
 
 	}
 	// generate buffer for binding vertex
-
 	glGenBuffers(1, &vertexBuffer);
 	glBindVertexArray(vertexArray); 
-
-	glGenBuffers(1, &vertexBuffer); 
 	// bind the openGL array data with vertextbuffer. 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-	
-	// checking for buffer if it can generation was successful. 
-	/*if (vertexBuffer == 0) 
-	{
-		std::cerr << " error: failed to gernerate vertex buffer.  " << std::endl;
-		return;
-
-	}*/
-	// bind the openGL array data with vertextbuffer. 
-	//glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
 	std::vector<float> vboData; 
 	for (size_t i = 0; i < vertices.size(); i++) 
