@@ -77,20 +77,20 @@ inline void MeshResource::createVBO(float width, float height, float depth)
 	{
 		// Front face
 	   -halfWidth, -halfHeight, halfDepth, // 0
-		1.0f, 0.0f, 0.0f, 0.0f,
+		05.0f, 0.0f, 1.0f, 0.0f,
 		halfWidth, -halfHeight, halfDepth, // 1
-		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 05.0f, 1.0f, 0.0f,
 		halfWidth,  halfHeight, halfDepth, // 2
 		1.0f, 0.0f, 0.0f, 0.0f,
 	   -halfWidth,  halfHeight, halfDepth, // 3
-		1.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 0.0f, 1.0f,
 	   // Back face
 	   -halfWidth, -halfHeight, -halfDepth, // 4
-		1.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f, 1.0f,
 		halfWidth, -halfHeight, -halfDepth, // 5
 		1.0f, 0.0f, 0.0f, 0.0f,
 		halfWidth,  halfHeight, -halfDepth, // 6
-		1.0f, 0.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 1.0f, 0.0f,
 	   -halfWidth,  halfHeight, -halfDepth, // 7
 
 	 //  // Left face

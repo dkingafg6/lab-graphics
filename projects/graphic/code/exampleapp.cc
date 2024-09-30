@@ -177,23 +177,31 @@ namespace Example
 	*/
 	void ExampleApp::Run()
 	{
+		// use for depth testl to show rander 3D in obj in front of or behind  each other. 
 		glEnable(GL_DEPTH_TEST);
+		// create a cube mesh resource with dimensions. 
 		meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
 
+		// get location form shader program 
 		GLint rotation = glGetUniformLocation(this->program, "rotation");
 
+		// initialize time as a float variable use for animation and transformations. 
 		float time = 0;
 		while (this->window->IsOpen())
 		{
-			time += 0.002;
+			// increment time on each iteration 
+			time += 0.009;
 
+			// define a 4x4 matrix used for transformation some scaling and ratation. 
 			mat4 matrix4x4;
 
+			// clear depth buffer and color buffer be ready for new frame. 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// update the window 
 			this->window->Update();
 
-
-
+			// binding vertex and index buffer object of the meshresource  be ready vertex and index data to be used in rendering. 
 			meshResource->bindVBO();
 			meshResource->bindIBO();
 
