@@ -41,6 +41,14 @@ void TextureResource::loadFromFile(const char* filename)
 
 }
 
+void TextureResource::Bind(unsigned int unit = 0)
+{
+	glActiveTexture(GL_TEXTURE0 + unit); 
+	glBindTexture(GL_TEXTURE_2D, textureID); 
+}
+
+
+
 
 
 void Cleanup() 

@@ -19,7 +19,7 @@ public:
     ~TextureResource();
 
 	void loadFromFile(const char* filename);
-	void bind(); 
+	void Bind(unsigned int unit );
 	void Cleanup(); 
 
 	int width;
