@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-
 #include "vec3.h"
 #include "vec4.h"
 #include <cmath> 
@@ -50,6 +49,17 @@ public:
 		{
 			m[i] = rhs.m[i]; 
 		}
+	}
+
+	// constructor that ini all the matrix element to a single value need for thea camera scaling, 
+	// it add becuase it need in camera class to scalling (mat4 perspective(0.0f)
+	inline mat4(float value) 
+	{
+		m[0] = vec4(value, value, value, value);
+		m[1] = vec4(value, value, value, value);
+		m[2] = vec4(value, value, value, value);
+		m[3] = vec4(value, value, value, value);
+
 	}
 
 	// copies values from another mat4

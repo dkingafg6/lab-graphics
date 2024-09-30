@@ -8,9 +8,13 @@
 #include "config.h"
 #include "exampleapp.h"
 #include <cstring>
-#include "MeshResource.h"
+#include "render/MeshResource.h"
 #include "core/mat4.h"
 #include "render/Camera.h"
+#include "render/Window.h"
+#include "render/Grid.h"
+#include "../../../exts/glfw/src/win32_platform.h"
+
 
 
 
@@ -20,13 +24,14 @@ const GLchar* vs =
 "layout(location=0) in vec3 pos;\n"
 
 "layout(location=1) in vec4 color;\n"
-//"uniform mat4 rotation;\n"
-"uniform mat4 rotation;\n" // for activat the camera 
+"uniform mat4 rotation;\n"
+"uniform mat4 camMatrix;\n" // for activat the camera 
+"out vec4 Color;\n"
 
 "void main()\n"
 "{\n"
 //"	gl_Position = vec4(pos, 1) * rotation;\n"
-"	gl_Position = vec4(pos, 1) * camMatrix;\n" // just for camera.
+"	gl_Position = vec4(pos, 1) * rotation * camMatrix;\n" // just for camera. combine rotation and camera.
 "	Color = color;\n"
 "}\n";
 
@@ -65,113 +70,141 @@ namespace Example
 //------------------------------------------------------------------------------
 /**
 */
-	bool ExampleApp::Open()
+	bool ExampleApp::Open() 
 	{
-		App::Open();
-		this->window = new Display::Window;
-		/*window->SetKeyPressFunction([this](int32, int32, int32, int32)
-		{
-			this->window->Close();
-		});*/
 
+		if(!App::Open()) return false;
+		this->window = new Display::Window;
+		window->SetKeyPressFunction([this](int32, int32, int32, int32)
+			{
+				this->window->Close();
+			});
+		// hello
 		//GLfloat buf[] =
 		//{
 		//	-0.5f,	-0.5f,	-1,			// pos 0
 		//	1,		0,		0,		1,	// color 0
 		//	0,		0.5f,	-1,			// pos 1
-		//	0,		1,		0,		1,	// color 0 
+		//	0,		1,		0,		1,	// color 0
 		//	0.5f,	-0.5f,	-1,			// pos 2
 		//	0,		0,		1,		1	// color 0
 		//};
 
-		if (this->window->Open())
+		if (!this->window->Open())
 		{
-			// ...inial   the MeshResource object, 
-			// set clear color to gray
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-			// setup vertex shader
-			vertexShader = glCreateShader(GL_VERTEX_SHADER);
-			GLint length = static_cast<GLint>(std::strlen(vs));
-			glShaderSource(vertexShader, 1, &vs, &length);
-			glCompileShader(vertexShader);
-
-			// get error log
-			GLint shaderLogSize;
-			glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-			if (shaderLogSize > 0)
-			{
-				GLchar* buf = new GLchar[shaderLogSize];
-				glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
-				printf("[SHADER COMPILE ERROR]: %s", buf);
-				delete[] buf;
-			}
-
-			// setup pixel shader
-			pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
-			length = static_cast<GLint>(std::strlen(ps));
-			glShaderSource(pixelShader, 1, &ps, &length);
-			glCompileShader(pixelShader);
-
-			// get error log
-			shaderLogSize;
-			glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-			if (shaderLogSize > 0)
-			{
-				GLchar* buf = new GLchar[shaderLogSize];
-				glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
-				printf("[SHADER COMPILE ERROR]: %s", buf);
-				delete[] buf;
-			}
-
-			// create a program object link
-			program = glCreateProgram();
-			glAttachShader(program, vertexShader);
-			glAttachShader(program, pixelShader);
-			glLinkProgram(program);
-
-
-
-			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &shaderLogSize);
-			if (shaderLogSize > 0)
-			{
-				GLchar* buf = new GLchar[shaderLogSize];
-				glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
-				printf("[PROGRAM LINK ERROR]: %s", buf);
-				delete[] buf;
-			}
-
-			// setup vbo
-			/*glGenBuffers(1, &this->triangle);
-			glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-			*/
-			return true;
-
+			return false; // to be sure window opened successfully. 
 		}
-		return false;
+
+		// camera initialize 
+		this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
+			vec3(0.0f, 0.0f, 0.0f),            // target position 
+
+			vec3(0.0f, 1.0f, 3.0f),            // up vector 
+			45.0f,                             // field of v
+			static_cast<float>(width) / static_cast<float>(height),
+			0.1f,           // near plan and far clipping 
+			100.0f);
+		// set clear color to gray
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+		// setup vertex shader
+		this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		GLint length = static_cast<GLint>(std::strlen(vs));
+		glShaderSource(this->vertexShader, 1, &vs, &length);
+		glCompileShader(this->vertexShader);
+
+		// get error log
+		GLint shaderLogSize;
+		glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
+			printf("[SHADER COMPILE ERROR]: %s", buf);
+			delete[] buf;
+		}
+
+		// setup pixel shader
+		this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
+		length = static_cast<GLint>(std::strlen(ps));
+		glShaderSource(this->pixelShader, 1, &ps, &length);
+		glCompileShader(this->pixelShader);
+
+		// get error log
+		shaderLogSize;
+		glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
+			printf("[SHADER COMPILE ERROR]: %s", buf);
+			delete[] buf;
+		}
+
+		// create a program object
+		this->program = glCreateProgram();
+		glAttachShader(this->program, this->vertexShader);
+		glAttachShader(this->program, this->pixelShader);
+		glLinkProgram(this->program);
+		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		if (shaderLogSize > 0)
+		{
+			GLchar* buf = new GLchar[shaderLogSize];
+			glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
+			printf("[PROGRAM LINK ERROR]: %s", buf);
+			delete[] buf;
+		}
+
+		// setup vbo
+		glGenBuffers(1, &this->triangle);
+		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		GLfloat buf[] =
+		{
+			-0.5f, -0.5f, -1, 1, 0, 0, 1, // vertex 0
+			0,      0.5f, -1, 0, 1, 0, 1, // vertex 1
+			0.5f, -0.5f, -1, 0, 0, 1, 1, // vertex 0
+		};
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		// initialize the grid 
+		grid = Render::Grid();
+		return true;
+
 	}
-
-
-//------------------------------------------------------------------------------
-/**
-*/
 	void ExampleApp::Close()
 	{
-		//if(this->meshResource != nullptr)
-		//{
-		//		this->meshResource->cleanup(); 
-		//		delete this->meshResource; 
-		//		// cleanup 
-		//		this->meshResource = nullptr; 
+		//if (this->window->IsOpen())
+			//this->window->Close();
 
-		//}
+		if(this->window != nullptr)
+		{
+				this->window->Close(); 
+				delete this->window; 
+				// cleanup 
+				this->window = nullptr; 
 
-		//if (this->window->IsOpen()) 
-		//{
-		//	this->window->Close();
-		//}
+		}
+
+		if (this->vertexShader != 0)
+		{
+			glDeleteShader(this->vertexShader); 
+			this->vertexShader = 0; 
+		}
+
+		if (this->pixelShader != 0)
+		{
+			glDeleteShader(this->pixelShader);
+			this->pixelShader = 0;
+		}
+
+		if (this->program != 0)
+		{
+			glDeleteProgram(this->program);
+			this->program = 0;
+		}
+
 		
 		Core::App::Close();
 	}
@@ -179,69 +212,116 @@ namespace Example
 	//------------------------------------------------------------------------------
 	/**
 	*/
-	void ExampleApp::Run()
+	void
+		ExampleApp::Run()
 	{
-		// use for depth testl to show rander 3D in obj in front of or behind  each other. 
-		glEnable(GL_DEPTH_TEST);
-		// create a cube mesh resource with dimensions. 
+		glEnable(GL_DEPTH_TEST); 
 		meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
 
-		// camera object 
-		Camera camera(width, height vec3(0.0f, 0.0f, 0.0f)); 
+
+		// get the location in the shader. 
+		GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
 
 		// get location form shader program 
 		GLint rotation = glGetUniformLocation(this->program, "rotation");
 
-		// initialize time as a float variable use for animation and transformations. 
-		float time = 0;
+		float time = 0; 
+
 		while (this->window->IsOpen())
 		{
-			// increment time on each iteration 
-			time += 0.009;
 
-			// define a 4x4 matrix used for transformation some scaling and ratation. 
-			mat4 matrix4x4;
 
-			camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix"); 
+			time += 0.009f; // increment time on eahc iteration. 
+
+			// define a 4x4 matrix used for transformation some scaling and ratation.
+			//mat4 matrix4x4; 
+			mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
+
+
 			// clear depth buffer and color buffer be ready for new frame. 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			// get ned dimenstions 
+
+
 			// update the window 
 			this->window->Update();
+
 
 			// binding vertex and index buffer object of the meshresource  be ready vertex and index data to be used in rendering. 
 			meshResource->bindVBO();
 			meshResource->bindIBO();
 
+			glUseProgram(this->program); // it use shader program. 
 
-
-			// use the the shader for rendering. 
-			glUseProgram(this->program);
-
-			matrix4x4 = rotationz(time) * rotationx(time);
+			// porojectin and view matrix combined from the camera. 
+			mat4 projectionMatrix = camera.getProjectionMatrix();
+			mat4 viewMatrix = camera.getViewMatrix();
+			mat4 viewProjectionMatrix = projectionMatrix * viewMatrix; // combined matrix
 
 			//	// attributes 
-			
-
+			glUniformMatrix4fv(camMatrixLoc, 1, GL_TRUE, (GLfloat*)&viewProjectionMatrix);
 			glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&matrix4x4);
 
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-			//swap buffers to display the rendered frame. 
-			this->window->SwapBuffers();
+			// draw a 3D grid and mesh
+			grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
+
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// draw the cube.
+			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+			this->window->SwapBuffers(); // swap buffers. 
+
+
+			// binding vertex and index buffer object of the meshresource  be ready vertex and index data to be used in rendering. 
+			//meshResource->bindVBO();
+			//meshResource->bindIBO();
+
+			//glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&matrix4x4);
+
+
+			//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+			//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+
+
+
+
+
+
+
+
+
+
+
+			// use for depth testl to show rander 3D in obj in front of or behind  each other. 
+			//glEnable(GL_DEPTH_TEST);
+			// create a cube mesh resource with dimensions. 
+			/*meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
+
+			int width = 800;
+			int height = 600; */
+
+
+			// get the location in the shader. 
+			//GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
+
+			// get location form shader program 
+			//GLint rotation = glGetUniformLocation(this->program, "rotation");
+
+			// camera object 
+			/*Camera camera(vec3(0.0f, 0.0f, .0f),
+				vec3(0.0f, 0.0f, 0.0f),
+				vec3(0.0f, 0.0f, 0.0f),
+				45.0f, (float)width / (float)height, 0.1f, 100.0f);*/
+
+			
 
 #ifdef CI_TEST
 			// if we're running CI, we want to return and exit the application after one frame
 			// break the loop and hopefully exit gracefully
 			break;
-		}
 #endif
-
 		}
 	}
 
-};
-
-
- // namespace Example
+} // namespace Example

@@ -24,6 +24,7 @@ public:
 	// Calculate the perspective matrix: 
 	mat4 getPerspectiveMatrix() const; 
 
+
 	// calculate the combined projection = perspective * view. 
 	mat4 getProjectionMatrix() const; 
 
