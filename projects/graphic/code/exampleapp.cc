@@ -10,6 +10,9 @@
 #include <cstring>
 #include "MeshResource.h"
 #include "core/mat4.h"
+#include "render/Camera.h"
+
+
 
 // vertex shader vs
 const GLchar* vs =
@@ -17,12 +20,13 @@ const GLchar* vs =
 "layout(location=0) in vec3 pos;\n"
 
 "layout(location=1) in vec4 color;\n"
-"layout(location=0) out vec4 Color;\n"
-"uniform mat4 rotation;\n"
+//"uniform mat4 rotation;\n"
+"uniform mat4 rotation;\n" // for activat the camera 
 
 "void main()\n"
 "{\n"
-"	gl_Position = vec4(pos, 1) * rotation;\n"
+//"	gl_Position = vec4(pos, 1) * rotation;\n"
+"	gl_Position = vec4(pos, 1) * camMatrix;\n" // just for camera.
 "	Color = color;\n"
 "}\n";
 
@@ -182,6 +186,9 @@ namespace Example
 		// create a cube mesh resource with dimensions. 
 		meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
 
+		// camera object 
+		Camera camera(width, height vec3(0.0f, 0.0f, 0.0f)); 
+
 		// get location form shader program 
 		GLint rotation = glGetUniformLocation(this->program, "rotation");
 
@@ -195,6 +202,7 @@ namespace Example
 			// define a 4x4 matrix used for transformation some scaling and ratation. 
 			mat4 matrix4x4;
 
+			camera.Matrix(45.0f, 0.1f, 100.0f, shaderProgram, "camMatrix"); 
 			// clear depth buffer and color buffer be ready for new frame. 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
