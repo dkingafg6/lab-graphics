@@ -26,6 +26,7 @@ public:
 
 
 	// constructor. 
+	Camera();
 	Camera(const vec3& pos, const vec3& target, const vec3& up, float fov = 45.0f, float aspect = 1.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
 		/*: position(pos), target(target), up(up), fov(fov), aspect(aspect), nearPlane(nearPlane), farPlane(farPlane),
 		yaw(-90.0f), pitch(0.0f), sensitivity(0.1f), lastX(400), lastY(300), firstMouse(true);*/

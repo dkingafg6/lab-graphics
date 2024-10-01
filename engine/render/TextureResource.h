@@ -16,7 +16,7 @@ class TextureResource
 public:
 	
 	//GLuint textureID
-
+	unsigned char* bytes;
 	TextureResource();
     ~TextureResource();
 

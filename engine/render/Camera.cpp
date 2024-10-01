@@ -8,9 +8,22 @@
 using namespace std; 
 
 // constructor 
+Camera::Camera()
+{
+
+}
+
 Camera::Camera(const vec3& pos, const vec3& target, const vec3& up,float fov, float aspect, float nearPlane, float farPlane) : position(pos), target(target), up(up), fov(fov), aspect(aspect), nearPlane(nearPlane), farPlane(farPlane),
 yaw(-90.0f), pitch(0.0f), sensitivity(0.1f), lastX(400), lastY(300), firstMouse(true)
-{
+{/*
+	position = vec3(0.0f, 0.0f, 3.0f);
+	target = vec3(0.0f, 0.0f, 0.0f); 
+	up = vec3(0.0f, 1.0f, 0.0f); 
+	fieldOfView = 45.0f; 
+	apsectRatio = 1.0f; 
+	nearClip = 0.1f; 
+	farClip = 100.0f; */
+
 	updateTarget();
 }
 

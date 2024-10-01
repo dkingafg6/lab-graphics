@@ -26,7 +26,7 @@ TextureResource::~TextureResource()
 bool TextureResource::loadFromFile(const char* filename)
 {
 	 //load image with stb_load
-	unsigned char* bytes = stbi_load(filename, &width, &height, &nrchannels, 0); 
+	this->bytes = stbi_load(filename, &width, &height, &nrchannels, 0); 
 	if (!bytes) 
 	{
 		fprintf(stderr, " Failed to load texture: %s", filename); 

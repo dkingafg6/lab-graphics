@@ -12,7 +12,7 @@
 #include "core/mat4.h"
 #include "render/Camera.h"
 #include "render/Window.h"
-#include "render/TextureResource.h"
+//#include "render/TextureResource.h"
 #include "render/Grid.h"
 
 
@@ -22,27 +22,38 @@
 const GLchar* vs =
 "#version 430\n"
 "layout(location=0) in vec3 pos;\n"
-
 "layout(location=1) in vec4 color;\n"
+"layout(location=2) in vec2 texCoord;\n"
+
 "uniform mat4 rotation;\n"
 "uniform mat4 camMatrix;\n" // for activate the camera 
+
 "out vec4 Color;\n"
+"out vec2 TexCoord;\n"
+
 
 "void main()\n"
 "{\n"
 //"	gl_Position = vec4(pos, 1) * rotation;\n"
 "	gl_Position = vec4(pos, 1) * rotation * camMatrix;\n" // just for camera. combine rotation and camera.
 "	Color = color;\n"
+"	TexCoord = texCoord;\n"
 "}\n";
 
 // Fragment Shader. 
 const GLchar* ps =
 "#version 430\n"
-"layout(location=0) in vec4 color;\n"
-"out vec4 Color;\n"
+"in vec4 color;\n"
+"in vec2 TexCoord;\n"
+
+"uniform sampler2D texture1;\n"
+
+"out vec4 FragColor;\n"
+//"out vec4 Color;\n"
 "void main()\n"
 "{\n"
-"	Color = color;\n"
+"	FragColor = texture(texture1, TexCoord) * Color;\n"
+//"	Color = color;\n"
 "}\n";
 
 
@@ -54,8 +65,8 @@ namespace Example
 /**
 */
 	ExampleApp::ExampleApp()
-	
 	{
+
 		// empty
 	}
 
@@ -64,6 +75,7 @@ namespace Example
 */
 	ExampleApp::~ExampleApp()
 	{
+
 		// empty
 	}
 
@@ -72,13 +84,29 @@ namespace Example
 */
 	bool ExampleApp::Open() 
 	{
-
+		//test.loadFromFile(); 
 		if(!App::Open()) return false;
+
 		this->window = new Display::Window;
-		window->SetKeyPressFunction([this](int32, int32, int32, int32)
-			{
-				this->window->Close();
-			});
+		if (!this->window->Open()) return false; 
+
+		this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f); 
+
+		// load texture
+		if (!texture.loadFromFile("R.png")) 
+		{
+			std::cerr << "Failed to load texture: R.png" << std::endl; 
+			return false; 
+
+		}
+		return true; 
+
+	
+
+		//window->SetKeyPressFunction([this](int32, int32, int32, int32)
+		//	{
+		//		this->window->Close();
+		//	});
 		// hello
 		//GLfloat buf[] =
 		//{
@@ -99,13 +127,14 @@ namespace Example
 		this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
 			vec3(0.0f, 0.0f, 0.0f),            // target position 
 
-			vec3(0.0f, 1.0f, 3.0f),            // up vector 
+			vec3(0.0f, 1.0f, 0.0f),            // up vector 
 			45.0f,                             // field of v
 			static_cast<float>(width) / static_cast<float>(height),
 			0.1f,           // near plan and far clipping 
 			100.0f);
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
 
 		// setup vertex shader
 		this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -169,7 +198,7 @@ namespace Example
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		/// load file pics 
-		TextureResource(objectOpen)
+		//TextureResource(objectOpen)
 		// initialize the grid;;
 		grid = Render::Grid();
 		return true;
@@ -215,16 +244,19 @@ namespace Example
 	/**
 	*/
 	void
-		ExampleApp::Run()
+	ExampleApp::Run()
 	{
-		glEnable(GL_DEPTH_TEST); 
+		glEnable(GL_DEPTH_TEST);
+
 		// bind texture. 
+		texture.loadFromFile("R.png");
+		// unbind 
 		texture.Bind(0); 
 		meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
 
-
+		
 		// get the location of texture uniform. 
-		GLint camMatrixLoc = glGetUniformLocation(this->program, "texture1");
+		GLint textureLoc = glGetUniformLocation(this->program, "texture1");
 
 		// get the location in the shader. 
 		GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
@@ -282,48 +314,6 @@ namespace Example
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 			this->window->SwapBuffers(); // swap buffers. 
 
-
-			// binding vertex and index buffer object of the meshresource  be ready vertex and index data to be used in rendering. 
-			//meshResource->bindVBO();
-			//meshResource->bindIBO();
-
-			//glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&matrix4x4);
-
-
-			//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-			//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
-
-
-
-
-
-
-
-
-
-
-			// use for depth testl to show rander 3D in obj in front of or behind  each other. 
-			//glEnable(GL_DEPTH_TEST);
-			// create a cube mesh resource with dimensions. 
-			/*meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
-
-			int width = 800;
-			int height = 600; */
-
-
-			// get the location in the shader. 
-			//GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
-
-			// get location form shader program 
-			//GLint rotation = glGetUniformLocation(this->program, "rotation");
-
-			// camera object 
-			/*Camera camera(vec3(0.0f, 0.0f, .0f),
-				vec3(0.0f, 0.0f, 0.0f),
-				vec3(0.0f, 0.0f, 0.0f),
-				45.0f, (float)width / (float)height, 0.1f, 100.0f);*/
 
 			
 

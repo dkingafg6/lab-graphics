@@ -18,6 +18,7 @@
 #include "render/grid.h"
 #include "core/app.h"
 #include "render/window.h"
+#include "render/TextureResource.h"
 namespace Example
 {
 class ExampleApp : public Core::App
@@ -35,6 +36,11 @@ public:
 	void Close();
 	/// run app
 	void Run();
+	// load picture 
+	
+	TextureResource texture;
+
+
 private:
 
 	Display::Window* window;
@@ -47,6 +53,7 @@ private:
 	// member of meshresource,
 	MeshResource* meshResource;
 
+	
 	Camera camera; // camera object
 
 
