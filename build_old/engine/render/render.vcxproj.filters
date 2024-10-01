@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\window.cc">
+      <Filter>display</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\grid.cc">
+      <Filter>display</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\Camera.cpp">
+      <Filter>display</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\TextureResource.cpp">
+      <Filter>display</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\meshResource.cc">
+      <Filter>display</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\config.cc">
+      <Filter>pch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\window.h">
+      <Filter>display</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\grid.h">
+      <Filter>display</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\Camera.h">
+      <Filter>display</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\MeshResource.h">
+      <Filter>display</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\stb_image.h">
+      <Filter>display</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\TextureResource.h">
+      <Filter>display</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\config.h">
+      <Filter>pch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\render\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="display">
+      <UniqueIdentifier>{7111C693-57CE-31D1-A583-321B1DBBDE1F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{534178FB-1799-3C48-8074-577F34E12655}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\ImGuiExample\code\exampleapp.cc">
+      <Filter>example</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\ImGuiExample\code\main.cc">
+      <Filter>example</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\ImGuiExample\code\exampleapp.h">
+      <Filter>example</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\ImGuiExample\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="example">
+      <UniqueIdentifier>{226060C3-D4FE-32CE-AA62-055EDBFD5D73}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

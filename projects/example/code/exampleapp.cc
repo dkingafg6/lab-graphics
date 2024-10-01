@@ -38,7 +38,7 @@ namespace Example
 //------------------------------------------------------------------------------
 /**
 */
-ExampleApp::ExampleApp()
+ExampleApp::ExampleApp() : camera()
 {
 	// empty
 }

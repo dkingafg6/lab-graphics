@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example\imgui_impl_glfw_gl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\stb_rect_pack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\stb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\stb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example\imgui_impl_glfw_gl3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{3664807C-7E35-3630-BA5A-8095135487DA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1D88D62C-0D67-3491-9445-20CF5D005330}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\Texture\TextureResource.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\config.cc">
+      <Filter>pch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\Texture\stb_image.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\Texture\TextureResource.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\config.h">
+      <Filter>pch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\Texture\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{74138C0D-54DD-3C09-AA92-F77532222E52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{534178FB-1799-3C48-8074-577F34E12655}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

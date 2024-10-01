@@ -2,18 +2,18 @@
 // exampleapp.cc
 // (C) 2015-2022 Individual contributors, see AUTHORS file
 //------------------------------------------------------------------------------
+#include "config.h"
 #include "math.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "config.h"
 #include "exampleapp.h"
 #include <cstring>
 #include "render/MeshResource.h"
 #include "core/mat4.h"
 #include "render/Camera.h"
 #include "render/Window.h"
+#include "render/TextureResource.h"
 #include "render/Grid.h"
-#include "../../../exts/glfw/src/win32_platform.h"
 
 
 
@@ -25,7 +25,7 @@ const GLchar* vs =
 
 "layout(location=1) in vec4 color;\n"
 "uniform mat4 rotation;\n"
-"uniform mat4 camMatrix;\n" // for activat the camera 
+"uniform mat4 camMatrix;\n" // for activate the camera 
 "out vec4 Color;\n"
 
 "void main()\n"
@@ -168,7 +168,9 @@ namespace Example
 		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		// initialize the grid 
+		/// load file pics 
+		TextureResource(objectOpen)
+		// initialize the grid;;
 		grid = Render::Grid();
 		return true;
 
@@ -216,8 +218,13 @@ namespace Example
 		ExampleApp::Run()
 	{
 		glEnable(GL_DEPTH_TEST); 
+		// bind texture. 
+		texture.Bind(0); 
 		meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
 
+
+		// get the location of texture uniform. 
+		GLint camMatrixLoc = glGetUniformLocation(this->program, "texture1");
 
 		// get the location in the shader. 
 		GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
@@ -231,9 +238,9 @@ namespace Example
 		{
 
 
-			time += 0.009f; // increment time on eahc iteration. 
+			time += 0.009f; // increment time on iteration. 
 
-			// define a 4x4 matrix used for transformation some scaling and ratation.
+			// define a 4x4 matrix used for transformation some scaling and rotation.
 			//mat4 matrix4x4; 
 			mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
 
@@ -248,20 +255,24 @@ namespace Example
 			this->window->Update();
 
 
-			// binding vertex and index buffer object of the meshresource  be ready vertex and index data to be used in rendering. 
+			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
 			meshResource->bindVBO();
 			meshResource->bindIBO();
 
 			glUseProgram(this->program); // it use shader program. 
 
-			// porojectin and view matrix combined from the camera. 
+
+			// projection and view matrix combined from the camera. 
 			mat4 projectionMatrix = camera.getProjectionMatrix();
 			mat4 viewMatrix = camera.getViewMatrix();
-			mat4 viewProjectionMatrix = projectionMatrix * viewMatrix; // combined matrix
+			mat4 viewProjectionMatrix = camera.getProjectionMatrix() * camera.getViewMatrix(); // combined matrix
 
 			//	// attributes 
 			glUniformMatrix4fv(camMatrixLoc, 1, GL_TRUE, (GLfloat*)&viewProjectionMatrix);
 			glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&matrix4x4);
+
+			// bind texture to uniform 
+			glUniform1i(textureLoc, 0); 
 
 
 			// draw a 3D grid and mesh

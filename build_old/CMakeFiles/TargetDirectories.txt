@@ -1,0 +1,15 @@
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/exts/CMakeFiles/imgui.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/exts/glew/CMakeFiles/glew.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/exts/glew/CMakeFiles/ALL_BUILD.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/exts/glfw/CMakeFiles/ALL_BUILD.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/exts/glfw/src/CMakeFiles/glfw.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/engine/core/CMakeFiles/core.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/engine/render/CMakeFiles/render.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/ImGuiExample/CMakeFiles/ImGuiExample.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/ImGuiExample/CMakeFiles/ALL_BUILD.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/CMakeFiles/example.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/CMakeFiles/ALL_BUILD.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/graphic/CMakeFiles/graphic.dir
+C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/graphic/CMakeFiles/ALL_BUILD.dir

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\camera\Camera.cpp">
+      <Filter>camera</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\config.cc">
+      <Filter>pch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\camera\Camera.h">
+      <Filter>camera</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\config.h">
+      <Filter>pch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine\camera\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="camera">
+      <UniqueIdentifier>{BAF2E1C3-CCF9-31AC-988D-909945163C71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pch">
+      <UniqueIdentifier>{534178FB-1799-3C48-8074-577F34E12655}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{80BA8E51-E965-3589-B553-2275B580BCFB}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>example</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">example.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">example</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">example.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">example</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">example.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">example</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">example.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">example</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;GLEW_STATIC;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;GLEW_STATIC;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\engine\core\Debug\core.lib;..\..\engine\render\Debug\render.lib;..\..\engine\core\Debug\core.lib;..\..\engine\render\Debug\render.lib;..\..\exts\glew\Debug\glew.lib;..\..\exts\glfw\src\Debug\glfw3.lib;..\..\exts\Debug\imgui.lib;..\..\exts\Debug\imgui.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/Debug/example.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/bin/example.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\engine\core\Release\core.lib;..\..\engine\render\Release\render.lib;..\..\engine\core\Release\core.lib;..\..\engine\render\Release\render.lib;..\..\exts\glew\Release\glew.lib;..\..\exts\glfw\src\Release\glfw3.lib;..\..\exts\Release\imgui.lib;..\..\exts\Release\imgui.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/Release/example.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/example.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\engine\core\MinSizeRel\core.lib;..\..\engine\render\MinSizeRel\render.lib;..\..\engine\core\MinSizeRel\core.lib;..\..\engine\render\MinSizeRel\render.lib;..\..\exts\glew\MinSizeRel\glew.lib;..\..\exts\glfw\src\MinSizeRel\glfw3.lib;..\..\exts\MinSizeRel\imgui.lib;..\..\exts\MinSizeRel\imgui.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/MinSizeRel/example.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/example.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLEW_STATIC;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\engine;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glew\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\glfw\include;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui;C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\exts\imgui\examples\opengl3_example;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>..\..\engine\core\RelWithDebInfo\core.lib;..\..\engine\render\RelWithDebInfo\render.lib;..\..\engine\core\RelWithDebInfo\core.lib;..\..\engine\render\RelWithDebInfo\render.lib;..\..\exts\glew\RelWithDebInfo\glew.lib;..\..\exts\glfw\src\RelWithDebInfo\glfw3.lib;..\..\exts\RelWithDebInfo\imgui.lib;..\..\exts\RelWithDebInfo\imgui.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/RelWithDebInfo/example.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/example.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\example\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/projects/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics" "-BC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build" --check-stamp-file "C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/projects/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics" "-BC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build" --check-stamp-file "C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/projects/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics" "-BC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build" --check-stamp-file "C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/projects/example/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics" "-BC:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build" --check-stamp-file "C:/Users/dawibr-1/Documents/GitHub/S0009E-lab Graphic/lab-graphics/build/projects/example/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\projects\example\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\example\code\exampleapp.h" />
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\example\code\exampleapp.cc" />
+    <ClCompile Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\projects\example\code\main.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\ZERO_CHECK.vcxproj">
+      <Project>{C92C6388-B7F8-343E-82D9-DDF9FDCF6B0E}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\engine\core\core.vcxproj">
+      <Project>{3E5BA778-D1ED-312A-B548-C03E0B02F3B4}</Project>
+      <Name>core</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\exts\glew\glew.vcxproj">
+      <Project>{C04BEA2D-3593-3CE9-BA3A-E8E1BEFCB0C8}</Project>
+      <Name>glew</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\exts\glfw\src\glfw.vcxproj">
+      <Project>{4C809EDF-38FD-3F65-9EAF-DDEBA680463B}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\dawibr-1\Documents\GitHub\S0009E-lab Graphic\lab-graphics\build\exts\imgui.vcxproj">
+      <Project>{A0710FD1-C411-3F6C-AFF9-011EC4700F06}</Project>
+      <Name>imgui</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
