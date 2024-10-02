@@ -11,8 +11,8 @@
 #include "render/MeshResource.h"
 #include "core/mat4.h"
 #include "render/Camera.h"
-#include "render/Window.h"
-#include "render/Grid.h"
+#include "render/window.h"
+#include "render/grid.h"
 
 
 
@@ -78,38 +78,38 @@ namespace Example
 		// empty
 	}
 
-	void ExampleApp::handleShaderError(GLuint shader, GLenum type)
-	{
-		GLint success; 
-		if (type == GL_COMPILE_STATUS) 
-		{
-			// checking 
-			glGetShaderiv(shader, type, &success); 
-			if (!success) 
-			{
-				GLint logLength;
-				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-				std::vector<GLchar> errorLog(logLength);
-				glGetShaderInfoLog(shader, logLength, nullptr, errorLog.data());
-				std::cerr << "[ Shader Copilation Error]: " << errorLog.data() << std::endl;
-			}
+	//void ExampleApp::handleShaderError(GLuint shader, GLenum type)
+	//{
+	//	GLint success; 
+	//	if (type == GL_COMPILE_STATUS) 
+	//	{
+	//		// checking 
+	//		glGetShaderiv(shader, type, &success); 
+	//		if (!success) 
+	//		{
+	//			GLint logLength;
+	//			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+	//			std::vector<GLchar> errorLog(logLength);
+	//			glGetShaderInfoLog(shader, logLength, nullptr, errorLog.data());
+	//			std::cerr << "[ Shader Copilation Error]: " << errorLog.data() << std::endl;
+	//		}
 
-		}
-		else if (type == GL_LINK_STATUS) 
-		{
-			// Checking 
-			glGetProgramiv(shader, type, &success);
-			if (!success)
-			{
-				GLint logLength;
-				glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-				std::vector<GLchar> errorLog(logLength);
-				glGetProgramInfoLog(shader, logLength, nullptr, errorLog.data());
-				std::cerr << "[ Program Linking Error]: " << errorLog.data() << std::endl;
-			}
+	//	}
+	//	else if (type == GL_LINK_STATUS) 
+	//	{
+	//		// Checking 
+	//		glGetProgramiv(shader, type, &success);
+	//		if (!success)
+	//		{
+	//			GLint logLength;
+	//			glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+	//			std::vector<GLchar> errorLog(logLength);
+	//			glGetProgramInfoLog(shader, logLength, nullptr, errorLog.data());
+	//			std::cerr << "[ Program Linking Error]: " << errorLog.data() << std::endl;
+	//		}
 
-		}
-	}
+	//	}
+	//}
 
 //------------------------------------------------------------------------------
 /**
@@ -123,13 +123,13 @@ namespace Example
 		if (!this->window->Open()) return false; 
 
 		// initialize meshresource. 
-		this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f); 
-		// create a cube 
-		if (!this->meshResource)
-		{
-			std::cerr << " Failed to create meshresource. " << std::endl;
-			return false;
-		}
+		//this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f); 
+		//// create a cube 
+		//if (!this->meshResource)
+		//{
+		//	std::cerr << " Failed to create meshresource. " << std::endl;
+		//	return false;
+		//}
 
 		// load texture
 		if (!texture.loadFromFile("R.png")) 
@@ -197,15 +197,15 @@ namespace Example
 		glShaderSource(this->vertexShader, 1, &vs, &length);
 		glCompileShader(this->vertexShader);
 		// check compilation for vertex shader. 
-		glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &success);
+		/*glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{ handleShaderError(this->vertexShader, "Vertex Shader Error");
 		return false; 
-		}
+		}*/
 
 		// change with new ErrorLog if it's not work can undo it
-		// get error log
-		/*GLint shaderLogSize;
+		 //get error log
+		GLint shaderLogSize;
 		glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
 		if (shaderLogSize > 0)
 		{
@@ -213,7 +213,7 @@ namespace Example
 			glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
 			printf("[SHADER COMPILE ERROR]: %s", buf);
 			delete[] buf;
-		}*/
+		}
 
 		// setup pixel shader
 		this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -222,15 +222,15 @@ namespace Example
 		glCompileShader(this->pixelShader);
 		// check compilation for vertex shader. 
 		glGetShaderiv(this->pixelShader, GL_COMPILE_STATUS, &success);
-		if (!success)
+		/*if (!success)
 		{
 			handleShaderError(this->vertexShader, "Fragment Shader Error");
 			return false;
-		}
+		}*/
 
 
 		// change with new ErrorLog if it's not work can undo it
-		/*shaderLogSize;
+		shaderLogSize;
 		glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
 		if (shaderLogSize > 0)
 		{
@@ -238,7 +238,7 @@ namespace Example
 			glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
 			printf("[SHADER COMPILE ERROR]: %s", buf);
 			delete[] buf;
-		}*/
+		}
 
 		// create a program object
 		this->program = glCreateProgram();
@@ -247,25 +247,25 @@ namespace Example
 		glLinkProgram(this->program);
 
 		 
-		// check compilation for vertex shader. 
+		//// check compilation for vertex shader. 
 		glGetShaderiv(this->program, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{
-			handleShaderError(this->program, "Program Linking ");
-			return false;
-		}
+		//if (!success)
+		//{
+		//	handleShaderError(this->program, "Program Linking ");
+		//	return false;
+		//}
 	
 		
 
 		// change with new ErrorLog if it's not work can undo it
-		/*glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
 		if (shaderLogSize > 0)
 		{
 			GLchar* buf = new GLchar[shaderLogSize];
 			glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
 			printf("[PROGRAM LINK ERROR]: %s", buf);
 			delete[] buf;
-		}*/
+		}
 
 		// setup vbo
 		glGenBuffers(1, &this->triangle);
@@ -353,6 +353,11 @@ namespace Example
 		// get the location of texture uniform. 
 		GLint textureLoc = glGetUniformLocation(this->program, "texture1");
 
+
+		// bind texture to uniform 
+		glUniform1i(textureLoc, 0);
+
+
 		// get the location in the shader. 
 		GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
 
@@ -400,8 +405,8 @@ namespace Example
 
 
 			// projection and view matrix combined from the camera. 
-			//mat4 projectionMatrix = camera.getProjectionMatrix();
-			//mat4 viewMatrix = camera.getViewMatrix();
+			mat4 projectionMatrix = camera.getProjectionMatrix();
+			mat4 viewMatrix = camera.getViewMatrix();
 			
 
 			//	// attributes 
@@ -413,13 +418,13 @@ namespace Example
 
 
 			// draw a 3D grid and mesh
-			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
+			grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 
-			//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// draw the cube.
-			//glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
+			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 
-			// render the grid 
-			grid.render();  
+			// render the grid to draw 
+			grid.Draw((float*)&viewProjectionMatrix);  
 			this->window->SwapBuffers(); // swap buffers. 
 
 

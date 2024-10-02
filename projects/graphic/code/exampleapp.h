@@ -14,7 +14,7 @@
 #include "render/MeshResource.h"
 #include "core/mat4.h"
 #include "render/Camera.h"
-#include "render/Window.h"
+
 #include "render/grid.h"
 #include "core/app.h"
 #include "render/window.h"
@@ -30,7 +30,7 @@ public:
 	~ExampleApp();
 
 	// hellp function for checking 
-	void handleShaderError(GLuint shader, GLenum type);
+	//void handleShaderError(GLuint shader, GLenum type);
 
 
 	bool Open(); 
