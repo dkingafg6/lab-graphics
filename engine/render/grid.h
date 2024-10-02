@@ -18,7 +18,7 @@ class Grid
 public:
     Grid();
     ~Grid();
-    
+   //oid render(const GLfloat* viewProjectionMatrix); 
     void Draw(float const* const viewProjection);
     
 private:

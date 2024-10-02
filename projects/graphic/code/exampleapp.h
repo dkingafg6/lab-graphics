@@ -29,9 +29,11 @@ public:
 	/// destructor
 	~ExampleApp();
 
+	// hellp function for checking 
+	void handleShaderError(GLuint shader, GLenum type);
+
 
 	bool Open(); 
-
 	/// close app
 	void Close();
 	/// run app

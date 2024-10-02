@@ -12,7 +12,6 @@
 #include "core/mat4.h"
 #include "render/Camera.h"
 #include "render/Window.h"
-//#include "render/TextureResource.h"
 #include "render/Grid.h"
 
 
@@ -79,6 +78,39 @@ namespace Example
 		// empty
 	}
 
+	void ExampleApp::handleShaderError(GLuint shader, GLenum type)
+	{
+		GLint success; 
+		if (type == GL_COMPILE_STATUS) 
+		{
+			// checking 
+			glGetShaderiv(shader, type, &success); 
+			if (!success) 
+			{
+				GLint logLength;
+				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+				std::vector<GLchar> errorLog(logLength);
+				glGetShaderInfoLog(shader, logLength, nullptr, errorLog.data());
+				std::cerr << "[ Shader Copilation Error]: " << errorLog.data() << std::endl;
+			}
+
+		}
+		else if (type == GL_LINK_STATUS) 
+		{
+			// Checking 
+			glGetProgramiv(shader, type, &success);
+			if (!success)
+			{
+				GLint logLength;
+				glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+				std::vector<GLchar> errorLog(logLength);
+				glGetProgramInfoLog(shader, logLength, nullptr, errorLog.data());
+				std::cerr << "[ Program Linking Error]: " << errorLog.data() << std::endl;
+			}
+
+		}
+	}
+
 //------------------------------------------------------------------------------
 /**
 */
@@ -90,7 +122,14 @@ namespace Example
 		this->window = new Display::Window;
 		if (!this->window->Open()) return false; 
 
+		// initialize meshresource. 
 		this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f); 
+		// create a cube 
+		if (!this->meshResource)
+		{
+			std::cerr << " Failed to create meshresource. " << std::endl;
+			return false;
+		}
 
 		// load texture
 		if (!texture.loadFromFile("R.png")) 
@@ -100,6 +139,20 @@ namespace Example
 
 		}
 		return true; 
+
+
+		// camera initialize 
+		this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
+			vec3(0.0f, 0.0f, 0.0f),            // target position 
+
+			vec3(0.0f, 1.0f, 0.0f),            // up vector 
+			45.0f,                             // field of v
+			static_cast<float>(width) / static_cast<float>(height),
+			0.1f,           // near plan and far clipping 
+			100.0f);
+
+		// set clear color to gray
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	
 
@@ -118,32 +171,41 @@ namespace Example
 		//	0,		0,		1,		1	// color 0
 		//};
 
-		if (!this->window->Open())
-		{
-			return false; // to be sure window opened successfully. 
-		}
+		//if (!this->window->Open())
+		//{
+		//	return false; // to be sure window opened successfully. 
+		//}
 
-		// camera initialize 
-		this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
-			vec3(0.0f, 0.0f, 0.0f),            // target position 
+		//// camera initialize 
+		//this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
+		//	vec3(0.0f, 0.0f, 0.0f),            // target position 
 
-			vec3(0.0f, 1.0f, 0.0f),            // up vector 
-			45.0f,                             // field of v
-			static_cast<float>(width) / static_cast<float>(height),
-			0.1f,           // near plan and far clipping 
-			100.0f);
+		//	vec3(0.0f, 1.0f, 0.0f),            // up vector 
+		//	45.0f,                             // field of v
+		//	static_cast<float>(width) / static_cast<float>(height),
+		//	0.1f,           // near plan and far clipping 
+		//	100.0f);
 		// set clear color to gray
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
+		//set up shaders. 
+		GLint success;
 
 		// setup vertex shader
 		this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		GLint length = static_cast<GLint>(std::strlen(vs));
 		glShaderSource(this->vertexShader, 1, &vs, &length);
 		glCompileShader(this->vertexShader);
+		// check compilation for vertex shader. 
+		glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{ handleShaderError(this->vertexShader, "Vertex Shader Error");
+		return false; 
+		}
 
+		// change with new ErrorLog if it's not work can undo it
 		// get error log
-		GLint shaderLogSize;
+		/*GLint shaderLogSize;
 		glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
 		if (shaderLogSize > 0)
 		{
@@ -151,16 +213,24 @@ namespace Example
 			glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
 			printf("[SHADER COMPILE ERROR]: %s", buf);
 			delete[] buf;
-		}
+		}*/
 
 		// setup pixel shader
 		this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
 		length = static_cast<GLint>(std::strlen(ps));
 		glShaderSource(this->pixelShader, 1, &ps, &length);
 		glCompileShader(this->pixelShader);
+		// check compilation for vertex shader. 
+		glGetShaderiv(this->pixelShader, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			handleShaderError(this->vertexShader, "Fragment Shader Error");
+			return false;
+		}
 
-		// get error log
-		shaderLogSize;
+
+		// change with new ErrorLog if it's not work can undo it
+		/*shaderLogSize;
 		glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
 		if (shaderLogSize > 0)
 		{
@@ -168,21 +238,34 @@ namespace Example
 			glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
 			printf("[SHADER COMPILE ERROR]: %s", buf);
 			delete[] buf;
-		}
+		}*/
 
 		// create a program object
 		this->program = glCreateProgram();
 		glAttachShader(this->program, this->vertexShader);
 		glAttachShader(this->program, this->pixelShader);
 		glLinkProgram(this->program);
-		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+
+		 
+		// check compilation for vertex shader. 
+		glGetShaderiv(this->program, GL_COMPILE_STATUS, &success);
+		if (!success)
+		{
+			handleShaderError(this->program, "Program Linking ");
+			return false;
+		}
+	
+		
+
+		// change with new ErrorLog if it's not work can undo it
+		/*glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
 		if (shaderLogSize > 0)
 		{
 			GLchar* buf = new GLchar[shaderLogSize];
 			glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
 			printf("[PROGRAM LINK ERROR]: %s", buf);
 			delete[] buf;
-		}
+		}*/
 
 		// setup vbo
 		glGenBuffers(1, &this->triangle);
@@ -249,11 +332,23 @@ namespace Example
 		glEnable(GL_DEPTH_TEST);
 
 		// bind texture. 
-		texture.loadFromFile("R.png");
+		//texture.loadFromFile("R.png");
 		// unbind 
 		texture.Bind(0); 
-		meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
 
+		// create a cube 
+		if (this->meshResource == nullptr) 
+		{
+			this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
+			if (!this->meshResource)
+			{
+				std::cerr << " Failed to create meshresource. " << std::endl;
+				return;
+			}
+
+
+		}
+		
 		
 		// get the location of texture uniform. 
 		GLint textureLoc = glGetUniformLocation(this->program, "texture1");
@@ -262,7 +357,14 @@ namespace Example
 		GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
 
 		// get location form shader program 
-		GLint rotation = glGetUniformLocation(this->program, "rotation");
+		GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
+
+		if (textureLoc == -1 || camMatrixLoc == -1 || rotationLoc == -1) 
+		{
+			std::cerr << "Failed to retrive uniform location " << std::endl;
+			return; 
+
+		}
 
 		float time = 0; 
 
@@ -293,25 +395,31 @@ namespace Example
 
 			glUseProgram(this->program); // it use shader program. 
 
+			// comute view projection matrix. 
+			mat4 viewProjectionMatrix = camera.getProjectionMatrix() * camera.getViewMatrix(); // combined matrix
+
 
 			// projection and view matrix combined from the camera. 
-			mat4 projectionMatrix = camera.getProjectionMatrix();
-			mat4 viewMatrix = camera.getViewMatrix();
-			mat4 viewProjectionMatrix = camera.getProjectionMatrix() * camera.getViewMatrix(); // combined matrix
+			//mat4 projectionMatrix = camera.getProjectionMatrix();
+			//mat4 viewMatrix = camera.getViewMatrix();
+			
 
 			//	// attributes 
 			glUniformMatrix4fv(camMatrixLoc, 1, GL_TRUE, (GLfloat*)&viewProjectionMatrix);
-			glUniformMatrix4fv(rotation, 1, GL_TRUE, (GLfloat*)&matrix4x4);
+			glUniformMatrix4fv(rotationLoc, 1, GL_TRUE, (GLfloat*)&matrix4x4);
 
 			// bind texture to uniform 
 			glUniform1i(textureLoc, 0); 
 
 
 			// draw a 3D grid and mesh
-			grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
+			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// draw the cube.
-			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+			//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// draw the cube.
+			//glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+
+			// render the grid 
+			grid.render();  
 			this->window->SwapBuffers(); // swap buffers. 
 
 
