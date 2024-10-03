@@ -15,7 +15,8 @@ class TextureResource
 
 public:
 	
-	//GLuint textureID
+	GLuint textureID;
+	unsigned int texture; 
 	unsigned char* bytes;
 	TextureResource();
     ~TextureResource();
@@ -25,7 +26,6 @@ public:
 
 private:
 	void Cleanup(); 
-	GLuint textureID;
 
 	int width;
 	int height;

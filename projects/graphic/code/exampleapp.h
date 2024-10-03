@@ -52,8 +52,6 @@ private:
 	GLuint pixelShader;
 	GLuint triangle;
 
-	// member of meshresource,
-	MeshResource* meshResource;
 
 	
 	Camera camera; // camera object
@@ -65,7 +63,7 @@ private:
 	const int height = 600;
 
 	// Add the grid as a member variable
-	Render::Grid grid; 
+	//Render::Grid grid; 
 	
 };
 } // namespace Example

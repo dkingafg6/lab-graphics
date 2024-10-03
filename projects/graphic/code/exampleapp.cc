@@ -12,7 +12,6 @@
 #include "core/mat4.h"
 #include "render/Camera.h"
 #include "render/window.h"
-#include "render/grid.h"
 
 
 
@@ -33,7 +32,6 @@ const GLchar* vs =
 
 "void main()\n"
 "{\n"
-//"	gl_Position = vec4(pos, 1) * rotation;\n"
 "	gl_Position = vec4(pos, 1) * rotation * camMatrix;\n" // just for camera. combine rotation and camera.
 "	Color = color;\n"
 "	TexCoord = texCoord;\n"
@@ -51,7 +49,7 @@ const GLchar* ps =
 //"out vec4 Color;\n"
 "void main()\n"
 "{\n"
-"	FragColor = texture(texture1, TexCoord) * Color;\n"
+"	FragColor = texture(texture1, TexCoord) * color;\n"
 //"	Color = color;\n"
 "}\n";
 
@@ -132,13 +130,6 @@ namespace Example
 		//}
 
 		// load texture
-		if (!texture.loadFromFile("R.png")) 
-		{
-			std::cerr << "Failed to load texture: R.png" << std::endl; 
-			return false; 
-
-		}
-		return true; 
 
 
 		// camera initialize 
@@ -221,7 +212,7 @@ namespace Example
 		glShaderSource(this->pixelShader, 1, &ps, &length);
 		glCompileShader(this->pixelShader);
 		// check compilation for vertex shader. 
-		glGetShaderiv(this->pixelShader, GL_COMPILE_STATUS, &success);
+		//glGetShaderiv(this->pixelShader, GL_COMPILE_STATUS, &success);
 		/*if (!success)
 		{
 			handleShaderError(this->vertexShader, "Fragment Shader Error");
@@ -283,7 +274,10 @@ namespace Example
 		/// load file pics 
 		//TextureResource(objectOpen)
 		// initialize the grid;;
-		grid = Render::Grid();
+		// 
+		
+
+		//grid = Render::Grid();
 		return true;
 
 	}
@@ -331,23 +325,15 @@ namespace Example
 	{
 		glEnable(GL_DEPTH_TEST);
 
-		// bind texture. 
-		//texture.loadFromFile("R.png");
-		// unbind 
-		texture.Bind(0); 
-
 		// create a cube 
-		if (this->meshResource == nullptr) 
-		{
-			this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f);
-			if (!this->meshResource)
-			{
-				std::cerr << " Failed to create meshresource. " << std::endl;
-				return;
-			}
+		//MeshResource* meshResource = new MeshResource();
+		MeshResource* meshResource = MeshResource::CreateCube(1.0f, 1.0f, 1.0f);
+		//load texture
+		texture.loadFromFile("../engine/texture/lizard.png");
+		// bind texture
+		texture.Bind(); 
 
-
-		}
+		
 		
 		
 		// get the location of texture uniform. 
@@ -355,7 +341,7 @@ namespace Example
 
 
 		// bind texture to uniform 
-		glUniform1i(textureLoc, 0);
+		//glUniform1i(textureLoc, 0);
 
 
 		// get the location in the shader. 
@@ -395,8 +381,8 @@ namespace Example
 
 
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
-			meshResource->bindVBO();
-			meshResource->bindIBO();
+			meshResource->BindVBO();
+			meshResource->BindIBO();
 
 			glUseProgram(this->program); // it use shader program. 
 
@@ -418,18 +404,17 @@ namespace Example
 
 
 			// draw a 3D grid and mesh
-			grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
+			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 
 			// render the grid to draw 
-			grid.Draw((float*)&viewProjectionMatrix);  
+			//grid.Draw((float*)&viewProjectionMatrix);  
 			this->window->SwapBuffers(); // swap buffers. 
 
 
-			
-
+		
 #ifdef CI_TEST
 			// if we're running CI, we want to return and exit the application after one frame
 			// break the loop and hopefully exit gracefully
