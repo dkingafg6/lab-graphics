@@ -5,16 +5,6 @@
 
 using namespace std; 
 
-//
-//// sructure for vertices to create cube. 
-//struct Vertex
-//{
-//    float position[3];   // position x,y,z, 
-//    float colot[4];      // color r,g,b,and a, 
-//    float texCoord[2];   // texture coordinates u and v, 
-//
-//};
-
 // Constructor
 MeshResource::MeshResource()
 {
@@ -38,6 +28,93 @@ MeshResource* MeshResource::CreateCube(float width, float height, float depth)
     mesh->CreateIBO(); 
     return mesh; 
 
+
+}
+
+// optional higher grade function spherical 
+MeshResource* MeshResource::CreateSpher(float radius, unsigned int rings, unsigned int sectors)
+{
+    std::vector<vec3> vertices; 
+    std::vector<vec2> uvs;
+    std::vector<unsigned int> indices;
+
+    //
+    for (unsigned int r = 0; r <= rings; ++r)
+    {
+        for (unsigned int s = 0; s <= sectors; ++s)
+        {
+            float y = cos((2 * asin(1.0) * r )/ rings);
+            float x = cos(2 * (2 * asin(1.0) )* s / sectors) * sin((2 * asin(1.0)) * r / rings);
+            float z = sin(2 * (2 * asin(1.0)) * s / sectors) * sin((2 * asin(1.0) )* r / rings);
+
+            vertices.emplace_back(x * radius, y * radius, z * radius); 
+            uvs.emplace_back((float)s / sectors, (float)r / rings); 
+        }
+
+    }
+
+    for (unsigned int r = 0; r < rings; ++r) 
+    {
+        for (unsigned int s = 0; s < sectors; ++s) 
+        {
+            unsigned int first = (r * (sectors + 1)) + s; 
+            unsigned int second = first + sectors + 1; 
+
+            indices.push_back(first); 
+            indices.push_back(second);
+            indices.push_back(first + 1);
+
+            indices.push_back(second);
+            indices.push_back(second + 1);
+            indices.push_back(first + 1);
+
+        }
+
+    }
+
+    MeshResource* mesh = new MeshResource(); 
+    mesh->setVertices(vertices); 
+    mesh->setUVs(uvs); 
+    mesh->setIndices(indices); 
+    mesh->setupMesh(); 
+    return mesh;
+}
+void MeshResource::setVertices(const std::vector<vec3>& vertices)
+{
+    this->vertices = vertices; 
+}
+void MeshResource::setUVs(const std::vector<vec2>& uvs)
+{
+    this->uvs = uvs; 
+}
+void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
+{
+    this->indices = Indices; 
+}
+void MeshResource::setupMesh()
+{
+    glGenBuffers(1, &vertexBuffer); 
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
+
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW); 
+
+    if (!uvs.empty()) 
+    {
+        GLuint uvBuffer; 
+        glGenBuffers(1, &uvBuffer); 
+        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer); 
+        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(vec2), uvs.data(), GL_STATIC_DRAW); 
+
+    }
+
+    //IBO 
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+
+    // unbinde 
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
 
 }
 // Method to create a vertex buffer object for the cube. 

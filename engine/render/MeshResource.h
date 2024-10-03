@@ -1,7 +1,10 @@
 #pragma once
+
 #include <config.h>
 #include <GL/glew.h>
 #include <vector>
+#include "core/vec3.h"
+#include "core/vec2.h"
 
 
 
@@ -31,18 +34,32 @@ public:
 	MeshResource();
 	~MeshResource();
 
-
-	// create the vertices with pos and texture cooordinate for each face of the cube.
-	static MeshResource* CreateCube(float width, float height, float depth);
-	
 	//void createVBO();
 	void CreateVBO(float width, float height, float depth);
 	void CreateIBO();
 	void BindVBO();
 	void BindIBO();
 	// draw the mesh 
-	
 	void Draw(); 
+
+
+
+	// create the vertices with pos and texture cooordinate for each face of the cube.
+	static MeshResource* CreateCube(float width, float height, float depth);
+
+
+	std::vector<vec3> vertices;
+	std::vector<vec2> uvs;
+	std::vector<unsigned int> indices;
+
+	static MeshResource* CreateSpher(float radius, unsigned int rings, unsigned int sectors);
+
+	void setVertices(const std::vector<vec3>& vertices); 
+	void setUVs(const std::vector<vec2>& uvs);
+	void setIndices(const std::vector<unsigned int>& Indices);
+	void setupMesh(); 
+	
+	// clean up resource
 	void Cleanup(); 
 	
 	

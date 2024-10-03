@@ -41,6 +41,10 @@ bool TextureResource::loadFromFile(const char* filename)
 	glActiveTexture(GL_TEXTURE0); 
 	glBindTexture(GL_TEXTURE_2D, textureID);
 
+	GLenum format = (nrchannels == 3) ? GL_RGB : GL_RGBA; 
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNPACK_SWAP_BYTES, bytes); 
+	glGenerateMipmap(GL_TEXTURE_2D); 
+
 	// texture wrapping 
 	// here is different rapping mode.
 	// GL_REPEAT= that repeat the texture;
@@ -58,28 +62,6 @@ bool TextureResource::loadFromFile(const char* filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 
-	// test here if it work!
-	//load image with stb_load 
-	//unsigned char *data = stbi_load(filename, &width, &height, &nrchannels, 0);
-	//if (!data)
-	//{
-	//	// upload data to GPU
-	//	GLenum format = (nrchannels == 3) ? GL_RGB : GL_RGBA;
-	//	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-	//	glGenerateMipmap(GL_TEXTURE_2D); // generate image. 
-	//	
-	//}
-	//else 
-	//{
-	//	std::cout << " Failed to load texture : " << std::endl; 
-
-	//}
-
-	// upload data to GPU
-	// just for test those three line down comment out
-	//GLenum format = (nrchannels == 3) ? GL_RGB : GL_RGBA; 
-	//glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes);
-	//glGenerateMipmap(GL_TEXTURE_2D); // generate image. 
 
 
 	// clean upp 

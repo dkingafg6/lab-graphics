@@ -76,38 +76,8 @@ namespace Example
 		// empty
 	}
 
-	//void ExampleApp::handleShaderError(GLuint shader, GLenum type)
-	//{
-	//	GLint success; 
-	//	if (type == GL_COMPILE_STATUS) 
-	//	{
-	//		// checking 
-	//		glGetShaderiv(shader, type, &success); 
-	//		if (!success) 
-	//		{
-	//			GLint logLength;
-	//			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	//			std::vector<GLchar> errorLog(logLength);
-	//			glGetShaderInfoLog(shader, logLength, nullptr, errorLog.data());
-	//			std::cerr << "[ Shader Copilation Error]: " << errorLog.data() << std::endl;
-	//		}
-
-	//	}
-	//	else if (type == GL_LINK_STATUS) 
-	//	{
-	//		// Checking 
-	//		glGetProgramiv(shader, type, &success);
-	//		if (!success)
-	//		{
-	//			GLint logLength;
-	//			glGetProgramiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-	//			std::vector<GLchar> errorLog(logLength);
-	//			glGetProgramInfoLog(shader, logLength, nullptr, errorLog.data());
-	//			std::cerr << "[ Program Linking Error]: " << errorLog.data() << std::endl;
-	//		}
-
-	//	}
-	//}
+	 
+	
 
 //------------------------------------------------------------------------------
 /**
@@ -120,14 +90,7 @@ namespace Example
 		this->window = new Display::Window;
 		if (!this->window->Open()) return false; 
 
-		// initialize meshresource. 
-		//this->meshResource = MeshResource::CreatCube(1.0f, 1.0f, 1.0f); 
-		//// create a cube 
-		//if (!this->meshResource)
-		//{
-		//	std::cerr << " Failed to create meshresource. " << std::endl;
-		//	return false;
-		//}
+		
 
 		// load texture
 
@@ -145,39 +108,6 @@ namespace Example
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-	
-
-		//window->SetKeyPressFunction([this](int32, int32, int32, int32)
-		//	{
-		//		this->window->Close();
-		//	});
-		// hello
-		//GLfloat buf[] =
-		//{
-		//	-0.5f,	-0.5f,	-1,			// pos 0
-		//	1,		0,		0,		1,	// color 0
-		//	0,		0.5f,	-1,			// pos 1
-		//	0,		1,		0,		1,	// color 0
-		//	0.5f,	-0.5f,	-1,			// pos 2
-		//	0,		0,		1,		1	// color 0
-		//};
-
-		//if (!this->window->Open())
-		//{
-		//	return false; // to be sure window opened successfully. 
-		//}
-
-		//// camera initialize 
-		//this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
-		//	vec3(0.0f, 0.0f, 0.0f),            // target position 
-
-		//	vec3(0.0f, 1.0f, 0.0f),            // up vector 
-		//	45.0f,                             // field of v
-		//	static_cast<float>(width) / static_cast<float>(height),
-		//	0.1f,           // near plan and far clipping 
-		//	100.0f);
-		// set clear color to gray
-		//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 		//set up shaders. 
 		GLint success;
@@ -188,49 +118,52 @@ namespace Example
 		glShaderSource(this->vertexShader, 1, &vs, &length);
 		glCompileShader(this->vertexShader);
 		// check compilation for vertex shader. 
-		/*glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &success);
-		if (!success)
-		{ handleShaderError(this->vertexShader, "Vertex Shader Error");
-		return false; 
-		}*/
-
+		
 		// change with new ErrorLog if it's not work can undo it
 		 //get error log
-		GLint shaderLogSize;
-		glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-		if (shaderLogSize > 0)
+		
+		glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &success);
+		if (success ==	GL_FALSE)
 		{
-			GLchar* buf = new GLchar[shaderLogSize];
-			glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
-			printf("[SHADER COMPILE ERROR]: %s", buf);
-			delete[] buf;
+			GLint shaderLogSize;
+			//GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderiv(this->vertexShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			if (shaderLogSize > 0) 
+			{
+				GLchar* buf = new GLchar[shaderLogSize];
+				glGetShaderInfoLog(this->vertexShader, shaderLogSize, NULL, buf);
+				printf("[SHADER COMPILE ERROR]: %s \n", buf);
+				delete[] buf;
+
+			}
+			return false; 
+			
 		}
 
 		// setup pixel shader
 		this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
 		length = static_cast<GLint>(std::strlen(ps));
 		glShaderSource(this->pixelShader, 1, &ps, &length);
-		glCompileShader(this->pixelShader);
+		glCompileShader(this->pixelShader);  
 		// check compilation for vertex shader. 
-		//glGetShaderiv(this->pixelShader, GL_COMPILE_STATUS, &success);
-		/*if (!success)
+		glGetShaderiv(this->pixelShader, GL_COMPILE_STATUS, &success);
+		if (success == GL_FALSE)
 		{
-			handleShaderError(this->vertexShader, "Fragment Shader Error");
+			GLint shaderLogSize;
+			//GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			if (shaderLogSize > 0)
+			{
+				GLchar* buf = new GLchar[shaderLogSize];
+				glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
+				printf("[SHADER COMPILE ERROR]: %s \n", buf);
+				delete[] buf;
+
+			}
 			return false;
-		}*/
 
-
-		// change with new ErrorLog if it's not work can undo it
-		shaderLogSize;
-		glGetShaderiv(this->pixelShader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-		if (shaderLogSize > 0)
-		{
-			GLchar* buf = new GLchar[shaderLogSize];
-			glGetShaderInfoLog(this->pixelShader, shaderLogSize, NULL, buf);
-			printf("[SHADER COMPILE ERROR]: %s", buf);
-			delete[] buf;
 		}
-
+		
 		// create a program object
 		this->program = glCreateProgram();
 		glAttachShader(this->program, this->vertexShader);
@@ -239,25 +172,24 @@ namespace Example
 
 		 
 		//// check compilation for vertex shader. 
-		glGetShaderiv(this->program, GL_COMPILE_STATUS, &success);
-		//if (!success)
-		//{
-		//	handleShaderError(this->program, "Program Linking ");
-		//	return false;
-		//}
-	
-		
-
-		// change with new ErrorLog if it's not work can undo it
-		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
-		if (shaderLogSize > 0)
+		glGetShaderiv(this->program, GL_LINK_STATUS, &success);
+		if (success == GL_FALSE)
 		{
-			GLchar* buf = new GLchar[shaderLogSize];
-			glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
-			printf("[PROGRAM LINK ERROR]: %s", buf);
-			delete[] buf;
-		}
+			GLint shaderLogSize;
+			//GLchar* buf = new GLchar[shaderLogSize];
+			glGetShaderiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			if (shaderLogSize > 0)
+			{
+				GLchar* buf = new GLchar[shaderLogSize];
+				glGetShaderInfoLog(this->program, shaderLogSize, NULL, buf);
+				printf("[PROGRAM LINK ERROR]: %s \n", buf);
+				delete[] buf;
 
+			}
+			return false;
+
+		}
+		
 		// setup vbo
 		glGenBuffers(1, &this->triangle);
 		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
@@ -272,19 +204,20 @@ namespace Example
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		/// load file pics 
-		//TextureResource(objectOpen)
-		// initialize the grid;;
-		// 
-		
+		if (!texture.loadFromFile("../engine/texture/lizard.png"))
+		{
+			std::cerr << "Failed to load texture " << std::endl; 
+			return false; 
 
+		}
+	
 		//grid = Render::Grid();
 		return true;
 
 	}
 	void ExampleApp::Close()
 	{
-		//if (this->window->IsOpen())
-			//this->window->Close();
+		
 
 		if(this->window != nullptr)
 		{
@@ -312,6 +245,8 @@ namespace Example
 			glDeleteProgram(this->program);
 			this->program = 0;
 		}
+		// cleanup mesh resource
+		//delete meshResource; 
 
 		
 		Core::App::Close();
