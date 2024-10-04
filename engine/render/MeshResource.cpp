@@ -126,47 +126,74 @@ void MeshResource::CreateVBO(float width, float height, float depth)
 
 
     // create vbo with vertext structure. 
-    Vertex positions[] = 
+    float positions[] = 
     {
-        {{-halfWidth, -halfHeight, -halfDepth}, {1.0f, 0.0f, 0.0f, 1.0f},
-        {{ halfWidth, -halfHeight, -halfDepth}, {0.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth,  halfHeight, -halfDepth}, {0.0f, 0.0f, 1.0f, 1.0f},
-        {{-halfWidth,  halfHeight, -halfDepth}, {0.0f, 1.0f, 0.0f, 1.0f},
+        //front face
+        -halfWidth, -halfHeight, -halfDepth,
+        1.0f, 0.0f, 0.0f, 1.0f,
+        halfWidth, -halfHeight, -halfDepth,
+        0.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth,  halfHeight, -halfDepth,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        -halfWidth,  halfHeight, -halfDepth,
+        0.0f, 1.0f, 0.0f, 1.0f
+
+
 
 
         // back face
-        {{-halfWidth, -halfHeight, halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
-        {{ halfWidth, -halfHeight, halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth,  halfHeight, halfDepth}, { 1.0f, 1.0f, 0.0f, 1.0f},
-        {{-halfWidth,  halfHeight, halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        -halfWidth, -halfHeight, halfDepth, 
+        0.0f, 0.0f, 1.0f, 1.0f,
+        halfWidth, -halfHeight, halfDepth, 
+        0.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth,  halfHeight, halfDepth, 
+        1.0f, 1.0f, 0.0f, 1.0f,
+        -halfWidth,  halfHeight, halfDepth, 
+        1.0f, 0.0f, 0.0f, 1.0f,
 
 
         // right face
-        {{ halfWidth, -halfHeight, -halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth,  halfHeight, -halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth, -halfHeight,  halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth,  halfHeight,  halfDepth}, { 0.0f, 0.0f, 0.0f, 1.0f},
+        halfWidth, -halfHeight, -halfDepth,  
+        0.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth,  halfHeight, -halfDepth,  
+        0.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth, -halfHeight,  halfDepth,  
+        0.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth,  halfHeight,  halfDepth,  
+        0.0f, 0.0f, 0.0f, 1.0f,
 
 
         // left face
-        {{-halfWidth, -halfHeight, -halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
-        {{-halfWidth,  halfHeight, -halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
-        {{-halfWidth, -halfHeight,  halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
-        {{-halfWidth,  halfHeight,  halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        -halfWidth, -halfHeight, -halfDepth,  
+        1.0f, 0.0f, 0.0f, 1.0f,
+        -halfWidth,  halfHeight, -halfDepth,  
+        0.0f, 0.0f, 1.0f, 1.0f,
+        -halfWidth, -halfHeight,  halfDepth,  
+        0.0f, 0.0f, 1.0f, 1.0f,
+        -halfWidth,  halfHeight,  halfDepth,  
+        1.0f, 0.0f, 0.0f, 1.0f,
 
 
         // bottom face
-        {{-halfWidth, -halfHeight, -halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
-        {{ halfWidth, -halfHeight, -halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth, -halfHeight,  halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
-        {{-halfWidth, -halfHeight,  halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        -halfWidth, -halfHeight, -halfDepth, 
+        1.0f, 0.0f, 0.0f, 1.0f,
+        halfWidth, -halfHeight, -halfDepth,  
+        0.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth, -halfHeight,  halfDepth,  
+        0.0f, 0.0f, 1.0f, 1.0f,
+        -halfWidth, -halfHeight,  halfDepth, 
+        0.0f, 1.0f, 0.0f, 1.0f,
 
 
         // top face
-        {{-halfWidth, halfHeight,  halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
-        {{ halfWidth, halfHeight,  halfDepth}, { 1.0f, 1.0f, 0.0f, 1.0f},
-        {{-halfWidth, halfHeight, -halfDepth}, { 1.0f, 1.0f, 0.0f, 1.0f},
-        {{ halfWidth, halfHeight, -halfDepth}, { 1.0f, 0.0f, 1.0f, 1.0f},
+        -halfWidth, halfHeight,  halfDepth,  
+        1.0f, 0.0f, 0.0f, 1.0f,
+        halfWidth, halfHeight,  halfDepth,  
+        1.0f, 1.0f, 0.0f, 1.0f,
+        -halfWidth, halfHeight, -halfDepth,  
+        1.0f, 1.0f, 0.0f, 1.0f,
+        halfWidth, halfHeight, -halfDepth,  
+        1.0f, 0.0f, 1.0f, 1.0f,
 
     };
 
@@ -177,9 +204,12 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
-    glEnableVertexAttribArray(0); //pos
-    glEnableVertexAttribArray(1); //color
-    glEnableVertexAttribArray(2); //UV
+    //position.
+    glEnableVertexAttribArray(0); 
+    // color.
+    glEnableVertexAttribArray(1); 
+    // uv.
+    glEnableVertexAttribArray(2); 
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, NULL);
     glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, (GLvoid*)(sizeof(float32) * 3));
@@ -194,7 +224,7 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     // Method to create an index buffer object
 void MeshResource::CreateIBO()
 {
-    unsigned int indexes[] =
+  int indexes[] =
     {
 
           0, 1, 2, 2, 3, 0, // front face
@@ -210,11 +240,15 @@ void MeshResource::CreateIBO()
           21, 20, 22, 23, 22, 21 // top face
     };
 
+    indexSize = sizeof(indexes) / sizeof(indexes[0]);
+
     // Generate and bind index buffer
     glGenBuffers(1, &indexBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,  sizeof(indexes), indexes, GL_STATIC_DRAW);
-    indexSize = sizeof(indexes) / sizeof(indexes[0]); 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+
+    //indexSize = sizeof(indexes) / sizeof(indexes[0]); 
 
 
     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
