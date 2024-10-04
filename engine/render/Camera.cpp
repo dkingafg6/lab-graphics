@@ -31,22 +31,7 @@ yaw(-90.0f), pitch(0.0f), sensitivity(0.1f), lastX(400), lastY(300), firstMouse(
 // Calculate the perspective matrix:
 mat4 Camera::getPerspectiveMatrix() const
 {
-	// convert fov t radians to calculate tangent. 
-	// since using asing(1.0) will return the value for pi/2. therefore, to get the value of pi is (pi = (2*asin(1.0))
-	float tanHalfFov = tan(fov * 0.5f * (2 * asin(1.0) / 180.0f));
-
-	mat4 perspective(0.0f);
-	// scaling x-z
-	perspective[0][0] = 1.0f / (aspect * tanHalfFov);
-	perspective[1][1] = 1.0f / tanHalfFov;
-	perspective[2][2] = -(farPlane + nearPlane) / (farPlane - nearPlane);
-	// projection t 2D plane 
-	perspective[2][3] = -1.0f;
-	// depth translation 
-	perspective[3][2] = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
-
-	return perspective;
-
+	return perspective(fov, aspect, nearPlane,farPlane);
 }
 
 
@@ -197,22 +182,12 @@ void Camera::updateTarget()
 
 
 
-
+// view = lookat
 mat4 Camera::getViewMatrix() const
 {
-	vec3 zaxis = normalize(position - target); // forward
-	vec3 xaxis = normalize(cross(up, zaxis)); // right
-	vec3 yaxis = cross(zaxis, xaxis);         //up
+	
 
-
-	// construction for veiw matrix
-	mat4 view;
-	view[0] = vec4(xaxis.x, yaxis.x, zaxis.x, 0.0f);
-	view[1] = vec4(xaxis.y, yaxis.y, zaxis.y, 0.0f);
-	view[2] = vec4(xaxis.z, yaxis.z, zaxis.z, 0.0f);
-	view[3] = vec4(-dot(xaxis, position), -dot(yaxis, position), -dot(zaxis, position), 1.0f);
-
-	return view;
+	return lookat(position, target, up); 
 }
 	
 

@@ -26,6 +26,7 @@ TextureResource::~TextureResource()
 bool TextureResource::loadFromFile(const char* filename)
 {
 	 //load image with stb_load
+	GLuint TextureID; 
 
 	// just for test if statement here comment out 
 	unsigned char* bytes = stbi_load(filename, &width, &height, &nrchannels, 0);
@@ -50,16 +51,12 @@ bool TextureResource::loadFromFile(const char* filename)
 		return false;
 	}
 
+	//GLuint TextureID;
 	// generate texture and bind
 	glGenTextures(1, &textureID); 
 	glActiveTexture(GL_TEXTURE0); 
-	//texture->Bind(); 
-	glBindTexture(GL_TEXTURE_2D, textureID);
 
-	// upload texture's data. 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes);
-	glGenerateMipmap(GL_TEXTURE_2D); 
-	
+
 	// texture wrapping 
 	// here is different rapping mode.
 	// GL_REPEAT= that repeat the texture;
@@ -76,6 +73,13 @@ bool TextureResource::loadFromFile(const char* filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	//texture->Bind(); 
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// upload texture's data. 
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes);
+	glGenerateMipmap(GL_TEXTURE_2D); 
+	
 
 
 

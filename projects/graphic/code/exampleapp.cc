@@ -26,13 +26,14 @@ const GLchar* vs =
 "uniform mat4 rotation;\n"
 "uniform mat4 camMatrix;\n" // for activate the camera 
 
+//"out vec4 projection;\n"
 "out vec4 Color;\n"
 "out vec2 TexCoord;\n"
 
 
 "void main()\n"
 "{\n"
-"	gl_Position = vec4(pos, 1) * rotation * camMatrix;\n" // just for camera. combine rotation and camera.
+"	gl_Position = camMatrix * rotation * vec4(pos, 1);\n" // just for camera. combine rotation and camera.
 "	Color = color;\n"
 "	TexCoord = texCoord;\n"
 "}\n";
@@ -46,10 +47,10 @@ const GLchar* ps =
 "uniform sampler2D texture1;\n"
 
 "out vec4 FragColor;\n"
-//"out vec4 Color;\n"
+"out vec4 Color;\n"
 "void main()\n"
 "{\n"
-"	FragColor = texture(texture1, TexCoord) * color;\n"
+"	Color = texture(texture1, TexCoord);\n"
 //"	Color = color;\n"
 "}\n";
 
@@ -197,7 +198,7 @@ namespace Example
 		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
 		GLfloat buf[] =
 		{
-			-0.5f, -0.5f, -1, 1, 0, 0, 1, // vertex 0
+			-0.5f, -0.5f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 0
 			0,      0.5f, -1, 0, 1, 0, 1, // vertex 1
 			0.5f, -0.5f, -1, 0, 0, 1, 1, // vertex 0
 		};
@@ -257,8 +258,7 @@ namespace Example
 	//------------------------------------------------------------------------------
 	/**
 	*/
-	void
-	ExampleApp::Run()
+	void ExampleApp::Run()
 	{
 		glEnable(GL_DEPTH_TEST);
 
@@ -318,23 +318,22 @@ namespace Example
 
 
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
-			meshResource->BindVBO();
-			meshResource->BindIBO();
+			
 
 			glUseProgram(this->program); // it use shader program. 
 
 			// comute view projection matrix. 
-			mat4 viewProjectionMatrix = camera.getProjectionMatrix() * camera.getViewMatrix(); // combined matrix
+			mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
 
 
 			// projection and view matrix combined from the camera. 
-			mat4 projectionMatrix = camera.getProjectionMatrix();
-			mat4 viewMatrix = camera.getViewMatrix();
+			//mat4 projectionMatrix = camera.getProjectionMatrix();
+			//mat4 viewMatrix = camera.getViewMatrix();
 			
 
 			//	// attributes 
-			glUniformMatrix4fv(camMatrixLoc, 1, GL_TRUE, (GLfloat*)&viewProjectionMatrix);
-			glUniformMatrix4fv(rotationLoc, 1, GL_TRUE, (GLfloat*)&matrix4x4);
+			glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, (GLfloat*)&viewProjectionMatrix);
+			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, (GLfloat*)&matrix4x4);
 
 			// bind texture to uniform 
 			glUniform1i(textureLoc, 0); 
@@ -342,13 +341,25 @@ namespace Example
 
 			// draw a 3D grid and mesh
 			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
-
+			meshResource->BindVBO();
+			meshResource->BindIBO();
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 
 			// render the grid to draw 
 			//grid.Draw((float*)&viewProjectionMatrix);  
 			this->window->SwapBuffers(); // swap buffers. 
+
+		// massage callback function be called when there is e debug message from opengl. 
+		
+		//void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * message, const void* userParam)
+		//{
+		//	//printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, Message: %s\n", (tpye == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), tpye, serverity, message);
+		//	printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
+
+		//}
+	
+
 
 
 		
@@ -358,6 +369,7 @@ namespace Example
 			break;
 #endif
 		}
+
 	}
 
 } // namespace Example

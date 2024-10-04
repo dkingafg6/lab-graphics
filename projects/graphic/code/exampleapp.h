@@ -36,6 +36,7 @@ public:
 	bool Open(); 
 	/// close app
 	void Close();
+	void GLAPIENTRY MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam);
 	/// run app
 	void Run();
 	// load picture 
