@@ -16,8 +16,8 @@ class TextureResource
 public:
 	
 	GLuint textureID;
-	unsigned int texture; 
-	unsigned char* bytes;
+	unsigned int texture; // not using now can use it later 
+	unsigned char* bytes; //  not using now can use it later 
 	TextureResource();
     ~TextureResource();
 

@@ -32,91 +32,91 @@ MeshResource* MeshResource::CreateCube(float width, float height, float depth)
 }
 
 // optional higher grade function spherical 
-MeshResource* MeshResource::CreateSpher(float radius, unsigned int rings, unsigned int sectors)
-{
-    std::vector<vec3> vertices; 
-    std::vector<vec2> uvs;
-    std::vector<unsigned int> indices;
-
-    //
-    for (unsigned int r = 0; r <= rings; ++r)
-    {
-        for (unsigned int s = 0; s <= sectors; ++s)
-        {
-            float y = cos((2 * asin(1.0) * r )/ rings);
-            float x = cos(2 * (2 * asin(1.0) )* s / sectors) * sin((2 * asin(1.0)) * r / rings);
-            float z = sin(2 * (2 * asin(1.0)) * s / sectors) * sin((2 * asin(1.0) )* r / rings);
-
-            vertices.emplace_back(x * radius, y * radius, z * radius); 
-            uvs.emplace_back((float)s / sectors, (float)r / rings); 
-        }
-
-    }
-
-    for (unsigned int r = 0; r < rings; ++r) 
-    {
-        for (unsigned int s = 0; s < sectors; ++s) 
-        {
-            unsigned int first = (r * (sectors + 1)) + s; 
-            unsigned int second = first + sectors + 1; 
-
-            indices.push_back(first); 
-            indices.push_back(second);
-            indices.push_back(first + 1);
-
-            indices.push_back(second);
-            indices.push_back(second + 1);
-            indices.push_back(first + 1);
-
-        }
-
-    }
-
-    MeshResource* mesh = new MeshResource(); 
-    mesh->setVertices(vertices); 
-    mesh->setUVs(uvs); 
-    mesh->setIndices(indices); 
-    mesh->setupMesh(); 
-    return mesh;
-}
-void MeshResource::setVertices(const std::vector<vec3>& vertices)
-{
-    this->vertices = vertices; 
-}
-void MeshResource::setUVs(const std::vector<vec2>& uvs)
-{
-    this->uvs = uvs; 
-}
-void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
-{
-    this->indices = Indices; 
-}
-void MeshResource::setupMesh()
-{
-    glGenBuffers(1, &vertexBuffer); 
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
-
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW); 
-
-    if (!uvs.empty()) 
-    {
-        GLuint uvBuffer; 
-        glGenBuffers(1, &uvBuffer); 
-        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer); 
-        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(vec2), uvs.data(), GL_STATIC_DRAW); 
-
-    }
-
-    //IBO 
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-
-    // unbinde 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-
-}
+//MeshResource* MeshResource::CreateSpher(float radius, unsigned int rings, unsigned int sectors)
+//{
+//    std::vector<vec3> vertices; 
+//    std::vector<vec2> uvs;
+//    std::vector<unsigned int> indices;
+//
+//    //
+//    for (unsigned int r = 0; r <= rings; ++r)
+//    {
+//        for (unsigned int s = 0; s <= sectors; ++s)
+//        {
+//            float y = cos((2 * asin(1.0) * r )/ rings);
+//            float x = cos(2 * (2 * asin(1.0) )* s / sectors) * sin((2 * asin(1.0)) * r / rings);
+//            float z = sin(2 * (2 * asin(1.0)) * s / sectors) * sin((2 * asin(1.0) )* r / rings);
+//
+//            vertices.emplace_back(x * radius, y * radius, z * radius); 
+//            uvs.emplace_back((float)s / sectors, (float)r / rings); 
+//        }
+//
+//    }
+//
+//    for (unsigned int r = 0; r < rings; ++r) 
+//    {
+//        for (unsigned int s = 0; s < sectors; ++s) 
+//        {
+//            unsigned int first = (r * (sectors + 1)) + s; 
+//            unsigned int second = first + sectors + 1; 
+//
+//            indices.push_back(first); 
+//            indices.push_back(second);
+//            indices.push_back(first + 1);
+//
+//            indices.push_back(second);
+//            indices.push_back(second + 1);
+//            indices.push_back(first + 1);
+//
+//        }
+//
+//    }
+//
+//    MeshResource* mesh = new MeshResource(); 
+//    mesh->setVertices(vertices); 
+//    mesh->setUVs(uvs); 
+//    mesh->setIndices(indices); 
+//    mesh->setupMesh(); 
+//    return mesh;
+//}
+//void MeshResource::setVertices(const std::vector<vec3>& vertices)
+//{
+//    this->vertices = vertices; 
+//}
+//void MeshResource::setUVs(const std::vector<vec2>& uvs)
+//{
+//    this->uvs = uvs; 
+//}
+//void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
+//{
+//    this->indices = Indices; 
+//}
+//void MeshResource::setupMesh()
+//{
+//    glGenBuffers(1, &vertexBuffer); 
+//    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
+//
+//    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW); 
+//
+//    if (!uvs.empty()) 
+//    {
+//        GLuint uvBuffer; 
+//        glGenBuffers(1, &uvBuffer); 
+//        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer); 
+//        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(vec2), uvs.data(), GL_STATIC_DRAW); 
+//
+//    }
+//
+//    //IBO 
+//    glGenBuffers(1, &indexBuffer);
+//    glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+//
+//    // unbinde 
+//    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+//
+//}
 // Method to create a vertex buffer object for the cube. 
 void MeshResource::CreateVBO(float width, float height, float depth)
 {
@@ -127,47 +127,46 @@ void MeshResource::CreateVBO(float width, float height, float depth)
 
     // create vbo with vertext structure. 
     Vertex positions[] = 
-{
-        // front face
-        {-halfWidth, -halfHeight, -halfDepth},  { 1.0f, 0.0f, 0.0f, 1.0f},
-        { halfWidth, -halfHeight, -halfDepth},  { 0.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth,  halfHeight, -halfDepth,}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        {-halfWidth,  halfHeight, -halfDepth,}, { 0.0f, 0.0f, 1.0f, 1.0f},
+    {
+        {{-halfWidth, -halfHeight, -halfDepth}, {1.0f, 0.0f, 0.0f, 1.0f},
+        {{ halfWidth, -halfHeight, -halfDepth}, {0.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth,  halfHeight, -halfDepth}, {0.0f, 0.0f, 1.0f, 1.0f},
+        {{-halfWidth,  halfHeight, -halfDepth}, {0.0f, 1.0f, 0.0f, 1.0f},
 
 
         // back face
-        {-halfWidth, -halfHeight, halfDepth},  { 0.0f, 0.0f, 1.0f, 1.0f},
-        { halfWidth, -halfHeight, halfDepth},  { 0.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth,  halfHeight, halfDepth,}, { 1.0f, 1.0f, 0.0f, 1.0f},
-        {-halfWidth,  halfHeight, halfDepth,}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        {{-halfWidth, -halfHeight, halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
+        {{ halfWidth, -halfHeight, halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth,  halfHeight, halfDepth}, { 1.0f, 1.0f, 0.0f, 1.0f},
+        {{-halfWidth,  halfHeight, halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
 
 
         // right face
-        { halfWidth, -halfHeight, -halfDepth},  { 0.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth,  halfHeight, -halfDepth},  { 0.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth, -halfHeight,  halfDepth,}, { 0.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth,  halfHeight,  halfDepth,}, { 0.0f, 0.0f, 0.0f, 1.0f},
+        {{ halfWidth, -halfHeight, -halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth,  halfHeight, -halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth, -halfHeight,  halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth,  halfHeight,  halfDepth}, { 0.0f, 0.0f, 0.0f, 1.0f},
 
 
         // left face
-        {-halfWidth, -halfHeight, -halfDepth},  { 1.0f, 0.0f, 0.0f, 1.0f},
-        { halfWidth,  halfHeight, -halfDepth},  { 0.0f, 0.0f, 1.0f, 1.0f},
-        { halfWidth, -halfHeight,  halfDepth,}, { 0.0f, 0.0f, 1.0f, 1.0f},
-        {-halfWidth,  halfHeight,  halfDepth,}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        {{-halfWidth, -halfHeight, -halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        {{-halfWidth,  halfHeight, -halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
+        {{-halfWidth, -halfHeight,  halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
+        {{-halfWidth,  halfHeight,  halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
 
 
         // bottom face
-        {-halfWidth, -halfHeight, -halfDepth},  { 1.0f, 0.0f, 0.0f, 1.0f},
-        { halfWidth, -halfHeight, -halfDepth},  { 0.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth, -halfHeight,  halfDepth,}, { 0.0f, 0.0f, 1.0f, 1.0f},
-        {-halfWidth, -halfHeight,  halfDepth,}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        {{-halfWidth, -halfHeight, -halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        {{ halfWidth, -halfHeight, -halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth, -halfHeight,  halfDepth}, { 0.0f, 0.0f, 1.0f, 1.0f},
+        {{-halfWidth, -halfHeight,  halfDepth}, { 0.0f, 1.0f, 0.0f, 1.0f},
 
 
         // top face
-        {-halfWidth, halfHeight,  halfDepth},  { 1.0f, 0.0f, 0.0f, 1.0f},
-        { halfWidth, halfHeight,  halfDepth},  { 1.0f, 1.0f, 0.0f, 1.0f},
-        {-halfWidth, halfHeight, -halfDepth,}, { 1.0f, 1.0f, 0.0f, 1.0f},
-        { halfWidth, halfHeight, -halfDepth,}, { 1.0f, 0.0f, 1.0f, 1.0f},
+        {{-halfWidth, halfHeight,  halfDepth}, { 1.0f, 0.0f, 0.0f, 1.0f},
+        {{ halfWidth, halfHeight,  halfDepth}, { 1.0f, 1.0f, 0.0f, 1.0f},
+        {{-halfWidth, halfHeight, -halfDepth}, { 1.0f, 1.0f, 0.0f, 1.0f},
+        {{ halfWidth, halfHeight, -halfDepth}, { 1.0f, 0.0f, 1.0f, 1.0f},
 
     };
 
@@ -178,21 +177,21 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
+    glEnableVertexAttribArray(0); //pos
+    glEnableVertexAttribArray(1); //color
+    glEnableVertexAttribArray(2); //UV
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, NULL);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, (GLvoid*)(sizeof(float32) * 3));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, (GLvoid*)(sizeof(float32) * 7));
+
+    // unbind the VBO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 }
-//    glEnableVertexAttribArray(0); //pos
-//    glEnableVertexAttribArray(1); //color
-//    glEnableVertexAttribArray(2); //UV
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, NULL);
-//    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, (GLvoid*)(sizeof(float32) * 3));
-//    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float32) * 9, (GLvoid*)(sizeof(float32) * 7));
-//
-//    // unbind the VBO
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+   
 
-
-
-
-// Method to create an index buffer object
+    // Method to create an index buffer object
 void MeshResource::CreateIBO()
 {
     unsigned int indexes[] =
@@ -233,13 +232,13 @@ void MeshResource::BindIBO()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 }
 
-void MeshResource::Draw()
-{
-    BindVBO();
-    BindIBO();
-
-    glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0); 
-}
+//void MeshResource::Draw()
+//{
+//    BindVBO();
+//    BindIBO();
+//
+//    glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0); 
+//}
 
 void MeshResource::Cleanup()
 {
@@ -258,151 +257,3 @@ void MeshResource::Cleanup()
     }
 
 }
-
-//
-//// Static method to create a cube mesh
-//MeshResource* MeshResource::CreateCube(float width, float height, float depth)
-//{
-//
-//    MeshResource* cubeMesh = new MeshResource();
-//    cubeMesh->CreateVBO(width, height, depth);
-//    cubeMesh->CreateIBO();
-//    return cubeMesh;
-//}
-//
-//std::shared_ptr<MeshResource> MeshResource::CreateCubeSharedptr(float width, float height, float depth)
-//{
-//    std::shared_ptr<MeshResource> cubeMesh = std::make_shared<MeshResource>();
-//    cubeMesh->CreateVBO(width, height, depth);
-//    cubeMesh->CreateIBO();
-//    return cubeMesh;
-//}
-//
-//void MeshResource::loadFromOBJ(const std::string& filename, float scale)
-//{
-//    std::stringstream ss;
-//    std::ifstream infile(filename);
-//    std::string line = "";
-//
-//    std::vector<vec3> tempVertices;
-//    std::vector<vec3> tempUVs;
-//    std::vector<vec3> tempNormals;
-//    std::vector<Vertex> finalVertices;
-//    std::vector<GLuint> vertexIndices;
-//
-//    if (!infile.is_open())
-//    {
-//        std::cout << "error not loading file\n";
-//    }
-//
-//    while ((std::getline(infile, line)))
-//    {
-//        std::istringstream iss(line);
-//        std::string prefix;
-//        iss >> prefix;
-//
-//        if (prefix == "v")
-//        {
-//            vec3 vertex;
-//            iss >> vertex.x >> vertex.y >> vertex.z;
-//            tempVertices.push_back(vertex);
-//        }
-//        else if (prefix == "vt")
-//        {
-//            vec3 uv;
-//            iss >> uv.x >> uv.y;
-//            uv.y = 1.0f - uv.y; // invert v cordinate for openGL
-//            uv.z = 0.0f;
-//            tempUVs.push_back(uv);
-//        }
-//        else if (prefix == "vn")
-//        {
-//            vec3 normal;
-//            iss >> normal.x >> normal.y >> normal.z;
-//            tempNormals.push_back(normal);
-//        }
-//        else if (prefix == "f")
-//        {
-//            GLuint vertexIndex[3], uvIndex[3], normalIndex[3];
-//
-//            for (int i = 0; i < 3; i++)
-//            {
-//
-//                char slash; // to sonsume the '/' character
-//
-//                iss >> vertexIndex[i] >> slash >> uvIndex[i] >> slash >> normalIndex[i];
-//
-//                // OBJ files use 1-based indexing so subtract 1
-//                vertexIndex[i]--;
-//                uvIndex[i]--;
-//                normalIndex[i]--;
-//
-//            }
-//
-//            for (int i = 0; i < 3; i++)
-//            {
-//                Vertex vertex;
-//                vertex.position = tempVertices[vertexIndex[i]] * scale;
-//                vertex.uv = tempUVs[uvIndex[i]];
-//                vertex.color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-//
-//                finalVertices.push_back(vertex);
-//                vertexIndices.push_back(finalVertices.size() - 1);
-//            }
-//        }
-//    }
-//    infile.close();
-//
-//    indexCount = vertexIndices.size();
-//
-//
-//    // Generate and bind vertex buffer
-//    glGenBuffers(1, &vertexbuffer);
-//    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-//    glBufferData(GL_ARRAY_BUFFER, finalVertices.size() * sizeof(Vertex), finalVertices.data(), GL_STATIC_DRAW);
-//
-//    // Generate and bind index buffer
-//    glGenBuffers(1, &indexbuffer);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexbuffer);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices.size() * sizeof(GLuint), vertexIndices.data(), GL_STATIC_DRAW);
-//
-//    //// Set vertex attributes
-//    glEnableVertexAttribArray(0); // Position
-//    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
-//
-//    glEnableVertexAttribArray(1); // Color
-//    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
-//
-//    glEnableVertexAttribArray(2); // UV
-//    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, uv));
-//
-//    //glEnableVertexAttribArray(3); // normals
-//    //glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normals));
-//
-//    // Unbind VAO and buffers
-//    glBindVertexArray(0);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-//}
-//
-//
-//// Method to delete buffers
-//void MeshResource::deleteBuffers()
-//{
-//    if (buffersCreated)
-//    {
-//        if (vertexbuffer != 0)
-//        {
-//            glDeleteBuffers(1, &vertexbuffer);
-//            vertexbuffer = 0;
-//        }
-//
-//        if (indexbuffer != 0)
-//        {
-//            glDeleteBuffers(1, &indexbuffer);
-//            indexbuffer = 0;
-//        }
-//
-//        buffersCreated = false;
-//    }
-//}

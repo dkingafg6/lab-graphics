@@ -114,6 +114,8 @@ namespace Example
 
 		// setup vertex shader
 		this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		this->pixelShader = glCreateShader(GL_FRAGMENT_SHADER);
+		// 
 		GLint length = static_cast<GLint>(std::strlen(vs));
 		glShaderSource(this->vertexShader, 1, &vs, &length);
 		glCompileShader(this->vertexShader);
@@ -172,7 +174,7 @@ namespace Example
 
 		 
 		//// check compilation for vertex shader. 
-		glGetShaderiv(this->program, GL_LINK_STATUS, &success);
+		glGetProgramiv(this->program, GL_LINK_STATUS, &success);
 		if (success == GL_FALSE)
 		{
 			GLint shaderLogSize;

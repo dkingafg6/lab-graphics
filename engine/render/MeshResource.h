@@ -15,9 +15,9 @@ using namespace std;
 // sructure for vertices to create cube. 
 struct Vertex
 {
-	float position[3];   // position x,y,z, 
-	float color[4];      // color r,g,b,and a, 
-	float texCoord[2];   // texture coordinates u and v, 
+	float position;   // position x,y,z, 
+	float color;      // color r,g,b,and a, 
+	float texCoord;   // texture coordinates u and v, 
 
 };
 class MeshResource
@@ -39,8 +39,9 @@ public:
 	void CreateIBO();
 	void BindVBO();
 	void BindIBO();
+	void setupMesh();
 	// draw the mesh 
-	void Draw(); 
+	/*void Draw();*/ 
 
 
 
@@ -57,7 +58,7 @@ public:
 	void setVertices(const std::vector<vec3>& vertices); 
 	void setUVs(const std::vector<vec2>& uvs);
 	void setIndices(const std::vector<unsigned int>& Indices);
-	void setupMesh(); 
+	//void setupMesh(); 
 	
 	// clean up resource
 	void Cleanup(); 

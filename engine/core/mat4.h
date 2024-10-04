@@ -120,9 +120,9 @@ public:
 	// multiples two mat4 matrices 
 	inline mat4 operator*(const mat4& rhs) const
 	{
-		std::cout << " Matrix A:\n" << this->m[0][0] << std::endl; 
-		std::cout << " Matrix B:\n"; for (int i = 0; i < 4; ++i)
-			std::cout << rhs.m[i] << std::endl;
+		//std::cout << " Matrix A:\n" << this->m[0][0] << std::endl; 
+		//std::cout << " Matrix B:\n"; for (int i = 0; i < 4; ++i)
+			//std::cout << rhs.m[i] << std::endl;
 		mat4 result = mat4(); 
 		int counter = 0; 
 		for (int i = 0; i < 4; i++) 
