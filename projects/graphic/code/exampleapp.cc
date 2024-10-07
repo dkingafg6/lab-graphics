@@ -90,6 +90,10 @@ namespace Example
 
 		this->window = new Display::Window;
 		if (!this->window->Open()) return false; 
+		window->SetKeyPressFunction([this](int32, int32, int32, int32)
+			{
+				this->window->Close();
+			});
 
 		
 
@@ -97,14 +101,15 @@ namespace Example
 
 
 		// camera initialize 
-		this->camera = Camera(vec3(0.0f, 0.0f, 3.0f),// position 
+		this->camera = Camera(
+			vec3(0.0f, 0.0f, 3.0f),// position 
 			vec3(0.0f, 0.0f, 0.0f),            // target position 
-
 			vec3(0.0f, 1.0f, 0.0f),            // up vector 
 			45.0f,                             // field of v
 			static_cast<float>(width) / static_cast<float>(height),
-			0.1f,           // near plan and far clipping 
-			100.0f);
+			// near plan and far clipping 
+			0.1f,           
+			100.0f);       
 
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -166,7 +171,14 @@ namespace Example
 			return false;
 
 		}
-		
+
+		//window->SetKeyPressFunction([this](int key, int scancode, int action, int mods) {
+		//	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		//	{
+		//		this->Close();
+		//	}
+
+		//}
 		// create a program object
 		this->program = glCreateProgram();
 		glAttachShader(this->program, this->vertexShader);
@@ -213,6 +225,16 @@ namespace Example
 			return false; 
 
 		}
+		/*window->SetKeyPressFunction([this](int key, int scancode, int action, int mods)
+			{
+				if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+				{
+					this->Close();
+				}
+
+		}*/
+
+		
 	
 		//grid = Render::Grid();
 		return true;
@@ -255,6 +277,13 @@ namespace Example
 		Core::App::Close();
 	}
 
+	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+	{
+		//printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, Message: %s\n", (tpye == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), tpye, serverity, message);
+		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
+		
+	}
+
 	//------------------------------------------------------------------------------
 	/**
 	*/
@@ -287,14 +316,26 @@ namespace Example
 		// get location form shader program 
 		GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
 
+	
+
 		if (textureLoc == -1 || camMatrixLoc == -1 || rotationLoc == -1) 
 		{
-			std::cerr << "Failed to retrive uniform location " << std::endl;
+			std::cerr << "Failed to retrieve uniform location " << std::endl;
 			return; 
 
 		}
 
 		float time = 0; 
+
+		////initialize mouse callback for camera. 
+		/*GLFWwindow* glfwwindow = this->window->GetGLFWwindow(); 
+		glfwSetCursorPosCallback(glfwwindow, [](GLFWwindow_ window, double xpos, double ypos)
+			{
+				ExampleApp* app = static_cast<ExampleApp*>(glfwGetWindowUserPointer(window)).camera.mouse_callback(window, xpos, ypos);
+
+			}); */
+		window->SetMouseMoveFunction([](){});
+		//glfwGetWindowUserPointer(this->window->GetGLFWwindow(), this); 
 
 		while (this->window->IsOpen())
 		{
@@ -316,12 +357,18 @@ namespace Example
 			// update the window 
 			this->window->Update();
 
-
+			// update the window 
+			
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
 			
 
 			glUseProgram(this->program); // it use shader program. 
 
+
+
+			// handle camera movemnet and input
+			// pass th window and camera reference
+			//camera.processInput(this->window->GetGLFWwindow(), camera); 
 			// comute view projection matrix. 
 			mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
 
@@ -350,15 +397,6 @@ namespace Example
 			//grid.Draw((float*)&viewProjectionMatrix);  
 			this->window->SwapBuffers(); // swap buffers. 
 
-		// massage callback function be called when there is e debug message from opengl. 
-		
-		//void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar * message, const void* userParam)
-		//{
-		//	//printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, Message: %s\n", (tpye == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), tpye, serverity, message);
-		//	printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
-
-		//}
-	
 
 
 
@@ -373,3 +411,14 @@ namespace Example
 	}
 
 } // namespace Example
+
+//
+//
+//
+//window->SetKeyPressFunction([this](int key, int scancode, int action, int mods) {
+//	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+//	{
+//		this->Close();
+//	}
+//
+//	}

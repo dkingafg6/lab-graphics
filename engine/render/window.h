@@ -95,6 +95,7 @@ private:
 	int32 height;
 	std::string title;
 	GLFWwindow* window;
+	GLFWwindow* GetGLFEwindow() const { return this->window; }
 };
 
 //------------------------------------------------------------------------------

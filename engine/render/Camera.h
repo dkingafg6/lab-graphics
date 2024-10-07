@@ -15,54 +15,90 @@ class Camera
 
 
 public:
+	Camera();
+	// constructor for width, height and position. 
+	Camera(int width, int height, vec3 position);
 
-	// camera's properties, position, target, vector, field of view in degrees, ration ( width / height) clipping pland both near and far.
-	vec3 position, target, up;
+	// constructor with pos. target, and up vectors. 
+	Camera(const vec3& pos, const vec3& target, const vec3& up, float fov = 45.0f, float aspect = 1.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
+
+	// camera's properties, position, target, vector, field of view in degrees, ration ( width / height) clipping plans both near and far.
+	vec3 position;
+	vec3 target = vec3(0.0f, 0.0f, -1.0f); 
+	vec3 up     = vec3(0.0f, 1.0f, 0.0f);
+
+
+	// prevent the camera from jumping when clicking the first time. 
+	bool firstClick = true; 
+
+	// window's width and height. 
+	int width;
+	int height;
+
+	// camera's angles for looking around.  
+	float yaw = -90.0f; 
+	float pitch = 0.0f; 
+
+	// Field of view, aspect ratio, near plane and far clipping plane
 	float fov, aspect, nearPlane, farPlane;
 
-	// camera's properties for mouse control 
-	float yaw, pitch, sensitivity, lastX, lastY; 
+	// adjusting the speed of the camera. 
+	float speed = 0.1f; 
+
+	// adjusting the sensitivity of the camera. 
+	float sensitivity = 0.10f; 
+
+	// mouse position tracking. 
+	float lastX; 
+	float lastY;
+
 	bool firstMouse; 
-
-
-	// constructor. 
-	Camera();
-	Camera(const vec3& pos, const vec3& target, const vec3& up, float fov = 45.0f, float aspect = 1.0f, float nearPlane = 0.1f, float farPlane = 100.0f);
-		/*: position(pos), target(target), up(up), fov(fov), aspect(aspect), nearPlane(nearPlane), farPlane(farPlane),
-		yaw(-90.0f), pitch(0.0f), sensitivity(0.1f), lastX(400), lastY(300), firstMouse(true);*/
-
-
-	// calculate the view matrix
-	// calculate the view matrix
-	mat4 getViewMatrix() const;
+	
 	
 
-	// Calculate the perspective matrix: 
-	mat4 getPerspectiveMatrix() const; 
 
+	
+	// calculate the view matrix ( look up target ) 
+	mat4 getViewMatrix() const;
 
-	// calculate the combined projection = perspective * view. 
-	mat4 getProjectionMatrix() const; 
+	// calculate the perspective matrix 
+	mat4 getPerspectiveMatrix() const;
+
+	// calculate the combined projection ( perspective * view ) 
+	mat4 getProjectionMatrix() const;
+
+	// update and send the camera matrix to the shader. 
+	void updateCameraMatrix(float FOVdeg, GLuint shaderProgram, const char* uniform); 
+	
+
 
 	// move the camera ( translate in world space) 
 	void move(const vec3& delta); 
 
 	// rotate the camera (yaw and pitch)  
-	void setFOV(float yaw, float pitch); 
+	//void setFOV(float yaw, float pitch); 
 
 	// setters for fov aspect ratio, and clipping plans. 
 	void setFOV(float newFOV); 
+
 	void setAspectRatio(float newAspect); 
 	void setClippingPlanes(float newNear, float newFar); 
-	void mouse_callback(GLFWwindow* window, double xpos, double ypos); 
-	void processInput(GLFWwindow* window, Camera& camera);
 
-	// functions to ratete around axes. 
-	vec3 rotateX(const vec3& v, float angle) const; 
-	vec3 rotateY(const vec3& v, float angle) const;
+	// mouse callback for camera rotation. 
+	void mouse_callback(float64 xpos, float64 ypos); 
 
-	// caculate direction based on (pitch and yaw)
+	// handle keyboard and mouse inputs for camera movement. 
+	void processInput(GLFWwindow* window);
+
+	//// functions to rotation around axes. 
+	//vec3 rotateX(const vec3& v, float angle) const; 
+	//vec3 rotateY(const vec3& v, float angle) const;
+
+	// calculate direction based on (pitch and yaw)
 	void updateTarget(); 
+
+private: 
+	void clamPicth(); 
 
 
 };
