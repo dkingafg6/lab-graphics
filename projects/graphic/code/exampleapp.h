@@ -12,6 +12,9 @@
 #include <cstring>
 #include "render/MeshResource.h"
 #include "core/mat4.h"
+#include "core/vec2.h"
+#include "core/vec3.h"
+#include "core/vec4.h"
 #include "render/Camera.h"
 #include "render/WindowWrapper.h"
 #include "render/grid.h"
@@ -69,4 +72,4 @@ private:
 	//Render::Grid grid; 
 	
 };
-} // namespace Example
+} // namespace Examplewdss

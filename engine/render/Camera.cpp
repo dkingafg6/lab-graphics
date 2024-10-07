@@ -129,18 +129,16 @@ void Camera::setClippingPlanes(float newNear, float newFar)
 
 void Camera::mouse_callback(float64 xpos, float64 ypos)
 {
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
+	static double lastX = xpos; 
+	static double lastY = ypos; 
 
-	}
+	double xoffset = xpos - lastX;
+	double yoffset = lastY - ypos; // reverses since y- coordinate go from bottom to top. 
 
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reverses since y- coordinate go from bottom to top. 
 	lastX = xpos;
 	lastY = ypos;
+
+	const float sensitivity  = 0.1f; 
 
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;

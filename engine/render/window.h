@@ -57,7 +57,7 @@ public:
 	/// set optional UI render function
 	void SetUiRender(const std::function<void()>& func);
 
-	GLFWwindow* GetGLFEwindow() const { return this->window; }
+	GLFWwindow* GetGLFWwindow() const { return this->window; }
 
 private:
 

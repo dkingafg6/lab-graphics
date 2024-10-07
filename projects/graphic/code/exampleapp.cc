@@ -116,7 +116,14 @@ namespace Example
 
 		// Enable debuge output
 		glEnable(GL_DEBUG_OUTPUT); 
-		//glEnable(GL_DEBUGE_OUTPUT_)
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+		// Register the callback function for
+		glDebugMessageCallback(MessageCallback, nullptr); 
+
+		// optionally filter out 
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 9, nullptr, GL_FALSE); 
+	
 
 
 		//set up shaders. 
@@ -295,6 +302,9 @@ namespace Example
 	{
 		glEnable(GL_DEPTH_TEST);
 
+		// the camera's pussibily during setup 
+		
+	
 		// create a cube 
 		//MeshResource* meshResource = new MeshResource();
 		MeshResource* meshResource = MeshResource::CreateCube(1.0f, 1.0f, 1.0f);
@@ -332,7 +342,7 @@ namespace Example
 		float time = 0; 
 
 		//initialize mouse callback for camera. 
-		GLFWwindow* glfwwindow = this->window->GetGLFEwindow(); 
+		GLFWwindow* glfwwindow = this->window->GetGLFWwindow(); 
 		//glfwSetCursorPosCallback(glfwwindow, [](GLFWwindow_ window, double xpos, double ypos)
 			/*{
 				ExampleApp* app = static_cast<ExampleApp*>(glfwGetWindowUserPointer(window)).camera.mouse_callback(window, xpos, ypos);*/
@@ -362,6 +372,7 @@ namespace Example
 			this->window->Update();
 
 			// update the window 
+			camera.processInput(this->window->GetGLFWwindow()); 
 			
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
 			
