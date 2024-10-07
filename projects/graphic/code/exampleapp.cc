@@ -114,6 +114,10 @@ namespace Example
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
+		// Enable debuge output
+		glEnable(GL_DEBUG_OUTPUT); 
+		//glEnable(GL_DEBUGE_OUTPUT_)
+
 
 		//set up shaders. 
 		GLint success;
@@ -327,14 +331,14 @@ namespace Example
 
 		float time = 0; 
 
-		////initialize mouse callback for camera. 
-		/*GLFWwindow* glfwwindow = this->window->GetGLFWwindow(); 
-		glfwSetCursorPosCallback(glfwwindow, [](GLFWwindow_ window, double xpos, double ypos)
-			{
-				ExampleApp* app = static_cast<ExampleApp*>(glfwGetWindowUserPointer(window)).camera.mouse_callback(window, xpos, ypos);
+		//initialize mouse callback for camera. 
+		GLFWwindow* glfwwindow = this->window->GetGLFEwindow(); 
+		//glfwSetCursorPosCallback(glfwwindow, [](GLFWwindow_ window, double xpos, double ypos)
+			/*{
+				ExampleApp* app = static_cast<ExampleApp*>(glfwGetWindowUserPointer(window)).camera.mouse_callback(window, xpos, ypos);*/
 
-			}); */
-		window->SetMouseMoveFunction([](){});
+		/*	}); */
+	
 		//glfwGetWindowUserPointer(this->window->GetGLFWwindow(), this); 
 
 		while (this->window->IsOpen())
@@ -392,6 +396,13 @@ namespace Example
 			meshResource->BindIBO();
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+
+			double xpos; 
+			double ypos; 
+
+			glfwGetCursorPos(glfwwindow, &xpos, &ypos);
+
+			camera.mouse_callback(xpos, ypos); 
 
 			// render the grid to draw 
 			//grid.Draw((float*)&viewProjectionMatrix);  
