@@ -93,9 +93,10 @@ namespace Example
 		this->window = new Display::Window;
 		if (!this->window->Open()) return false; 
 		window->SetKeyPressFunction([this](int32, int32, int32, int32)
-		{
+			{
 				this->window->Close();
-		});
+			});
+		
 
 		
 

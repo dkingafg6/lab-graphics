@@ -7,6 +7,8 @@
 #include "core/mat4.h"
 #include "core/vec4.h"
 #include "core/vec3.h"
+#include "render/window.h"
+
 #include "math.h"
 
 class Camera
@@ -83,6 +85,22 @@ public:
 
 	void setAspectRatio(float newAspect); 
 	void setClippingPlanes(float newNear, float newFar); 
+
+	////////////  testing for mouse control ///////////////
+
+
+	/// set key press function callback
+	void SetKeyPressFunction(const std::function<void(int32, int32, int32, int32)>& func);
+	/// set mouse press function callback
+	void SetMousePressFunction(const std::function<void(int32, int32, int32)>& func);
+	/// set mouse move function callback
+	void SetMouseMoveFunction(const std::function<void(float64, float64)>& func);
+	
+
+
+	////////////  testing for mouse control ///////////////
+	
+
 
 	// mouse callback for camera rotation. 
 	void mouse_callback(float64 xpos, float64 ypos); 

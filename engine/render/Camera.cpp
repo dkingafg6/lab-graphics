@@ -126,6 +126,19 @@ void Camera::setClippingPlanes(float newNear, float newFar)
 	farPlane = newFar;
 }
 
+/*oid Camera::SetKeyPressFunction(const std::function<void(int32, int32, int32, int32)>& func)
+{
+}
+
+void Camera::SetMousePressFunction(const std::function<void(int32, int32, int32)>& func)
+{
+}
+
+void Camera::SetMouseMoveFunction(const std::function<void(float64, float64)>& func)
+{
+	Window* window = (Window*)glfwGetWindowUserPointer(win); 
+}*/
+
 
 void Camera::mouse_callback(float64 xpos, float64 ypos)
 {
@@ -170,6 +183,11 @@ void Camera::clamPicth()
 		pitch = -89.0f;
 
 }
+
+//window.SetMouseMoveFunctin([this](float64 z, float y) 
+//	{
+//
+//	}
 // process Keyboard and mouse input;
 void Camera::processInput(GLFWwindow* window)
 {
@@ -215,26 +233,6 @@ void Camera::processInput(GLFWwindow* window)
 	updateTarget(); 
 	
 }
-
-//// setters for fov aspect ratio, and clipping plans. 
-//vec3 Camera::rotateX(const vec3& v, float angle) const
-//{
-//	float rad = angle * (2 * asin(1.0) / 180.0f);
-//	float cosAngle = cos(rad);
-//	float sinAngle = sin(rad);
-//	return vec3(v.x, v.y * cosAngle - v.z * sinAngle, v.y * sinAngle + v.z * cosAngle);
-//}
-//
-//// setters for fov aspect ratio, and clipping plans. 
-//vec3 Camera::rotateY(const vec3& v, float angle) const 
-//{
-//	float rad = angle * (2 * asin(1.0) / 180.0f);
-//	float cosAngle = cos(rad);
-//	float sinAngle = sin(rad);
-//	return vec3(v.z * sinAngle + v.x * cosAngle, v.y, v.z * cosAngle - v.x * sinAngle);
-//
-//}
-//
 
 
 
