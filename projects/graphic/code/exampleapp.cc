@@ -203,7 +203,7 @@ namespace Example
 		{
 			GLint shaderLogSize;
 			//GLchar* buf = new GLchar[shaderLogSize];
-			glGetShaderiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+			glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
 			if (shaderLogSize > 0)
 			{
 				GLchar* buf = new GLchar[shaderLogSize];
@@ -236,14 +236,14 @@ namespace Example
 			return false; 
 
 		}
-		/*window->SetKeyPressFunction([this](int key, int scancode, int action, int mods)
+		window->SetKeyPressFunction([this](int key, int scancode, int action, int mods)
 			{
-				if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-				{
-					this->Close();
-				}
+				//if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+				//{
+				//	this->Close();
+				//}
 
-		}*/
+			});
 
 		
 	

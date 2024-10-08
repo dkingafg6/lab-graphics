@@ -134,7 +134,7 @@ void Camera::mouse_callback(float64 xpos, float64 ypos)
 
 	// calculate the offsets based on movement of the mouse.  
 	double xoffset = xpos - lastX;
-	double yoffset = lastY - ypos; // reverses since y- coordinate go from bottom to top. 
+	double yoffset = ypos - lastY; // reverses since y- coordinate go from bottom to top. 
 
 	lastX = xpos;
 	lastY = ypos;
