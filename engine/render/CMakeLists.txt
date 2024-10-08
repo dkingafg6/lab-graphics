@@ -13,7 +13,15 @@ SET(files_render_display
 	MeshResource.cpp
 	stb_image.h
 	TextureResource.h
-	TextureResource.cpp)
+	TextureResource.cpp 
+	WindowWrapper.h 
+       	ShaderResource.cpp 
+       	ShaderResource.h
+      	GraphicsNode.cpp
+	GraphicsNode.h
+)
+
+
 SOURCE_GROUP("display" FILES ${files_render_display})
 
 SET(files_render
