@@ -132,20 +132,29 @@ void Camera::mouse_callback(float64 xpos, float64 ypos)
 	static double lastX = xpos; 
 	static double lastY = ypos; 
 
+	// calculate the offsets based on movement of the mouse.  
 	double xoffset = xpos - lastX;
 	double yoffset = lastY - ypos; // reverses since y- coordinate go from bottom to top. 
 
 	lastX = xpos;
 	lastY = ypos;
 
-	const float sensitivity  = 0.1f; 
+	// adjusting this how sensitivity has the mouse with changing. 
+	const float sensitivity  = 0.05f; 
 
+	// the sensitivity. 
 	xoffset *= sensitivity;
 	yoffset *= sensitivity;
 
+	// fix the direction of the camera in (x and y ) coordinate to move with mouse direction. 
+	xoffset = -xoffset; 
+	yoffset = -yoffset; 
+
+	// update 
 	yaw += xoffset;
 	pitch += yoffset;
 
+	// this function help the camera to not flipping upside down. 
 	clamPicth(); 
 
 
@@ -155,7 +164,7 @@ void Camera::mouse_callback(float64 xpos, float64 ypos)
 	//if (pitch < -89.0f)
 	//	pitch = -89.0f;
 
-	// update the target direction after adjustint yaw and pitch
+	// update the target direction after adjusting yaw and pitch
 	updateTarget();
 }
 

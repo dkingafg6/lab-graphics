@@ -91,9 +91,9 @@ namespace Example
 		this->window = new Display::Window;
 		if (!this->window->Open()) return false; 
 		window->SetKeyPressFunction([this](int32, int32, int32, int32)
-			{
+		{
 				this->window->Close();
-			});
+		});
 
 		
 
@@ -343,11 +343,7 @@ namespace Example
 
 		//initialize mouse callback for camera. 
 		GLFWwindow* glfwwindow = this->window->GetGLFWwindow(); 
-		//glfwSetCursorPosCallback(glfwwindow, [](GLFWwindow_ window, double xpos, double ypos)
-			/*{
-				ExampleApp* app = static_cast<ExampleApp*>(glfwGetWindowUserPointer(window)).camera.mouse_callback(window, xpos, ypos);*/
-
-		/*	}); */
+		
 	
 		//glfwGetWindowUserPointer(this->window->GetGLFWwindow(), this); 
 
