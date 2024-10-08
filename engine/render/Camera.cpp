@@ -158,12 +158,6 @@ void Camera::mouse_callback(float64 xpos, float64 ypos)
 	clamPicth(); 
 
 
-	//// pitch 
-	//if (pitch > 89.0f)
-	//	pitch = 89.0f;
-	//if (pitch < -89.0f)
-	//	pitch = -89.0f;
-
 	// update the target direction after adjusting yaw and pitch
 	updateTarget();
 }
@@ -182,6 +176,7 @@ void Camera::processInput(GLFWwindow* window)
 	const float cameraSpeed = speed; // adjust accordingly for movement speed
 	vec3 forward = normalize(target - position); // camera direction vector
 	vec3 right = normalize(cross(up, forward)); // perpendicular to up and forward, 
+	vec3 upDirection = normalize(up);          // normalize up vector for vertical movement. 
 
 	// move forward
 	if (glfwGetKey(window,  GLFW_KEY_W) == GLFW_PRESS)
@@ -205,6 +200,16 @@ void Camera::processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
 		move(right * cameraSpeed);
+	}
+	// move up 
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	{
+		move(upDirection * cameraSpeed);
+	}
+	// move down 
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+	{
+		move(-upDirection * cameraSpeed);
 	}
 	// update camera target after moving
 	updateTarget(); 

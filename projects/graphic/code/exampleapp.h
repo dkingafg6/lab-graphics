@@ -69,7 +69,7 @@ private:
 	
 
 	// Add the grid as a member variable
-	//Render::Grid grid; 
+	
 	
 };
 } // namespace Examplewdss

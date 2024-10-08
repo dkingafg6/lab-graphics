@@ -12,6 +12,8 @@
 #include "core/mat4.h"
 #include "render/Camera.h"
 #include "render/window.h"
+#include "render/grid.h"
+
 
 
 
@@ -50,7 +52,7 @@ const GLchar* ps =
 "out vec4 Color;\n"
 "void main()\n"
 "{\n"
-"	Color = texture(texture1, TexCoord);\n"
+"	FragColor = texture(texture1, TexCoord);\n"
 //"	Color = color;\n"
 "}\n";
 
@@ -114,7 +116,7 @@ namespace Example
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-		// Enable debuge output
+		// Enable debugs output
 		glEnable(GL_DEBUG_OUTPUT); 
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
@@ -126,7 +128,7 @@ namespace Example
 	
 
 
-		//set up shaders. 
+		// Initialize shaders. 
 		GLint success;
 
 		// setup vertex shader
@@ -138,9 +140,9 @@ namespace Example
 		glCompileShader(this->vertexShader);
 		// check compilation for vertex shader. 
 		
-		// change with new ErrorLog if it's not work can undo it
-		 //get error log
 		
+		 //get error log
+		// checking shader compilation.
 		glGetShaderiv(this->vertexShader, GL_COMPILE_STATUS, &success);
 		if (success ==	GL_FALSE)
 		{
@@ -190,7 +192,9 @@ namespace Example
 		//	}
 
 		//}
-		// create a program object
+		// 
+		// 
+		// create a shader program object
 		this->program = glCreateProgram();
 		glAttachShader(this->program, this->vertexShader);
 		glAttachShader(this->program, this->pixelShader);
@@ -216,7 +220,8 @@ namespace Example
 
 		}
 		
-		// setup vbo
+		// setup vbo (initialize) 
+
 		glGenBuffers(1, &this->triangle);
 		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
 		GLfloat buf[] =
@@ -229,13 +234,25 @@ namespace Example
 		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		/// load file pics 
+		/// load file pics or load texture.
 		if (!texture.loadFromFile("../engine/texture/lizard.png"))
 		{
 			std::cerr << "Failed to load texture " << std::endl; 
 			return false; 
 
 		}
+
+		//initialize th grid
+		/*if (!grid.Init()) 
+		{
+			std::cerr << "Failed to initialize the grid from grid class" << std::endl;
+			return false;
+
+		}
+		return true; */
+
+
+		// active for taking the information from the window class here right for movement the cameras with mouse and keys. 
 		window->SetKeyPressFunction([this](int key, int scancode, int action, int mods)
 			{
 				//if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -247,7 +264,7 @@ namespace Example
 
 		
 	
-		//grid = Render::Grid();
+		//;
 		return true;
 
 	}
@@ -303,7 +320,7 @@ namespace Example
 		glEnable(GL_DEPTH_TEST);
 
 		// the camera's pussibily during setup 
-		
+		Render::Grid grid;
 	
 		// create a cube 
 		//MeshResource* meshResource = new MeshResource();
@@ -312,7 +329,7 @@ namespace Example
 		texture.loadFromFile("../engine/texture/lizard.png");
 		// bind texture
 		texture.Bind(); 
-
+		
 		
 		
 		
@@ -353,13 +370,17 @@ namespace Example
 
 			time += 0.009f; // increment time on iteration. 
 
-			// define a 4x4 matrix used for transformation some scaling and rotation.
-			//mat4 matrix4x4; 
-			mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
-
 
 			// clear depth buffer and color buffer be ready for new frame. 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// define a 4x4 matrix used for transformation some scaling and rotation.
+			//mat4 matrix4x4; 
+			//mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
+
+
+			// clear depth buffer and color buffer be ready for new frame. 
+			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			// get ned dimenstions 
 
@@ -367,8 +388,16 @@ namespace Example
 			// update the window 
 			this->window->Update();
 
-			// update the window 
+			// handle the camera movement. 
 			camera.processInput(this->window->GetGLFWwindow()); 
+
+			// comute view projection matrix. 
+			mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
+
+			// define a 4x4 matrix used for transformation some scaling and rotation.
+			//mat4 matrix4x4; 
+			mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
+
 			
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
 			
@@ -381,7 +410,7 @@ namespace Example
 			// pass th window and camera reference
 			//camera.processInput(this->window->GetGLFWwindow(), camera); 
 			// comute view projection matrix. 
-			mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
+			//mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
 
 
 			// projection and view matrix combined from the camera. 
@@ -400,19 +429,23 @@ namespace Example
 			// draw a 3D grid and mesh
 			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 			meshResource->BindVBO();
-			meshResource->BindIBO();
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
-			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+			meshResource->BindIBO();// update the camera based on mouse mouvement. 
+			double xpos;
+			double ypos;
 
-			double xpos; 
-			double ypos; 
 
 			glfwGetCursorPos(glfwwindow, &xpos, &ypos);
 
-			camera.mouse_callback(xpos, ypos); 
+			camera.mouse_callback(xpos, ypos);
+			
+
+	
 
 			// render the grid to draw 
-			//grid.Draw((float*)&viewProjectionMatrix);  
+			grid.Draw((float*)&viewProjectionMatrix);
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
+			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
+			  
 			this->window->SwapBuffers(); // swap buffers. 
 
 
