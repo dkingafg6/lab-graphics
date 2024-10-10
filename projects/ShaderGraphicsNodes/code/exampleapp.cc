@@ -136,7 +136,7 @@ namespace Example
 		//glDebugMessageCallback(MessageCallback, nullptr); 
 
 		// optionally filter out 
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 9, nullptr, GL_FALSE); 
+		//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 9, nullptr, GL_FALSE); 
 	
 
 
