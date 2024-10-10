@@ -384,7 +384,7 @@ namespace Example
 			// handle the camera movement. 
 			camera.processInput(this->window->GetGLFWwindow()); 
 
-			// comute view projection matrix. 
+			// compute view projection matrix. 
 			mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
 
 			// define a 4x4 matrix used for transformation some scaling and rotation.
