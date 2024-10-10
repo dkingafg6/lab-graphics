@@ -7,6 +7,7 @@
 #include "core/mat4.h"
 #include "core/vec4.h"
 #include "core/vec3.h"
+#include "core/util.h"
 #include "render/window.h"
 
 #include "math.h"

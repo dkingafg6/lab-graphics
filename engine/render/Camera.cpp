@@ -52,14 +52,14 @@ void Camera::updateTarget()
 mat4 Camera::getViewMatrix() const
 {
 
-	return lookat(position, position + target, up);
+	return mat4::lookat(position, position + target, up);
 }
 
 
 // Calculate the perspective matrix:
 mat4 Camera::getPerspectiveMatrix() const
 {
-	return perspective(fov, aspect, nearPlane,farPlane);
+	return mat4::perspective(fov, aspect, nearPlane,farPlane);
 }
 
 

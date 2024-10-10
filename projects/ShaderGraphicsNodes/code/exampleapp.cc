@@ -389,7 +389,7 @@ namespace Example
 
 			// define a 4x4 matrix used for transformation some scaling and rotation.
 			//mat4 matrix4x4; 
-			mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
+			mat4 matrix4x4 = mat4::rotationz(time) * mat4::rotationx(time); // rotation matrix
 
 			
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
