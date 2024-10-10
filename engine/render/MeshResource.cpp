@@ -8,6 +8,7 @@ using namespace std;
 // Constructor
 MeshResource::MeshResource()
 {
+    // initialize vertex, index shader and indexSize to zero. 
     vertexBuffer = 0; 
     indexBuffer = 0; 
     indexSize = 0; 
@@ -18,115 +19,88 @@ MeshResource::MeshResource()
 MeshResource::~MeshResource()
 {
     // meshresource shuold clean when the object is destroyed. 
+    printf("Cleanup called \n");
     Cleanup(); 
     
 }
+
+// Create the Cube mesh resource with static method
 MeshResource* MeshResource::CreateCube(float width, float height, float depth) 
 {
+    // allocate a new meshResource object. 
     MeshResource* mesh = new MeshResource(); 
+    // create both vertex and index buffer object for the cube. 
     mesh->CreateVBO(width, height, depth); 
-    mesh->CreateIBO(); 
-    return mesh; 
+    mesh->CreateIBO();                    
+    return mesh;   // return the create mesh resource. 
 
 
 }
 
- //optional higher grade function spherical 
-MeshResource* MeshResource::CreateSpher(float radius, unsigned int rings, unsigned int sectors)
-{
-    std::vector<vec3> vertices; 
-    std::vector<vec2> uvs;
-    std::vector<unsigned int> indices;
 
-    //
-    for (unsigned int r = 0; r <= rings; ++r)
-    {
-        for (unsigned int s = 0; s <= sectors; ++s)
-        {
-            float y = cos((2 * asin(1.0) * r )/ rings);
-            float x = cos(2 * (2 * asin(1.0) )* s / sectors) * sin((2 * asin(1.0)) * r / rings);
-            float z = sin(2 * (2 * asin(1.0)) * s / sectors) * sin((2 * asin(1.0) )* r / rings);
-
-            vertices.emplace_back(x * radius, y * radius, z * radius); 
-            uvs.emplace_back((float)s / sectors, (float)r / rings); 
-        }
-
-    }
-
-    for (unsigned int r = 0; r < rings; ++r) 
-    {
-        for (unsigned int s = 0; s < sectors; ++s) 
-        {
-            unsigned int first = (r * (sectors + 1)) + s; 
-            unsigned int second = first + sectors + 1; 
-
-            indices.push_back(first); 
-            indices.push_back(second);
-            indices.push_back(first + 1);
-
-            indices.push_back(second);
-            indices.push_back(second + 1);
-            indices.push_back(first + 1);
-
-        }
-
-    }
-
-    MeshResource* mesh = new MeshResource(); 
-    mesh->setVertices(vertices); 
-    mesh->setUVs(uvs); 
-    mesh->setIndices(indices); 
-    mesh->setupMesh(); 
-    return mesh;
-}
+// set vertex data for mesh.
 void MeshResource::setVertices(const std::vector<vec3>& vertices)
 {
     this->vertices = vertices; 
 }
+
+// set UV coordinates for the mesh. 
 void MeshResource::setUVs(const std::vector<vec2>& uvs)
 {
     this->uvs = uvs; 
 }
+
+// set index data for the mesh. 
 void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
 {
     this->indices = Indices; 
 }
-void MeshResource::setupMesh()
-{
-    glGenBuffers(1, &vertexBuffer); 
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); 
 
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW); 
-
-    if (!uvs.empty()) 
-    {
-        GLuint uvBuffer; 
-        glGenBuffers(1, &uvBuffer); 
-        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer); 
-        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(vec2), uvs.data(), GL_STATIC_DRAW); 
-
-    }
-
-    //IBO 
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-
-    // unbinde 
-    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-
-}
+// buffer for the mesh's vertex data and index data. 
+//void MeshResource::setupMesh()
+//{
+//    glGenBuffers(1, &vertexBuffer); // generate vertex buffer. 
+//    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); // binding the vertex buffer after generating. 
+//
+//    // allocate buffer data for vertices. 
+//    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW); 
+//
+//    // checking 
+//    if (!uvs.empty()) 
+//    {
+//        GLuint uvBuffer; 
+//        // generate UV buffer and bind it. 
+//        glGenBuffers(1, &uvBuffer); 
+//        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer); 
+//
+//        // allocate buffer data for UVs
+//        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(vec2), uvs.data(), GL_STATIC_DRAW); 
+//
+//    }
+//
+//    //Create (IBO) bind after that.  
+//    glGenBuffers(1, &indexBuffer);
+//    glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
+//
+//    // allocate buffer data for indics. 
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+//
+//    // unbind index buffer 
+//    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+//
+//}
 
 // Method to create a vertex buffer object for the cube. 
 void MeshResource::CreateVBO(float width, float height, float depth)
 {
+    // calculate half dimensions for positioning. 
     float halfWidth = width / 2.0f;
     float halfHeight = height / 2.0f;
     float halfDepth = depth / 2.0f;
 
 
-    // create vbo with vertext structure. 
+    // create vertex data for the cube with pos, colors and Uvs 
     float positions[] = 
     {
 
@@ -242,13 +216,14 @@ void MeshResource::CreateVBO(float width, float height, float depth)
 
     };
 
-    // Define vertex data (position, color, uv)
+    
 
      // Generate and bind vertex buffer /VBOS
     glGenBuffers(1, &vertexBuffer);
     // Biding the VBO 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    // for VBO send the size of the float in array. 
+    // for VBO send the size of the float in array.
+    // allocate buffer data for vertex pos.
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
     // position attribute 
@@ -265,7 +240,7 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     glEnableVertexAttribArray(2);
 
     // unbind the VBO
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
    
@@ -299,7 +274,7 @@ void MeshResource::CreateIBO()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     // for IBO send the size of the float in array. 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,  sizeof(indexes), indexes, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
+    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
 
     //indexSize = sizeof(indexes) / sizeof(indexes[0]); 
 

@@ -128,12 +128,12 @@ namespace Example
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-		// Enable debugs output
-		glEnable(GL_DEBUG_OUTPUT); 
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		//// Enable debugs output
+		//glEnable(GL_DEBUG_OUTPUT); 
+		//glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 
-		// Register the callback function for
-		glDebugMessageCallback(MessageCallback, nullptr); 
+		//// Register the callback function for
+		//glDebugMessageCallback(MessageCallback, nullptr); 
 
 		// optionally filter out 
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 9, nullptr, GL_FALSE); 
@@ -309,12 +309,12 @@ namespace Example
 		Core::App::Close();
 	}
 
-	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+	/*void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
 		
 		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
 		
-	}
+	}*/
 
 	//------------------------------------------------------------------------------
 	/**
@@ -329,8 +329,9 @@ namespace Example
 		// create a cube 
 		//MeshResource* meshResource = new MeshResource();
 		MeshResource* meshResource = MeshResource::CreateCube(1.0f, 1.0f, 1.0f);
+
 		//load texture
-		texture.loadFromFile("../engine/texture/lizard4.png");
+		texture.loadFromFile("../engine/texture/lizard1.png");
 		// bind texture
 		texture.Bind(); 
 		
@@ -355,7 +356,7 @@ namespace Example
 
 		if (textureLoc == -1 || camMatrixLoc == -1 || rotationLoc == -1) 
 		{
-			std::cerr << "Failed to retrieve uniform location " << std::endl;
+			printf("Failed to retrieve uniform location \n");
 			return; 
 
 		}
@@ -424,13 +425,11 @@ namespace Example
 	
 
 			// render the grid to draw 
-			//grid.Draw((GLfloat*)&viewProjectionMatrix);
+			grid.Draw((GLfloat*)&viewProjectionMatrix);
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 			  
 			this->window->SwapBuffers(); // swap buffers. 
-
-
 
 
 		
@@ -440,7 +439,7 @@ namespace Example
 			break;
 #endif
 		}
-
+		delete meshResource;
 	}
 
 } // namespace Example

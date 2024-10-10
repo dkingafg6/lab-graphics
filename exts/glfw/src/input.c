@@ -629,8 +629,7 @@ GLFWAPI int glfwGetKeyScancode(int key)
 GLFWAPI int glfwGetKey(GLFWwindow* handle, int key)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
-
+    
     _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_RELEASE);
 
     if (key < GLFW_KEY_SPACE || key > GLFW_KEY_LAST)

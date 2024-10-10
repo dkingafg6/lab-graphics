@@ -40,11 +40,9 @@ public:
 	void BindVBO();
 	void BindIBO();
 	void Draw();
-	void setupMesh();
+	//void setupMesh();
 	//draw the mesh 
 	
-
-
 
 	// create the vertices with pos and texture cooordinate for each face of the cube.
 	static MeshResource* CreateCube(float width, float height, float depth);
@@ -54,7 +52,7 @@ public:
 	std::vector<vec2> uvs;
 	std::vector<unsigned int> indices;
 
-	static MeshResource* CreateSpher(float radius, unsigned int rings, unsigned int sectors);
+	
 
 	void setVertices(const std::vector<vec3>& vertices); 
 	void setUVs(const std::vector<vec2>& uvs);

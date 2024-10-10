@@ -6,7 +6,9 @@ SET(files_texture
 	lizard1.png
 	lizard2.png
 	lizard3.png
-	lizard4.png)
+	lizard4.png
+	lizard5.png
+	lizard6.png)
 SOURCE_GROUP("texture" FILES ${files_texture})
 
 SET(files_pch ../config.h ../config.cc)
