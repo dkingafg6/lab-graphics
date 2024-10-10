@@ -49,27 +49,18 @@ public:
 private:
 
 	Display::Window* window;
-
 	GLuint program;
 	GLuint vertexShader;
 	GLuint pixelShader;
 	GLuint triangle;
-
-
-	
 	Camera camera; // camera object
 
-
-
+	bool mouseLeftPressed = false;
+	bool mouseRightPressed = false;
+	bool mouseMiddlePressed = false;
 	// width and hieght of window
 	const int width = 800;
 	const int height = 600;
-	
-	// help function to get GLFW window.
-	
-
-	// Add the grid as a member variable
-	
 	
 };
 } // namespace Examplewdss

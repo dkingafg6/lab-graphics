@@ -142,6 +142,7 @@ void Camera::SetMouseMoveFunction(const std::function<void(float64, float64)>& f
 
 void Camera::mouse_callback(float64 xpos, float64 ypos)
 {
+
 	static double lastX = xpos; 
 	static double lastY = ypos; 
 
@@ -160,7 +161,7 @@ void Camera::mouse_callback(float64 xpos, float64 ypos)
 	yoffset *= sensitivity;
 
 	// fix the direction of the camera in (x and y ) coordinate to move with mouse direction. 
-	xoffset = -xoffset; 
+	xoffset = xoffset; 
 	yoffset = -yoffset; 
 
 	// update 
@@ -208,26 +209,26 @@ void Camera::processInput(GLFWwindow* window)
 		move(-forward * cameraSpeed);
 
 	}
-	// move left
+	// move right
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 	{
-		move(-right * cameraSpeed);
+		move(right * cameraSpeed);
 
 	}
-	// move right 
+	// move left
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 	{
-		move(right * cameraSpeed);
+		move(-right * cameraSpeed);
 	}
-	// move up 
+	// move down
 	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
 	{
-		move(upDirection * cameraSpeed);
+		move(-upDirection * cameraSpeed);
 	}
-	// move down 
+	// move up
 	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
 	{
-		move(-upDirection * cameraSpeed);
+		move(upDirection * cameraSpeed);
 	}
 	// update camera target after moving
 	updateTarget(); 

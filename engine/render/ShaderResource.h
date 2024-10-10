@@ -6,61 +6,66 @@
 #include <unordered_map>
 #include <fstream>
 #include <string>
+#include <stdexcept>
 
 
 using namespace std;
 
-// take the file convert to text file
-//string get_file_contents(const char* filename); 
+// take the files convert to the text file
+string get_file_contents(const char* filename); 
 
 // ShaderResource class handles loading, compiling, for those using OpenGL shader programs. 
 class ShaderRsource
 {
 public:
 	
-	ShaderRsource()
-	{
-	}
+	ShaderRsource(); 
+	
+	
 	
 	// constructor
 	~ShaderRsource(); // Destructor
 
+	
+	GLuint vertexShader; 
+	GLuint indexShader; 
+
 	// ID linked the shader program in OpneGL
 	GLuint programID; 
 
-	unordered_map<string, GLint> uniformLocationas; 
+	// (optional add ) Do the reducing the overhead of multiple lookup.  
+	unordered_map<string, GLint> uniformLocationas; // cache for uniform location. 
 	
 	//// Load shader source file, compiles and vertex shader plus fragment shader after compile links them into a shader program. 
-	void loadfromFiles(const string& vertexShaderPath, const string& fragmentShaderPath); 
+	void loadfromFiles(const string& FilePath, GLenum Typename);
 
-	// compiles shader 
-	GLint copileShader(GLenum shaderType, const string& shadersource);
+	// compiles one single shader return its ID. 
+	GLint compileShader(GLenum shaderType, const char* shadersource);
+
 	// connect this shader program for use in rendering. 
+	// OBS this function (Use()) should call before any object render. 
+	// be sour that correct shaders are used. 
 	void Use(); 
 
+	//Add functions to modify uniform variables of at least the type Matrix4fv .
 	// use a 4x4 matrix uniform in the shader.
-	void SetUniformMatrix4fv(const string& name, const GLfloat* value); 
+	// helping transformation to be used
+	void SetUniformMatrix4fv(const char* name, const GLfloat* value);
 
-	//use 4D vector uniform in the shader. 
-	void SetUniformVector4fv(const string& name, const GLfloat* value);
+	//Add functions to modify uniform variables of at least the type Vector4f (or Vector4fv).
+	//use 4D vector uniform in the shader used for colors position. 
+	void SetUniformVector4fv(const char* name, const GLfloat* value);
 
-	
 
-	// load shader source from file. 
-	string loadShaderSource(const string& filePath); 
+	// load shader source code from file returns as a string. 
+	string loadShaderSource(const char* filePath);
 
 	// get location of the uniform's variable from the shader program. 
-	GLint getUniformLocation(const string& name); 
-
-	// active 
-	void Active(); 
-	// delete. 
-	void Delete(); 
+	// can use it later. 
+	GLint getUniformLocation(const char* name);
 
 
 
 private:
-	// to check for shader compilation and linked errors. 
-	void compileErrors(unsigned shader, const char* type); 
-
+	
 };

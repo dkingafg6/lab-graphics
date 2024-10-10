@@ -91,11 +91,22 @@ namespace Example
 		if(!App::Open()) return false;
 
 		this->window = new Display::Window;
-		if (!this->window->Open()) return false; 
-		window->SetKeyPressFunction([this](int32, int32, int32, int32)
+
+		if (!this->window->Open()) return false;
+		window->SetMousePressFunction([this](int32 button, int32 action, int32 mods)
 			{
-				this->window->Close();
+				if (button == GLFW_MOUSE_BUTTON_LEFT)
+				{
+					this->mouseLeftPressed = (action == GLFW_PRESS);
+				}
+				else if (button == GLFW_MOUSE_BUTTON_RIGHT)
+				{
+					this->mouseRightPressed = (action == GLFW_PRESS);
+				}
+				
 			});
+
+		
 		
 
 		
@@ -212,7 +223,7 @@ namespace Example
 			if (shaderLogSize > 0)
 			{
 				GLchar* buf = new GLchar[shaderLogSize];
-				glGetShaderInfoLog(this->program, shaderLogSize, NULL, buf);
+				glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
 				printf("[PROGRAM LINK ERROR]: %s \n", buf);
 				delete[] buf;
 
@@ -234,14 +245,6 @@ namespace Example
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(buf), buf, GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		/// load file pics or load texture.
-		if (!texture.loadFromFile("../engine/texture/lizard.png"))
-		{
-			std::cerr << "Failed to load texture " << std::endl; 
-			return false; 
-
-		}
 
 		//initialize th grid
 		/*if (!grid.Init()) 
@@ -308,7 +311,7 @@ namespace Example
 
 	void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 	{
-		//printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, Message: %s\n", (tpye == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), tpye, serverity, message);
+		
 		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
 		
 	}
@@ -327,7 +330,7 @@ namespace Example
 		//MeshResource* meshResource = new MeshResource();
 		MeshResource* meshResource = MeshResource::CreateCube(1.0f, 1.0f, 1.0f);
 		//load texture
-		texture.loadFromFile("../engine/texture/lizard.png");
+		texture.loadFromFile("../engine/texture/lizard4.png");
 		// bind texture
 		texture.Bind(); 
 		
@@ -362,8 +365,6 @@ namespace Example
 		//initialize mouse callback for camera. 
 		GLFWwindow* glfwwindow = this->window->GetGLFWwindow(); 
 		
-	
-		//glfwGetWindowUserPointer(this->window->GetGLFWwindow(), this); 
 
 		while (this->window->IsOpen())
 		{
@@ -374,16 +375,6 @@ namespace Example
 
 			// clear depth buffer and color buffer be ready for new frame. 
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			// define a 4x4 matrix used for transformation some scaling and rotation.
-			//mat4 matrix4x4; 
-			//mat4 matrix4x4 = rotationz(time) * rotationx(time); // rotation matrix
-
-
-			// clear depth buffer and color buffer be ready for new frame. 
-			//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			// get ned dimenstions 
 
 
 			// update the window 
@@ -406,19 +397,6 @@ namespace Example
 			glUseProgram(this->program); // it use shader program. 
 
 
-
-			// handle camera movemnet and input
-			// pass th window and camera reference
-			//camera.processInput(this->window->GetGLFWwindow(), camera); 
-			// comute view projection matrix. 
-			//mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
-
-
-			// projection and view matrix combined from the camera. 
-			//mat4 projectionMatrix = camera.getProjectionMatrix();
-			//mat4 viewMatrix = camera.getViewMatrix();
-			
-
 			//	// attributes 
 			glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, (GLfloat*)&viewProjectionMatrix);
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, (GLfloat*)&matrix4x4);
@@ -431,19 +409,22 @@ namespace Example
 			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 			meshResource->BindVBO();
 			meshResource->BindIBO();// update the camera based on mouse mouvement. 
+		
 			double xpos;
 			double ypos;
 
+			if (this->mouseRightPressed)
+			{
+				glfwGetCursorPos(glfwwindow, &xpos, &ypos);
 
-			glfwGetCursorPos(glfwwindow, &xpos, &ypos);
-
-			camera.mouse_callback(xpos, ypos);
+				camera.mouse_callback(xpos, ypos);
+			}
 			
 
 	
 
 			// render the grid to draw 
-			grid.Draw((float*)&viewProjectionMatrix);
+			//grid.Draw((GLfloat*)&viewProjectionMatrix);
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 			  

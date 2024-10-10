@@ -246,19 +246,21 @@ void MeshResource::CreateVBO(float width, float height, float depth)
 
      // Generate and bind vertex buffer /VBOS
     glGenBuffers(1, &vertexBuffer);
+    // Biding the VBO 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    // for VBO send the size of the float in array. 
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
     // position attribute 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) NULL);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*) NULL); // position 
     //position.
     glEnableVertexAttribArray(0); 
 
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3  * sizeof(GLfloat)));
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(3  * sizeof(GLfloat))); // color
     // color.
     glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)(7 * sizeof(GLfloat))); // TexCoord
     // uv.
     glEnableVertexAttribArray(2);
 
@@ -293,7 +295,9 @@ void MeshResource::CreateIBO()
 
     // Generate and bind index buffer
     glGenBuffers(1, &indexBuffer);
+    // binding IBO 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    // for IBO send the size of the float in array. 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,  sizeof(indexes), indexes, GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
 
@@ -315,13 +319,20 @@ void MeshResource::BindIBO()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 }
 
-//void MeshResource::Draw()
-//{
-//    BindVBO();
-//    BindIBO();
-//
-//    glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0); 
-//}
+void MeshResource::Draw()
+{
+
+    // bind vertex buffer. 
+    BindVBO();
+    // bind index buffer.
+    BindIBO();
+
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
+    // unbind both VBO and IBO 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
 
 void MeshResource::Cleanup()
 {

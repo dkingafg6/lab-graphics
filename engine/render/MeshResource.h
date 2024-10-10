@@ -39,9 +39,10 @@ public:
 	void CreateIBO();
 	void BindVBO();
 	void BindIBO();
+	void Draw();
 	void setupMesh();
-	// draw the mesh 
-	/*void Draw();*/ 
+	//draw the mesh 
+	
 
 
 

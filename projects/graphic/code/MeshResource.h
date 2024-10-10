@@ -165,7 +165,16 @@ inline void MeshResource::bindIBO()
 
 inline void MeshResource::draw()
 {
+	// bind vertex buffer. 
+	bindVBO(); 
+	// bind index buffer.
+	bindIBO(); 
+
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
+	// unbind both VBO and IBO 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
 }
 
 inline void MeshResource::cleanup()
