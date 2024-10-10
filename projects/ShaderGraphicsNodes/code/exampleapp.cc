@@ -410,6 +410,8 @@ namespace Example
 			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 			meshResource->BindVBO();
 			meshResource->BindIBO();// update the camera based on mouse mouvement. 
+
+			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 		
 			double xpos;
 			double ypos;
@@ -426,7 +428,7 @@ namespace Example
 
 			// render the grid to draw 
 			grid.Draw((GLfloat*)&viewProjectionMatrix);
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
+			
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 			  
 			this->window->SwapBuffers(); // swap buffers. 
