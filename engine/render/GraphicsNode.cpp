@@ -76,4 +76,5 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 void GraphicsNode::Draw()
 {
+	// test //////////
 }
