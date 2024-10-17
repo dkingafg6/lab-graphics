@@ -19,8 +19,8 @@ public:
 	void SetMeshResource(shared_ptr<MeshResource> mesh); 
 	shared_ptr<MeshResource> GetMeshResource() const; 
 	
-	void SetShaderResource(shared_ptr<ShaderRsource> shader);
-	shared_ptr<ShaderRsource> GetShaderResource() const; 
+	void SetShaderResource(shared_ptr<ShaderResource> shader);
+	shared_ptr<ShaderResource> GetShaderResource() const; 
 
 
 	void SetTextureResource(shared_ptr<TextureResource> texture); 
@@ -41,7 +41,7 @@ private:
 
 	// smart pointer to resources share between GraphicsNode and instance. 
 	std::shared_ptr<MeshResource> meshResource; 
-	std::shared_ptr<ShaderRsource> shaerResource;
+	std::shared_ptr<ShaderResource> shaerResource;
 	std::shared_ptr<TextureResource> textureResource;
 
 	//transformation matrix. 

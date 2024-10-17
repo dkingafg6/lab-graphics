@@ -15,20 +15,21 @@ using namespace std;
 string get_file_contents(const char* filename); 
 
 // ShaderResource class handles loading, compiling, for those using OpenGL shader programs. 
-class ShaderRsource
+class ShaderResource
 {
 public:
 	
-	ShaderRsource(); 
-	
-	
-	
 	// constructor
-	~ShaderRsource(); // Destructor
-
+	ShaderResource(); 
+	
+	
+	
+	// destructor
+	~ShaderResource(); 
 	
 	GLuint vertexShader; 
 	GLuint indexShader; 
+	GLuint fragmentShader; 
 
 	// ID linked the shader program in OpneGL
 	GLuint programID; 
@@ -37,15 +38,16 @@ public:
 	unordered_map<string, GLint> uniformLocationas; // cache for uniform location. 
 	
 	//// Load shader source file, compiles and vertex shader plus fragment shader after compile links them into a shader program. 
-	void loadfromFiles(const string& FilePath, GLenum Typename);
+	void loadFromFiles(const string& vertexFilePath, GLenum fregmentFilePath);
 
 	// compiles one single shader return its ID. 
 	GLint compileShader(GLenum shaderType, const char* shadersource);
 
+
 	// connect this shader program for use in rendering. 
-	// OBS this function (Use()) should call before any object render. 
+	// OBS this function (UseProgram()) should call before any object render. 
 	// be sour that correct shaders are used. 
-	void Use(); 
+	void UseProgram(); 
 
 	//Add functions to modify uniform variables of at least the type Matrix4fv .
 	// use a 4x4 matrix uniform in the shader.

@@ -23,12 +23,12 @@ shared_ptr<MeshResource> GraphicsNode::GetMeshResource() const
 	return this->meshResource;
 }
 
-void GraphicsNode::SetShaderResource(shared_ptr<ShaderRsource> shader)
+void GraphicsNode::SetShaderResource(shared_ptr<ShaderResource> shader)
 {
 	this->shaerResource = shader; 
 }
 
-shared_ptr<ShaderRsource> GraphicsNode::GetShaderResource() const
+shared_ptr<ShaderResource> GraphicsNode::GetShaderResource() const
 {
 	return this->shaerResource;
 }

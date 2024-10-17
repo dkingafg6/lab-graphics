@@ -13,6 +13,10 @@
 #include "render/Camera.h"
 #include "render/window.h"
 #include "render/grid.h"
+#include "render/ShaderResource.h"
+#include "render/GraphicsNode.h"
+
+
 
 
 
@@ -331,7 +335,7 @@ namespace Example
 		MeshResource* meshResource = MeshResource::CreateCube(1.0f, 1.0f, 1.0f);
 
 		//load texture
-		texture.loadFromFile("../engine/texture/lizard1.png");
+		texture.loadFromFile("../engine/texture/lizard2.png");
 		// bind texture
 		texture.Bind(); 
 		
