@@ -47,6 +47,7 @@ public:
 	// connect this shader program for use in rendering. 
 	// OBS this function (UseProgram()) should call before any object render. 
 	// be sour that correct shaders are used. 
+	// in example.cpp should be in right order. 
 	void UseProgram(); 
 
 	//Add functions to modify uniform variables of at least the type Matrix4fv .

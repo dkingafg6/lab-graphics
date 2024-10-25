@@ -240,6 +240,7 @@ namespace Example
 
 		glGenBuffers(1, &this->triangle);
 		glBindBuffer(GL_ARRAY_BUFFER, this->triangle);
+		//vertex data for triangle like pos and color. 
 		GLfloat buf[] =
 		{
 			-0.5f, -0.5f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 0
@@ -325,7 +326,7 @@ namespace Example
 	*/
 	void ExampleApp::Run()
 	{
-		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_DEPTH_TEST); // enable depth testing for 3D rendering. 
 
 		// the camera's pussibily during setup 
 		Render::Grid grid;
@@ -374,6 +375,12 @@ namespace Example
 		while (this->window->IsOpen())
 		{
 
+			// connect this shader program for use in rendering. 
+			// OBS this function (UseProgram()) should call before any object render. 
+			// be sour that correct shaders are used. 
+			// used in shaderResource or called. 
+			glUseProgram(this->program); // avtive the shader program. 
+
 
 			time += 0.009f; // increment time on iteration. 
 
@@ -384,6 +391,9 @@ namespace Example
 
 			// update the window 
 			this->window->Update();
+
+			//set texture uniform and the unit is 0 
+			glUniform1i(textureLoc, 0); 
 
 			// handle the camera movement. 
 			camera.processInput(this->window->GetGLFWwindow()); 
@@ -399,10 +409,10 @@ namespace Example
 			// binding vertex and index buffer object of the mesh resource  be ready vertex and index data to be used in rendering. 
 			
 
-			glUseProgram(this->program); // it use shader program. 
+			//glUseProgram(this->program); // avtive the shader program. 
 
 
-			//	// attributes 
+			//	// attributes set the uniform when shader program avtivate. 
 			glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, (GLfloat*)&viewProjectionMatrix);
 			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, (GLfloat*)&matrix4x4);
 
@@ -416,6 +426,7 @@ namespace Example
 			meshResource->BindIBO();// update the camera based on mouse mouvement. 
 
 			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
+			glBindVertexArray(0); 
 		
 			double xpos;
 			double ypos;
@@ -432,6 +443,7 @@ namespace Example
 
 			// render the grid to draw 
 			grid.Draw((GLfloat*)&viewProjectionMatrix);
+			//meshResource->Draw(this->program); 
 			
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
 			  

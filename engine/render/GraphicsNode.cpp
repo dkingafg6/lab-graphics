@@ -74,7 +74,26 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw()
+void GraphicsNode::Draw(const mat4& viewPrjectionMatrix)
 {
+	//set texture uniform and the unit is 0 
+	glUniform1i(textureLoc, 0);
+
+
+	//	// attributes set the uniform when shader program avtivate. 
+	glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, (GLfloat*)&viewProjectionMatrix);
+	glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, (GLfloat*)&matrix4x4);
+
+	// bind texture to uniform 
+	glUniform1i(textureLoc, 0);
+
+
+	// draw a 3D grid and mesh
+	//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
+	meshResource->BindVBO();
+	meshResource->BindIBO();// update the camera based on mouse mouvement. 
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
+	glBindVertexArray(0);
 	// test //////////
 }
