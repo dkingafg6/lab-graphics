@@ -1,12 +1,15 @@
 #pragma once
 #include <config.h>
 #include <GL/glew.h>
+#include <memory>
+#include <GL/glew.h>
 #include <cstring>
 #include "core/mat4.h" // matrix 4x4 class for transformations 
 #include "render/MeshResource.h"
 #include "render/ShaderResource.h"
 #include "render/WindowWrapper.h"
 #include "render/TextureResource.h"
+
 
 using namespace std;
 
@@ -39,7 +42,7 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(); 
+	void Draw(const mat4& viewPrjectionMatrix);
 
 
 private:
