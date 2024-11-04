@@ -37,9 +37,10 @@ public:
 	//void createVBO();
 	void CreateVBO(float width, float height, float depth);
 	void CreateIBO();
+	void Draw();
 	void BindVBO();
 	void BindIBO();
-	void Draw();
+
 	//void setupMesh();
 	//draw the mesh 
 	
@@ -57,11 +58,17 @@ public:
 	void setVertices(const std::vector<vec3>& vertices); 
 	void setUVs(const std::vector<vec2>& uvs);
 	void setIndices(const std::vector<unsigned int>& Indices);
+
+	// method to rerurn the index count 
+	GLsizei GetIndexCount() const; 
 	//void setupMesh(); 
 	
 	// clean up resource
 	void Cleanup(); 
-	
+
+private: 
+	GLuint vbo, ibo, vao; 
+	GLsizei indexCount; // 
 	
 };
 

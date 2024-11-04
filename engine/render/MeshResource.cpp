@@ -2,6 +2,7 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
+#include <vector>
 
 using namespace std; 
 
@@ -18,6 +19,9 @@ MeshResource::MeshResource()
 // Destructor
 MeshResource::~MeshResource()
 {
+    glDeleteBuffers(1, &vertexBuffer); 
+    glDeleteBuffers(1, &indexBuffer);
+    //glDeleteVertexArrays(1, &vbo);
     // meshresource shuold clean when the object is destroyed. 
     printf("Cleanup called \n");
     Cleanup(); 
@@ -284,6 +288,27 @@ void MeshResource::CreateIBO()
    
 }
 
+void MeshResource::Draw()
+{
+
+    // bind vertex buffer. 
+    BindVBO();
+    // bind index buffer.
+    BindIBO();
+
+    glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, nullptr);
+
+    // unbind both VBO and IBO 
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+GLsizei MeshResource::GetIndexCount()const 
+{
+    return indexSize; 
+
+}
+
 void MeshResource::BindVBO()
 {
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -294,20 +319,6 @@ void MeshResource::BindIBO()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 }
 
-void MeshResource::Draw()
-{
-
-    // bind vertex buffer. 
-    BindVBO();
-    // bind index buffer.
-    BindIBO();
-
-    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-
-    // unbind both VBO and IBO 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
 
 void MeshResource::Cleanup()
 {

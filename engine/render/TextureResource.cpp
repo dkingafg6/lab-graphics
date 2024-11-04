@@ -32,7 +32,8 @@ bool TextureResource::loadFromFile(const char* filename)
 	unsigned char* bytes = stbi_load(filename, &width, &height, &nrchannels, 0);
 	if (!bytes) 
 	{
-		fprintf(stderr, " Failed to load texture: %s\n", filename); 
+		std::cerr << " Failed to load texture: " << filename << std::endl; 
+		//fprintf(stderr, " Failed to load texture: %s\n", filename); 
 		
 		return false; // return false if loading fails
 

@@ -25,12 +25,12 @@ shared_ptr<MeshResource> GraphicsNode::GetMeshResource() const
 
 void GraphicsNode::SetShaderResource(shared_ptr<ShaderResource> shader)
 {
-	this->shaerResource = shader; 
+	this->shaderResource = shader; 
 }
 
 shared_ptr<ShaderResource> GraphicsNode::GetShaderResource() const
 {
-	return this->shaerResource;
+	return this->shaderResource;
 }
 
 void GraphicsNode::SetTextureResource(shared_ptr<TextureResource> texture)
@@ -74,12 +74,14 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw(const mat4& viewPrjectionMatrix)
+void GraphicsNode::Draw(const mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, const mat4& matrix4x4, GLint& textureLoc, GLint& TextureID)
 { 
 	// checking 
-	if (!shaerResource || !meshResource || textureResource) return; 
+	if (!shaderResource || !meshResource || textureResource) return; 
 	// active the shader 
-	ShaderResource->UseProgram(); 
+	/*std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
+	std::shared_ptr<TextureResource> GhraphicsNode = std::make_shared<TextureResource>();*/
+	shaderResource->UseProgram();
 	
 	//set texture uniform and the unit is 0 
 	//glUniform1i(textureLoc, 0);
@@ -94,7 +96,7 @@ void GraphicsNode::Draw(const mat4& viewPrjectionMatrix)
 
 	// set texture and bind tuxture 
 	glActiveTexture(GL_TEXTURE0); 
-	glBindTexture(GL_TEXTURE_2D, textureResource->textureID()); 
+	glBindTexture(GL_TEXTURE_2D, textureResource->getTextureID()); 
 	glUniform1i(textureLoc, 0);
 
 

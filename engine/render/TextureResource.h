@@ -15,7 +15,7 @@ class TextureResource
 
 public:
 	
-	GLuint textureID;
+	//GLuint textureID;
 	unsigned int texture; // not using now can use it later 
 	unsigned char* bytes; //  not using now can use it later 
 	TextureResource();
@@ -23,10 +23,13 @@ public:
 
 	bool loadFromFile(const char* filename);
 	void Bind(unsigned int unit = 0 ) const;
+	void Cleanup();
+
+	GLuint getTextureID() const { return textureID; }
 
 private:
-	void Cleanup(); 
-
+	GLuint textureID;
+	
 	int width;
 	int height;
 	int nrchannels;
