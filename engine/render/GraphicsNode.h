@@ -2,7 +2,6 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <memory>
-#include <GL/glew.h>
 #include <cstring>
 #include "core/mat4.h" // matrix 4x4 class for transformations 
 #include "core/vec4.h"
@@ -12,6 +11,7 @@
 #include "render/ShaderResource.h"
 #include "render/WindowWrapper.h"
 #include "render/TextureResource.h"
+// test for github
 
 
 using namespace std;
@@ -45,7 +45,7 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(const mat4& viewPrjectionMatrix);
+	void Draw(const mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, const mat4& matrix4x4, GLint& textureLoc, GLint& TextureID);
 
 
 private:
@@ -53,7 +53,7 @@ private:
 	// smart pointer to resources share between GraphicsNode and instance. 
 	// mesh geometry, shader program and textrure
 	std::shared_ptr<MeshResource> meshResource; 
-	std::shared_ptr<ShaderResource> shaerResource;
+	std::shared_ptr<ShaderResource> shaderResource;
 	std::shared_ptr<TextureResource> textureResource;
 
 	//transformation matrix for position, rotation and scaling.
