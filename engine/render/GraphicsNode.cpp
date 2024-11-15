@@ -12,42 +12,49 @@ GraphicsNode::GraphicsNode()
 GraphicsNode::~GraphicsNode()
 {
 }
-
-void GraphicsNode::SetMeshResource(shared_ptr<MeshResource> mesh)
+// set and assign the meshResouce to the node. 
+void GraphicsNode::SetMeshResource(shared_ptr<MeshResource> mesh)  
 {
 	this->meshResource = mesh; 
 }
 
+// Retrieves and return the meshrescorce 
 shared_ptr<MeshResource> GraphicsNode::GetMeshResource() const
 {
 	return this->meshResource;
 }
 
+// set and assign the shederResouce to the node. 
 void GraphicsNode::SetShaderResource(shared_ptr<ShaderResource> shader)
 {
 	this->shaderResource = shader; 
 }
 
+// Retrieves for and return to the shaderrescorce to this node. 
 shared_ptr<ShaderResource> GraphicsNode::GetShaderResource() const
 {
 	return this->shaderResource;
 }
 
+// sets ans assign the texturResurces for this node. 
 void GraphicsNode::SetTextureResource(shared_ptr<TextureResource> texture)
 {
 	this->textureResource = texture; 
 }
 
+// Retrieves for and return to the texturerescorce to this node. 
 shared_ptr<TextureResource> GraphicsNode::GetTextureResource() const
 {
 	return this->textureResource;
 }
 
+// sets the trans..matrix for this node. 
 void GraphicsNode::SetTransform(const mat4& transform)
 {
 	this->transform = transform; 
 }
 
+// 
 const mat4& GraphicsNode::GetTransform() const
 {
 	return this->transform; 
