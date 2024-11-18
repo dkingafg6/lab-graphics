@@ -60,7 +60,7 @@ const mat4& GraphicsNode::GetTransform() const
 	return this->transform; 
 	
 }
-
+// testing 
 void GraphicsNode::Translate(const vec3& translation)
 {
 	mat4 translationMatrix = mat4::translation(translation);
