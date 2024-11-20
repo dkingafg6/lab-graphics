@@ -116,4 +116,4 @@ void GraphicsNode::Draw(const mat4& viewProjectionMatrix, GLint& camMatrixLoc, G
 	glDrawElements(GL_TRIANGLES,meshResource->GetIndexCount(), GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 	glBindVertexArray(0);
 	// test //////////
-}
+}// teteskkkk

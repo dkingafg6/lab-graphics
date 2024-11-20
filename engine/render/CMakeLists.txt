@@ -19,6 +19,9 @@ SET(files_render_display
        	ShaderResource.h
       	GraphicsNode.cpp
 	GraphicsNode.h
+        PointLightSourceNode.cpp
+        PointLightSourceNode.h
+
 )
 
 
