@@ -19,19 +19,13 @@
 int
 main(int argc, const char** argv)
 {
-	Example::ExampleApp app;
-	if (app.Open())
-	{
+    Example::ExampleApp app;
+    if (app.Open())
+    {
+        app.Run();
+        app.Close();
+    }
+    app.Exit();
 
-		app.Run(); 
-		app.Close();
-
-		//app.Run();
-		//app.Close();
-	}
-	app.Exit();	
-
-
-
-	return app.ExitCode();
+    return app.ExitCode();
 }

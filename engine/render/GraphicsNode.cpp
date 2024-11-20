@@ -1,12 +1,21 @@
 #pragma once
 #include <config.h>
 #include "GraphicsNode.h"
+#include <render/Camera.h>
 
 using namespace std; 
 
 
 GraphicsNode::GraphicsNode()
 {
+
+}
+
+GraphicsNode::GraphicsNode(shared_ptr<MeshResource> meshResource, shared_ptr<ShaderResource> shaderResource, std::shared_ptr<TextureResource> textureResource)
+{
+	this->SetMeshResource(meshResource);
+	this->SetShaderResource(shaderResource);
+	this->SetTextureResource(textureResource);
 }
 
 GraphicsNode::~GraphicsNode()
@@ -81,13 +90,9 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw(const mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, const mat4& matrix4x4, GLint& textureLoc, GLint& TextureID)
+void GraphicsNode::Draw(mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, mat4& matrix4x4, GLint& textureLoc, GLint TextureID)
 { 
-	// checking 
-	if (!shaderResource || !meshResource || textureResource) return; 
-	// active the shader 
-	/*std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
-	std::shared_ptr<TextureResource> GhraphicsNode = std::make_shared<TextureResource>();*/
+
 	shaderResource->UseProgram();
 	
 	//set texture uniform and the unit is 0 
@@ -112,7 +117,6 @@ void GraphicsNode::Draw(const mat4& viewProjectionMatrix, GLint& camMatrixLoc, G
 	//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 	meshResource->BindVBO();
 	meshResource->BindIBO();// update the camera based on mouse mouvement. 
-
 	glDrawElements(GL_TRIANGLES,meshResource->GetIndexCount(), GL_UNSIGNED_INT, nullptr);// render and draw the cube.
 	glBindVertexArray(0);
 	// test //////////

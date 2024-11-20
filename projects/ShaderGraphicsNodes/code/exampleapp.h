@@ -8,7 +8,6 @@
 //------------------------------------------------------------------------------
 #include <GL/glew.h>
 #include "config.h"
-#include "exampleapp.h"
 #include <cstring>
 #include "render/MeshResource.h"
 #include "core/mat4.h"
@@ -21,6 +20,7 @@
 #include "core/app.h"
 #include "render/window.h"
 #include "render/TextureResource.h"
+#include "render/GraphicsNode.h"
 namespace Example
 {
 class ExampleApp : public Core::App
@@ -50,10 +50,10 @@ private:
 
 	Display::Window* window;
 	GLuint program;
-	GLuint vertexShader;
-	GLuint pixelShader;
+
 	GLuint triangle;
 	Camera camera; // camera object
+
 
 	bool mouseLeftPressed = false;
 	bool mouseRightPressed = false;

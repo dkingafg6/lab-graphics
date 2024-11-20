@@ -25,7 +25,7 @@ public:
 	void Bind(unsigned int unit = 0 ) const;
 	void Cleanup();
 
-	GLuint getTextureID() const { return textureID; }
+	GLuint getTextureID();
 
 private:
 	GLuint textureID;

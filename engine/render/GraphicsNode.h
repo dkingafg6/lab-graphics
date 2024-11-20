@@ -11,6 +11,7 @@
 #include "render/ShaderResource.h"
 #include "render/WindowWrapper.h"
 #include "render/TextureResource.h"
+
 // test for github
 
 
@@ -21,6 +22,7 @@ class GraphicsNode
 public:
 	// constrrctor and destructor. 
 	GraphicsNode();
+	GraphicsNode(shared_ptr<MeshResource> meshResource, shared_ptr<ShaderResource> shaderResource, std::shared_ptr<TextureResource> textureResource);
 	~GraphicsNode();
 
 	//Add get/set functions for all the resource types, or expose them as public members (your preference).
@@ -45,7 +47,7 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(const mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, const mat4& matrix4x4, GLint& textureLoc, GLint& TextureID);
+	void Draw(mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, mat4& matrix4x4, GLint& textureLoc, GLint TextureID);
 
 
 private:

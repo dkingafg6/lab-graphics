@@ -102,6 +102,10 @@ void TextureResource::Bind(unsigned int unit) const
 	glActiveTexture(GL_TEXTURE0 + unit); 
 	glBindTexture(GL_TEXTURE_2D, this->textureID); 
 }
+GLuint TextureResource::getTextureID()
+{
+	return this->textureID;
+}
 
 void TextureResource::Cleanup()
 {
