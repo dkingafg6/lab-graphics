@@ -103,6 +103,8 @@ void GraphicsNode::Draw(mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& 
 	glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, &viewProjectionMatrix[0][0]);
 	glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, &matrix4x4[0][0]);
 
+	//shaderResource->SetUniformMatrix4fv(camMatrixLoc, viewProjectionMatrix);
+
 	// bind texture to uniform 
 	//glUniform1i(textureLoc, 0);
 
@@ -110,6 +112,8 @@ void GraphicsNode::Draw(mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& 
 	glActiveTexture(GL_TEXTURE0); 
 	glBindTexture(GL_TEXTURE_2D, textureResource->getTextureID()); 
 	glUniform1i(textureLoc, 0);
+
+	//textureResource->Bind(textureResource->getTextureID());
 
 
 

@@ -52,8 +52,9 @@ private:
 	GLuint program;
 
 	GLuint triangle;
-	Camera camera; // camera object
+	Camera cameraObject; // camera object
 
+	GraphicsNode graphicsNode;
 
 	bool mouseLeftPressed = false;
 	bool mouseRightPressed = false;

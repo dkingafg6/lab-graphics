@@ -112,7 +112,7 @@ namespace Example
 		}
 
 		// camera initialize 
-		this->camera = Camera(
+		this->cameraObject = Camera(
 			vec3(0.0f, 0.0f, 3.0f),				// position 
 			vec3(0.0f, 0.0f, 0.0f),            // target position 
 			vec3(0.0f, 1.0f, 0.0f),            // up vector 
@@ -216,10 +216,10 @@ namespace Example
 			glUniform1i(textureLoc, 0); 
 
 			// handle the camera movement. 
-			camera.processInput(this->window->GetGLFWwindow()); 
+			cameraObject.processInput(this->window->GetGLFWwindow());
 
 			// compute view projection matrix. 
-			mat4 viewProjectionMatrix = camera.getProjectionMatrix(); // combined matrix
+			mat4 viewProjectionMatrix = cameraObject.getProjectionMatrix(); // combined matrix
 
 			mat4 matrix4x4 = mat4::rotationz(time) * mat4::rotationx(time); // rotation matrix
 
@@ -247,7 +247,7 @@ namespace Example
 			{
 				glfwGetCursorPos(glfwwindow, &xpos, &ypos);
 
-				camera.mouse_callback(xpos, ypos);
+				cameraObject.mouse_callback(xpos, ypos);
 			}
 			
 
