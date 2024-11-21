@@ -389,6 +389,16 @@ public:
 
 			return transpose(m);
 		}
+		mat4 translation(float tx, float ty, float tz)
+		{
+			mat4 translationMatrix = mat4();
+
+			translationMatrix.m[3][0] = tx;    // Row 4, Column 1
+			translationMatrix.m[3][1] = ty;    // Row 4, Column 2
+			translationMatrix.m[3][2] = tz;    // Row 4, Column 3
+
+			return translationMatrix;
+		}
 
 };
 

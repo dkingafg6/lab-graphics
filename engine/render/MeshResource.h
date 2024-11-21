@@ -24,7 +24,7 @@ class MeshResource
 {
 public:
 	// for vertex data like position and col0rs.  
-	GLuint vertexBuffer ;
+	GLuint vertexBuffer;
 	// show the order of vertices to form primitives like triangles. 
 	GLuint indexBuffer;
 
@@ -47,6 +47,7 @@ public:
 
 	// create the vertices with pos and texture cooordinate for each face of the cube.
 	static MeshResource* CreateCube(float width, float height, float depth);
+	std::shared_ptr<MeshResource> CreateCube_SharedPtr(float width, float height, float depth);
 
 
 	std::vector<vec3> vertices;
@@ -66,9 +67,6 @@ public:
 	// clean up resource
 	void Cleanup(); 
 
-private: 
-	GLuint vbo, ibo, vao; 
-	GLsizei indexCount; // 
 	
 };
 

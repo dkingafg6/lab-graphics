@@ -8,7 +8,6 @@ using namespace std;
 
 GraphicsNode::GraphicsNode()
 {
-
 }
 
 GraphicsNode::GraphicsNode(shared_ptr<MeshResource> meshResource, shared_ptr<ShaderResource> shaderResource, std::shared_ptr<TextureResource> textureResource)
@@ -90,38 +89,19 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw(mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, mat4& matrix4x4, GLint& textureLoc, GLint TextureID)
+void GraphicsNode::Draw(Camera& camera)
 { 
-
 	shaderResource->UseProgram();
-	
-	//set texture uniform and the unit is 0 
-	//glUniform1i(textureLoc, 0);
+	shaderResource->SetUniformMatrix4fv("model", this->GetTransform());
+	shaderResource->SetUniformMatrix4fv("view", camera.getViewMatrix());
+	shaderResource->SetUniformMatrix4fv("projection", camera.getPerspectiveMatrix());
+
+	textureResource->Bind();
 
 
-	//	// attributes set the uniform when shader program avtivate. 
-	glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, &viewProjectionMatrix[0][0]);
-	glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, &matrix4x4[0][0]);
-
-	//shaderResource->SetUniformMatrix4fv(camMatrixLoc, viewProjectionMatrix);
-
-	// bind texture to uniform 
-	//glUniform1i(textureLoc, 0);
-
-	// set texture and bind tuxture 
-	glActiveTexture(GL_TEXTURE0); 
-	glBindTexture(GL_TEXTURE_2D, textureResource->getTextureID()); 
-	glUniform1i(textureLoc, 0);
-
-	//textureResource->Bind(textureResource->getTextureID());
-
-
-
-	// draw a 3D grid and mesh
-	//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
 	meshResource->BindVBO();
 	meshResource->BindIBO();// update the camera based on mouse mouvement. 
-	glDrawElements(GL_TRIANGLES,meshResource->GetIndexCount(), GL_UNSIGNED_INT, nullptr);// render and draw the cube.
+	glDrawElements(GL_TRIANGLES,meshResource->indexSize, GL_UNSIGNED_INT, (void*)NULL);// render and draw the cube.
 	glBindVertexArray(0);
-	// test //////////
-}// teteskkkk
+
+}

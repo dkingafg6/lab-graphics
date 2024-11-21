@@ -88,46 +88,43 @@ namespace Example
 //------------------------------------------------------------------------------
 /**
 */
-	bool ExampleApp::Open() 
+	bool ExampleApp::Open()
 	{
 		App::Open();
 
 		this->window = new Display::Window;
+		window->SetMousePressFunction([this](int32 button, int32 action, int32 mods)
+			{
+				if (button == GLFW_MOUSE_BUTTON_LEFT)
+				{
+					this->mouseLeftPressed = (action == GLFW_PRESS);
+				}
+				if (button == GLFW_MOUSE_BUTTON_RIGHT)
+				{
+					this->mouseRightPressed = (action == GLFW_PRESS);
+				}
+			});
+		window->SetMouseMoveFunction([this](float64 z, float64 y)
+			{
+				if (this->mouseLeftPressed)
+				{
+					float deltaY = static_cast<float>(y - this->lastMouseY);
+					float deltaZ = static_cast<float>(z - this->lastMouseZ);
+
+
+					this->graphicsNode.transform[3].y -= deltaY * 0.01f;
+					this->graphicsNode.transform[3].z -= deltaZ * 0.01f;
+				}
+			});
 
 		if (this->window->Open())
 		{
-			window->SetMousePressFunction([this](int32 button, int32 action, int32 mods)
-				{
-					if (button == GLFW_MOUSE_BUTTON_LEFT)
-					{
-						this->mouseLeftPressed = (action == GLFW_PRESS);
-					}
-					else if (button == GLFW_MOUSE_BUTTON_RIGHT)
-					{
-						this->mouseRightPressed = (action == GLFW_PRESS);
-					}
-
-				});
+			// set clear color to gray
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			return true;
 		}
-
-		// camera initialize 
-		this->cameraObject = Camera(
-			vec3(0.0f, 0.0f, 3.0f),				// position 
-			vec3(0.0f, 0.0f, 0.0f),            // target position 
-			vec3(0.0f, 1.0f, 0.0f),            // up vector 
-			45.0f,                             // field of v
-			static_cast<float>(width) / static_cast<float>(height),
-			// near plan and far clipping 
-			0.1f,           
-			100.0f);       
-
-		// set clear color to gray
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	
-
 		return false;
-		}
+	}
 
 	void ExampleApp::Close()
 	{
@@ -151,6 +148,17 @@ namespace Example
 	{
 		glEnable(GL_DEPTH_TEST); // enable depth testing for 3D rendering. 
 
+		// camera initialize 
+		this->cameraObject = Camera(
+			vec3(0.0f, 0.0f, 3.0f),				// position 
+			vec3(0.0f, 0.0f, 0.0f),            // target position 
+			vec3(0.0f, 1.0f, 0.0f),            // up vector 
+			45.0f,                             // field of v
+			static_cast<float>(width) / static_cast<float>(height),
+			// near plan and far clipping 
+			0.1f,
+			100.0f);
+
 		// the camera's pussibily during setup 
 		Render::Grid grid;
 		
@@ -166,22 +174,22 @@ namespace Example
 		textureResource->loadFromFile("../engine/texture/lizard2.png");
 
 		std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-		meshResource->CreateCube(1.0f, 1.0f, 1.0f);
+		meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
 		// bind texture
 
 		GraphicsNode graphicsNode(meshResource, shaderResource, textureResource);
-		
-		// get the location of texture uniform. 
-		GLint textureLoc = glGetUniformLocation(this->program, "texture1");
+		//
+		//// get the location of texture uniform. 
+		//GLint textureLoc = glGetUniformLocation(this->program, "texture1");
 
-		// bind texture to uniform 
+		//// bind texture to uniform 
 		//glUniform1i(textureLoc, 0);
 
-		// get the location in the shader. 
-		GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
+		//// get the location in the shader. 
+		//GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
 
-		// get location form shader program 
-		GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
+		//// get location form shader program 
+		//GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
 
 	
 
@@ -194,51 +202,36 @@ namespace Example
 
 		while (this->window->IsOpen())
 		{
-
-			// connect this shader program for use in rendering. 
-			// OBS this function (UseProgram()) should call before any object render. 
-			// be sour that correct shaders are used. 
-			// used in shaderResource or called. 
-			glUseProgram(this->program); // avtive the shader program. 
+			// clear depth buffer and color buffer be ready for new frame. 
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			// update the window 
+			this->window->Update();
 
 
 			time += 0.009f; // increment time on iteration. 
 
-
-			// clear depth buffer and color buffer be ready for new frame. 
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-			// update the window 
-			this->window->Update();
-
-			//set texture uniform and the unit is 0 
-			glUniform1i(textureLoc, 0); 
-
+		
+		
+			mat4 viewMatrix = cameraObject.getViewMatrix();
+			mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
+			mat4 gridMatrix = projectionMatrix * viewMatrix;
 			// handle the camera movement. 
 			cameraObject.processInput(this->window->GetGLFWwindow());
+			mat4 translationMat = mat4::translation(vec3(graphicsNode.transform[3][0], graphicsNode.transform[3][1], graphicsNode.transform[3][2]));
+			mat4 rotationMat = mat4::rotationy(graphicsNode.transform[1][1]) * mat4::rotationz(graphicsNode.transform[1][2]);
 
-			// compute view projection matrix. 
-			mat4 viewProjectionMatrix = cameraObject.getProjectionMatrix(); // combined matrix
+			graphicsNode.SetTransform( mat4::rotationz(time) * mat4::rotationx(time) ); // rotation matrix
 
-			mat4 matrix4x4 = mat4::rotationz(time) * mat4::rotationx(time); // rotation matrix
+			std::cout << "Rotation Matrix:\n";
+			for (int i = 0; i < 4; ++i) {
+				std::cout << rotationMat[i][0] << " " << rotationMat[i][1] << " "
+					<< rotationMat[i][2] << " " << rotationMat[i][3] << "\n";
+			}
 
-
-
-			//	// attributes set the uniform when shader program avtivate. 
-			glUniformMatrix4fv(camMatrixLoc, 1, GL_FALSE, (GLfloat*)&viewProjectionMatrix);
-			glUniformMatrix4fv(rotationLoc, 1, GL_FALSE, (GLfloat*)&matrix4x4);
-
-			// bind texture to uniform 
-			glUniform1i(textureLoc, 0); 
 
 			GLuint TextureID = graphicsNode.GetTextureResource()->getTextureID();
-			// draw a 3D grid and mesh
-			//grid.Draw((GLfloat*)&viewProjectionMatrix); // call the grid's draw function with combined matrix 
-			graphicsNode.Draw(viewProjectionMatrix,camMatrixLoc, rotationLoc, matrix4x4, textureLoc, TextureID);
 
-			//glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);// render and draw the cube.
-			//glBindVertexArray(0); 
+			graphicsNode.Draw(cameraObject);
 		
 			double xpos;
 			double ypos;
@@ -254,7 +247,7 @@ namespace Example
 	
 
 			// render the grid to draw 
-			grid.Draw((GLfloat*)&viewProjectionMatrix);
+			grid.Draw((GLfloat*)&gridMatrix);
 			//meshResource->Draw(this->program); 
 			
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo

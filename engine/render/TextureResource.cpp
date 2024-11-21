@@ -11,10 +11,11 @@
 
 TextureResource::TextureResource()
 {
-	textureID = 0;
-	width = 0; 
-	height = 0; 
-	nrchannels = 0; 
+	this->textureID = 0;
+	this->width = 0;
+	this->height = 0;
+	this->nrchannels = 0;
+	this->isTexLoaded = false;
 		
 
 }	
@@ -23,48 +24,20 @@ TextureResource::~TextureResource()
 	Cleanup(); 
 
 }
-bool TextureResource::loadFromFile(const char* filename)
+void TextureResource::loadFromFile(const char* filename)
 {
-	 //load image with stb_load
-	GLuint TextureID; 
-
-	// just for test if statement here comment out 
 	unsigned char* bytes = stbi_load(filename, &width, &height, &nrchannels, 0);
-	if (!bytes) 
+	if (bytes == nullptr) 
 	{
 		std::cerr << " Failed to load texture: " << filename << std::endl; 
-		//fprintf(stderr, " Failed to load texture: %s\n", filename); 
-		
-		return false; // return false if loading fails
 
+		isTexLoaded = false;
+		return;
 	}
 
-	// check the texture before uploading if it support 3 or 4 channel!. 
-	GLenum format;
-	if (nrchannels == 3)
-		format = GL_RGB;
-	else if (nrchannels == 4)
-		format = GL_RGBA;
-	else
-	{
-		std::cerr << "The texture's format not supported " << std::endl;
-		stbi_image_free(bytes);
-		return false;
-	}
-
-	//GLuint TextureID;
 	// generate texture and bind
-	glGenTextures(1, &textureID); 
-	glActiveTexture(GL_TEXTURE0); 
-
-
-	// texture wrapping 
-	// here is different rapping mode.
-	// GL_REPEAT= that repeat the texture;
-	// GL_MIRRORED_REPEAT=  that mirroring and repeat. 
-	// GL_CLAMP_TO_EDAGE=  that press from both side to see clear just in edge, 
-	// GL_CLAMP_TO_BORDER=  that clipping the edge just see to clamp. 
-	// inside the par-antes(Specifies the texture target, what option we want to set, wrapping mode. ) 
+	glGenTextures(1, &textureID);  
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -74,33 +47,27 @@ bool TextureResource::loadFromFile(const char* filename)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	//texture->Bind(); 
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
 	// upload texture's data. 
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, bytes);
 	glGenerateMipmap(GL_TEXTURE_2D); 
-	
-
-
 
 	// clean the image some loaded. 
 	stbi_image_free(bytes); 
 	// unbind texture. 
 	glBindTexture(GL_TEXTURE_2D, 0); 
 
-	return true; 
-
-
-
-	
+	isTexLoaded = true;
 
 }
 
-void TextureResource::Bind(unsigned int unit) const
+void TextureResource::Bind(unsigned int unit)
 {
-	glActiveTexture(GL_TEXTURE0 + unit); 
-	glBindTexture(GL_TEXTURE_2D, this->textureID); 
+	if (isTexLoaded)
+	{
+		glActiveTexture(GL_TEXTURE0 + unit);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+	}
+	
 }
 GLuint TextureResource::getTextureID()
 {
@@ -109,7 +76,8 @@ GLuint TextureResource::getTextureID()
 
 void TextureResource::Cleanup()
 {
-	if (this->textureID != 0) {
+	if (this->textureID != 0) 
+	{
 		glDeleteTextures(1, &textureID); // delete the opengl texture
 		this->textureID = 0; //reset textureid to 0, 
 	}

@@ -14,22 +14,18 @@ class TextureResource
 
 
 public:
-	
-	//GLuint textureID;
-	unsigned int texture; // not using now can use it later 
-	unsigned char* bytes; //  not using now can use it later 
 	TextureResource();
     ~TextureResource();
 
-	bool loadFromFile(const char* filename);
-	void Bind(unsigned int unit = 0 ) const;
+	void loadFromFile(const char* filename);
+	void Bind(unsigned int unit = 0 );
 	void Cleanup();
 
 	GLuint getTextureID();
 
 private:
 	GLuint textureID;
-	
+	bool isTexLoaded;
 	int width;
 	int height;
 	int nrchannels;

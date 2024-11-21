@@ -41,6 +41,18 @@ MeshResource* MeshResource::CreateCube(float width, float height, float depth)
 
 }
 
+std::shared_ptr<MeshResource> MeshResource::CreateCube_SharedPtr(float width, float height, float depth)
+{
+    // allocate a new meshResource object. 
+    shared_ptr<MeshResource> mesh = std::make_shared<MeshResource>();
+    // create both vertex and index buffer object for the cube. 
+    mesh->CreateVBO(width, height, depth);
+    mesh->CreateIBO();
+    return mesh;   // return the create mesh resource. 
+
+
+}
+
 
 // set vertex data for mesh.
 void MeshResource::setVertices(const std::vector<vec3>& vertices)
@@ -301,12 +313,6 @@ void MeshResource::Draw()
     // unbind both VBO and IBO 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-GLsizei MeshResource::GetIndexCount()const 
-{
-    return indexSize; 
-
 }
 
 void MeshResource::BindVBO()

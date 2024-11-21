@@ -7,6 +7,7 @@
 #include "core/vec4.h"
 #include "core/vec3.h"
 #include "core/vec2.h"
+#include "render/Camera.h"
 #include "render/MeshResource.h"
 #include "render/ShaderResource.h"
 #include "render/WindowWrapper.h"
@@ -47,9 +48,9 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(mat4& viewProjectionMatrix, GLint& camMatrixLoc, GLint& rotationLoc, mat4& matrix4x4, GLint& textureLoc, GLint TextureID);
+	void Draw(Camera& camera);
 
-
+	mat4 transform;
 private:
 
 	// smart pointer to resources share between GraphicsNode and instance. 
@@ -59,5 +60,5 @@ private:
 	std::shared_ptr<TextureResource> textureResource;
 
 	//transformation matrix for position, rotation and scaling.
-	mat4 transform; 
+	
 };

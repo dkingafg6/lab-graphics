@@ -43,15 +43,13 @@ public:
 	void Run();
 	// load picture 
 	
-	TextureResource texture;
 
+	double lastMouseX, lastMouseY, lastMouseZ;
 
 private:
 
 	Display::Window* window;
-	GLuint program;
 
-	GLuint triangle;
 	Camera cameraObject; // camera object
 
 	GraphicsNode graphicsNode;
@@ -59,6 +57,7 @@ private:
 	bool mouseLeftPressed = false;
 	bool mouseRightPressed = false;
 	bool mouseMiddlePressed = false;
+
 	// width and hieght of window
 	const int width = 800;
 	const int height = 600;
