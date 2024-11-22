@@ -43,8 +43,18 @@ public:
 	void Run();
 	// load picture 
 	
+	// mouse button states
+	bool mouseLeftPressed = false;
+	bool mouseRightPressed = false;
+	bool mouseMiddlePressed = false;
 
-	double lastMouseX, lastMouseY, lastMouseZ;
+	// tracking the mouse movement
+	double lastMouseX = 0.0f, lastMouseY = 0.0f, lastMouseZ = 0.0f;
+	vec3 translation = vec3(0.0f, 0.0f, 0.0f); // translation for the cube. 
+
+	// cube rotation angles
+	float rotationX = 0.0f; 
+	float rotationY = 0.0f; 
 
 private:
 
@@ -54,9 +64,6 @@ private:
 
 	GraphicsNode graphicsNode;
 
-	bool mouseLeftPressed = false;
-	bool mouseRightPressed = false;
-	bool mouseMiddlePressed = false;
 
 	// width and hieght of window
 	const int width = 800;
