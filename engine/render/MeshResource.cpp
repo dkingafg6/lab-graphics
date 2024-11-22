@@ -23,7 +23,7 @@ MeshResource::~MeshResource()
     glDeleteBuffers(1, &indexBuffer);
     //glDeleteVertexArrays(1, &vbo);
     // meshresource shuold clean when the object is destroyed. 
-    printf("Cleanup called \n");
+    printf("Cleanup called in MeshResouce \n");
     Cleanup(); 
     
 }

@@ -222,11 +222,11 @@ namespace Example
 
 			graphicsNode.SetTransform( mat4::rotationz(time) * mat4::rotationx(time) ); // rotation matrix
 
-			std::cout << "Rotation Matrix:\n";
-			for (int i = 0; i < 4; ++i) {
-				std::cout << rotationMat[i][0] << " " << rotationMat[i][1] << " "
-					<< rotationMat[i][2] << " " << rotationMat[i][3] << "\n";
-			}
+			//std::cout << "Rotation Matrix:\n";
+			//for (int i = 0; i < 4; ++i) {
+			//	std::cout << rotationMat[i][0] << " " << rotationMat[i][1] << " "
+			//		<< rotationMat[i][2] << " " << rotationMat[i][3] << "\n";
+			//}
 
 
 			GLuint TextureID = graphicsNode.GetTextureResource()->getTextureID();
