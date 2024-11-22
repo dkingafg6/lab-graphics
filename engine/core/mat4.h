@@ -171,19 +171,6 @@ public:
 		// OBS  ALL  statice funcion should be here. 
 
 
-// create translation matrix 
-		static mat4 translation(const vec3& translation)
-		{
-			return mat4(
-				vec4(1.0f, 0.0f, 0.0f, translation.x),
-				vec4(0.0f, 1.0f, 0.0f, translation.y),
-				vec4(1.0f, 0.0f, 1.0f, translation.z),
-				vec4(1.0f, 0.0f, 0.0f, 1.0f)
-
-			);
-
-		}
-
 		// create scaling matrix 
 		static mat4 scaling(const vec3& scaleFactors)
 		{
@@ -389,7 +376,7 @@ public:
 
 			return transpose(m);
 		}
-		mat4 translation(float tx, float ty, float tz)
+		static mat4 translation(float tx, float ty, float tz)
 		{
 			mat4 translationMatrix = mat4();
 

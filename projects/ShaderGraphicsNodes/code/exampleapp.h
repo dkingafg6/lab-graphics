@@ -55,6 +55,7 @@ public:
 	// cube rotation angles
 	float rotationX = 0.0f; 
 	float rotationY = 0.0f; 
+	mat4 translationMatrix;
 
 private:
 
@@ -63,6 +64,7 @@ private:
 	Camera cameraObject; // camera object
 
 	GraphicsNode graphicsNode;
+	
 
 
 	// width and hieght of window

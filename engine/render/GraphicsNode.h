@@ -43,7 +43,6 @@ public:
 	void SetTransform(const mat4& transform); // transformation matrix use to rotation, position and scaling. 
 	const mat4& GetTransform() const; // retrive the current transformation. 
 
-	void Translate(const vec3& translation); // use vector to translating object. 
 	void Rotate(float angle, const vec3& axis); // rotating the object around here is axis. 
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 

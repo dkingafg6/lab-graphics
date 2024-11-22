@@ -69,12 +69,6 @@ const mat4& GraphicsNode::GetTransform() const
 	return this->transform; 
 	
 }
-// testing 
-void GraphicsNode::Translate(const vec3& translation)
-{
-	mat4 translationMatrix = mat4::translation(translation);
-	transform = translationMatrix * transform; // apply the translation. 
-}
 	
 
 void GraphicsNode::Rotate(float angle, const vec3& axis)

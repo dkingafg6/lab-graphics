@@ -103,6 +103,10 @@ namespace Example
 				{
 					this->mouseRightPressed = (action == GLFW_PRESS);
 				}
+				if (button == GLFW_MOUSE_BUTTON_MIDDLE)
+				{
+					this->mouseMiddlePressed = (action == GLFW_PRESS);
+				}
 			});
 		window->SetMouseMoveFunction([this](float64 z, float64 y)
 			{
@@ -111,16 +115,60 @@ namespace Example
 					float deltaY = static_cast<float>(y - this->lastMouseY);
 					float deltaZ = static_cast<float>(z - this->lastMouseZ);
 
-
-					this->graphicsNode.transform[3].y -= deltaY * 0.01f;
-					this->graphicsNode.transform[3].z -= deltaZ * 0.01f;
+					this->translationMatrix[3].y -= deltaY * 0.01f;
+					this->translationMatrix[3].z -= deltaZ * 0.01f;
 				}
+
+
+				else if (this->mouseMiddlePressed)
+				{
+					float deltaY = static_cast<float>(y - this->lastMouseY);
+					float deltaZ = static_cast<float>(z - this->lastMouseZ);
+
+					this->translationMatrix[2].y -= deltaY * 0.01f;
+					this->translationMatrix[2].z -= deltaZ * 0.01f;
+				}
+				this->lastMouseZ = z;
+				this->lastMouseY = y;
 			});
+
+		// handle keyboard input 
+		window->SetKeyPressFunction([this](int key, int scancode, int action, int mods)
+			{
+				if (action == GLFW_PRESS || action == GLFW_REPEAT)
+				{
+					const float moveSpeed = 0.2f; 
+					if (key == GLFW_KEY_W) this->translation.y += moveSpeed; 
+					if (key == GLFW_KEY_S) this->translation.y -= moveSpeed;
+					if (key == GLFW_KEY_A) this->translation.x -= moveSpeed;
+					if (key == GLFW_KEY_D) this->translation.x += moveSpeed;
+
+				}
+				
+			});
+
 
 		if (this->window->Open())
 		{
 			// set clear color to gray
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+			// create a cube from graphicsNode
+
+			std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
+
+			shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
+			shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
+
+			std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
+			//load texture
+			textureResource->loadFromFile("../engine/texture/lizard2.png");
+
+			std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
+			meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
+			// bind texture
+
+			this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource); 
 			return true;
 		}
 		return false;
@@ -210,17 +258,26 @@ namespace Example
 
 			time += 0.009f; // increment time on iteration. 
 
-		
+			mat4 translationMat = mat4::translation(this->translationMatrix[3][0], this->translationMatrix[3][1], this->translationMatrix[3][2]);
+			mat4 rotationMat = mat4::rotationy(this->translationMatrix[2][1]) * mat4::rotationz(this->translationMatrix[2][2]);
+			mat4 modelMatrix = translationMat * rotationMat;
+
+			this->graphicsNode.SetTransform(modelMatrix); 
+
+			this->graphicsNode.Draw(cameraObject); 
+
 		
 			mat4 viewMatrix = cameraObject.getViewMatrix();
 			mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
 			mat4 gridMatrix = projectionMatrix * viewMatrix;
+
+			Render::Grid grid; 
+			// render the grid to draw 
+			grid.Draw((GLfloat*)&gridMatrix);
 			// handle the camera movement. 
 			cameraObject.processInput(this->window->GetGLFWwindow());
-			mat4 translationMat = mat4::translation(vec3(graphicsNode.transform[3][0], graphicsNode.transform[3][1], graphicsNode.transform[3][2]));
-			mat4 rotationMat = mat4::rotationy(graphicsNode.transform[1][1]) * mat4::rotationz(graphicsNode.transform[1][2]);
-
-			graphicsNode.SetTransform( mat4::rotationz(time) * mat4::rotationx(time) ); // rotation matrix
+			
+			//graphicsNode.SetTransform( mat4::rotationz(time) * mat4::rotationx(time) ); // rotation matrix
 
 			//std::cout << "Rotation Matrix:\n";
 			//for (int i = 0; i < 4; ++i) {
@@ -231,7 +288,6 @@ namespace Example
 
 			GLuint TextureID = graphicsNode.GetTextureResource()->getTextureID();
 
-			graphicsNode.Draw(cameraObject);
 		
 			double xpos;
 			double ypos;
@@ -247,7 +303,7 @@ namespace Example
 	
 
 			// render the grid to draw 
-			grid.Draw((GLfloat*)&gridMatrix);
+			//grid.Draw((GLfloat*)&gridMatrix);
 			//meshResource->Draw(this->program); 
 			
 			glBindBuffer(GL_ARRAY_BUFFER, 0); // UNbind vbo
