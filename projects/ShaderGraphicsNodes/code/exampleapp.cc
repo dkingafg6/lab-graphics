@@ -133,6 +133,7 @@ namespace Example
 			});
 
 
+
 		if (this->window->Open())
 		{
 			// set clear color to gray
