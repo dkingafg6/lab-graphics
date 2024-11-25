@@ -8,7 +8,8 @@ SET(files_texture
 	lizard3.png
 	lizard4.png
 	lizard5.png
-	lizard6.png)
+	lizard6.png
+    cubepic.png)
 SOURCE_GROUP("texture" FILES ${files_texture})
 
 SET(files_pch ../config.h ../config.cc)
