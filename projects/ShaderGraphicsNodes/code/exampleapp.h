@@ -48,7 +48,7 @@ public:
 
 
 	// the cube's position
-	vec3 translation = vec3(0.0f, 0.0f, 0.0f);
+	mat4 translationMatrix;
 	// cube' rotation angles around x,y and z axis. 
 	float rotationX = 0.0f;
 	float rotationY = 0.0f;

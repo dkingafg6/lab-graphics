@@ -132,21 +132,6 @@ namespace Example
 				this->lastMouseY = y;
 			});
 
-		// handle keyboard input 
-		window->SetKeyPressFunction([this](int key, int scancode, int action, int mods)
-			{
-				if (action == GLFW_PRESS || action == GLFW_REPEAT)
-				{
-					const float moveSpeed = 0.2f; 
-					if (key == GLFW_KEY_W) this->translation.y += moveSpeed; 
-					if (key == GLFW_KEY_S) this->translation.y -= moveSpeed;
-					if (key == GLFW_KEY_A) this->translation.x -= moveSpeed;
-					if (key == GLFW_KEY_D) this->translation.x += moveSpeed;
-
-				}
-				
-			});
-
 
 		if (this->window->Open())
 		{
