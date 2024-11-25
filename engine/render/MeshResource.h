@@ -4,8 +4,11 @@
 #include <GL/glew.h>
 #include <vector>
 #include <string>
+#include <iostream>
 #include "core/vec3.h"
 #include "core/vec2.h"
+
+
 
 
 

@@ -17,11 +17,13 @@ using namespace std;
 class PointLightSourceNode 
 {
 public: 
-	void posion(); 
+	vec3 position; // pos for light in world space. 
+	vec3 color; // color for the light. 
+	float intensity;  // intencity of the light. 
+
+	PointLight(const vec3& pos, const vec3& col, float intens); 
+	void position(); 
 	
-
-
-
 
 
 

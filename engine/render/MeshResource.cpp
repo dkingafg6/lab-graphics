@@ -2,7 +2,10 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
-#include <vector>
+//#include <tiny_obj_loader.h>
+
+
+
 
 using namespace std; 
 
@@ -72,40 +75,6 @@ void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
     this->indices = Indices; 
 }
 
-// buffer for the mesh's vertex data and index data. 
-//void MeshResource::setupMesh()
-//{
-//    glGenBuffers(1, &vertexBuffer); // generate vertex buffer. 
-//    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer); // binding the vertex buffer after generating. 
-//
-//    // allocate buffer data for vertices. 
-//    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW); 
-//
-//    // checking 
-//    if (!uvs.empty()) 
-//    {
-//        GLuint uvBuffer; 
-//        // generate UV buffer and bind it. 
-//        glGenBuffers(1, &uvBuffer); 
-//        glBindBuffer(GL_ARRAY_BUFFER, uvBuffer); 
-//
-//        // allocate buffer data for UVs
-//        glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(vec2), uvs.data(), GL_STATIC_DRAW); 
-//
-//    }
-//
-//    //Create (IBO) bind after that.  
-//    glGenBuffers(1, &indexBuffer);
-//    glBindBuffer(GL_ARRAY_BUFFER, indexBuffer);
-//
-//    // allocate buffer data for indics. 
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
-//
-//    // unbind index buffer 
-//    glBindBuffer(GL_ARRAY_BUFFER, 0); 
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-//
-//}
 
 // Method to create a vertex buffer object for the cube. 
 void MeshResource::CreateVBO(float width, float height, float depth)
@@ -298,6 +267,13 @@ void MeshResource::CreateIBO()
     //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
    
+}
+
+bool MeshResource::LoadFromOBJ(const std::string& filePath)
+{
+   
+
+    return false;
 }
 
 void MeshResource::Draw()
