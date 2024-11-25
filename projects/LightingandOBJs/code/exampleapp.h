@@ -21,6 +21,10 @@
 #include "core/app.h"
 #include "render/window.h"
 #include "render/TextureResource.h"
+#include "render/PointLightSourceNode.h"
+#include "render/GraphicsNode.h"
+#include "render/DirectionalLight.h"
+
 namespace Example
 {
 class ExampleApp : public Core::App
@@ -52,8 +56,18 @@ private:
 	GLuint program;
 	GLuint vertexShader;
 	GLuint pixelShader;
+
 	GLuint triangle;
 	Camera camera; // camera object
+	GraphicsNode* lightsphereNode; 
+
+	PointLightSourceNode pointLight; 
+	DirectionalLight direcLight; 
+
+	bool pauseLightMovement; 
+	float lastTime;  
+	GLuint texrureID; 
+	 
 
 	bool mouseLeftPressed = false;
 	bool mouseRightPressed = false;

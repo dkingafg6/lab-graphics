@@ -21,8 +21,12 @@ public:
 	vec3 color; // color for the light. 
 	float intensity;  // intencity of the light. 
 
-	PointLight(const vec3& pos, const vec3& col, float intens); 
-	void position(); 
+	// constructor.
+	PointLightSourceNode(const vec3& pos, const vec3& col, float intens)
+		: position(pos), color(col), intensity(intens){}
+
+
+	void Apply(GLuint shaderProgram); 
 	
 
 

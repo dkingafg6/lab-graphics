@@ -22,7 +22,8 @@ public:
 	vec3 color; 
 	float intensity; 
 
-	DirectionalLight(const vec3& direc, const vec3& col, float intens);
+	DirectionalLight(const vec3& direc, const vec3& col, float intens); 
+		
 	~DirectionalLight();
 
 	void Apply(GLuint shaderProgram); 

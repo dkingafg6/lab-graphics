@@ -69,6 +69,7 @@ namespace Example
 /**
 */
 	ExampleApp::ExampleApp()
+		: window(nullptr), vertexShader(0), program(0), pauseLightMovement(false), pointLight(nullptr), direcLight(nullptr)
 	{
 
 		// empty
@@ -79,6 +80,8 @@ namespace Example
 */
 	ExampleApp::~ExampleApp()
 	{
+		if (pointLight) delete pointLight; 
+		if (direcLight) delete direcLight; 
 
 		// empty
 	}
@@ -128,21 +131,28 @@ namespace Example
 			// near plan and far clipping 
 			0.1f,           
 			100.0f);       
+	// set up lights 
+		
 
 		// set clear color to gray
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-		//// Enable debugs output
-		//glEnable(GL_DEBUG_OUTPUT); 
-		//glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		// intialize dirictional light
+		shared_ptr<DirectionalLight>direcLight = make_shared<DirectionalLight>
+			(
+			vec3(1.0f, -1.0f, 0.0f),
+			vec3(1.0f, 1.0f, 1.0f),
+			0.8f
+			); 
 
-		//// Register the callback function for
-		//glDebugMessageCallback(MessageCallback, nullptr); 
-
-		// optionally filter out 
-		//glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 9, nullptr, GL_FALSE); 
-	
-
+		// intialize point light
+		shared_ptr<PointLightSourceNode>pointLight = make_shared<PointLightSourceNode>
+			(
+			vec3(1.0f, 1.0f, 2.0f),
+			vec3(1.0f, 0.5f, 1.0f),
+			1.8f
+			);
+		
 
 		// Initialize shaders. 
 		GLint success;
@@ -336,15 +346,16 @@ namespace Example
 		MeshResource* meshResource = MeshResource::CreateCube(1.0f, 1.0f, 1.0f);
 
 		//load texture
+		TextureResource texture; 
 		texture.loadFromFile("../engine/texture/lizard2.png");
 		// bind texture
 		texture.Bind(); 
 		
 		
-		
-		
+		// camera pos
+		glUniform3fv(glGetUniformLocation(this->program, "viewPos"), 1, (GLfloat*)&camera.position);
 		// get the location of texture uniform. 
-		GLint textureLoc = glGetUniformLocation(this->program, "texture1");
+		glUniform1i(glGetUniformLocation(this->program, "texture1"),0);
 
 
 		// bind texture to uniform 
@@ -357,6 +368,20 @@ namespace Example
 		// get location form shader program 
 		GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
 
+
+
+		// directional light uniform locations
+		glUniform3fv(glGetUniformLocation(this->program, "dirLight.direction"), 1, (GLfloat*)&direcLight.direction);
+		glUniform3fv(glGetUniformLocation(this->program, "dirtLight.color"), 1, (GLfloat*)&direcLight.color);
+		glUniform1f(glGetUniformLocation(this->program, "dirtLight.intensity"), direcLight.intensity);
+
+
+
+		// point light uniform locations
+		glUniform3fv(glGetUniformLocation(this->program, "pointLight.position"), 1, (GLfloat*)&pointLight.position);
+		glUniform3fv(glGetUniformLocation(this->program, "pointLight.color"), 1, (GLfloat*)&pointLight.color);
+		glUniform1f(glGetUniformLocation(this->program, "pointLight.intensity"), pointLight.intensity);
+
 	
 
 		if (textureLoc == -1 || camMatrixLoc == -1 || rotationLoc == -1) 
@@ -366,7 +391,7 @@ namespace Example
 
 		}
 
-		float time = 0; 
+		float time = 0.0f; 
 
 		//initialize mouse callback for camera. 
 		GLFWwindow* glfwwindow = this->window->GetGLFWwindow(); 
