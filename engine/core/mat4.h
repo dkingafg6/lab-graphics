@@ -171,6 +171,7 @@ public:
 		// OBS  ALL  statice funcion should be here. 
 
 
+
 		// create scaling matrix 
 		static mat4 scaling(const vec3& scaleFactors)
 		{

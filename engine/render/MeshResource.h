@@ -3,6 +3,7 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <vector>
+#include <string>
 #include "core/vec3.h"
 #include "core/vec2.h"
 
@@ -15,9 +16,13 @@ using namespace std;
 // sructure for vertices to create cube. 
 struct Vertex
 {
-	float position;   // position x,y,z, 
-	float color;      // color r,g,b,and a, 
-	float texCoord;   // texture coordinates u and v, 
+	vec3 position;   // position x,y,z, 
+	vec3 color;      // color r,g,b,and a, 
+	vec2 texCoord;   // texture coordinates u and v, 
+
+	//float position;   // position x,y,z, 
+	//float color;      // color r,g,b,and a, 
+	//float texCoord;   // texture coordinates u and v, 
 
 };
 class MeshResource
@@ -35,11 +40,12 @@ public:
 	~MeshResource();
 
 	//void createVBO();
+
+	// creat a cube. 
 	void CreateVBO(float width, float height, float depth);
 	void CreateIBO();
-	void Draw();
-	void BindVBO();
-	void BindIBO();
+	
+	
 
 	//void setupMesh();
 	//draw the mesh 
@@ -49,7 +55,15 @@ public:
 	static MeshResource* CreateCube(float width, float height, float depth);
 	std::shared_ptr<MeshResource> CreateCube_SharedPtr(float width, float height, float depth);
 
+	// OBJ loading methos
+	bool LoadFromOBJ(const std::string& filePath); 
 
+	void Draw();
+	void BindVBO();
+	void BindIBO();
+
+	// Stores vetex and index data for position, normal , texcoord and EBO
+	// Can be in private also. 
 	std::vector<vec3> vertices;
 	std::vector<vec2> uvs;
 	std::vector<unsigned int> indices;

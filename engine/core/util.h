@@ -54,3 +54,5 @@
 //	const vec4 E4(E, E, E, E);
 //	return nearequal(lhs[0], rhs[0], E4) && nearequal(lhs[1], rhs[1], E4) && nearequal(lhs[2], rhs[2], E4) && nearequal(lhs[3], rhs[3], E4);
 //}
+//constexpr float PI = 3.14159265359f; 
+//inline float radians(float degrees) { return degrees * (PI / 180.0f);  }

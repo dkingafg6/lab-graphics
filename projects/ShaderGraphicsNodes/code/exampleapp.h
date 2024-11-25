@@ -43,19 +43,16 @@ public:
 	void Run();
 	// load picture 
 	
-	// mouse button states
-	bool mouseLeftPressed = false;
-	bool mouseRightPressed = false;
-	bool mouseMiddlePressed = false;
 
-	// tracking the mouse movement
-	double lastMouseX = 0.0f, lastMouseY = 0.0f, lastMouseZ = 0.0f;
-	vec3 translation = vec3(0.0f, 0.0f, 0.0f); // translation for the cube. 
+	double lastMouseX, lastMouseY, lastMouseZ;
 
-	// cube rotation angles
-	float rotationX = 0.0f; 
-	float rotationY = 0.0f; 
-	mat4 translationMatrix;
+
+	// the cube's position
+	vec3 translation = vec3(0.0f, 0.0f, 0.0f);
+	// cube' rotation angles around x,y and z axis. 
+	float rotationX = 0.0f;
+	float rotationY = 0.0f;
+	float rotationZ = 0.0f;
 
 private:
 
@@ -64,7 +61,10 @@ private:
 	Camera cameraObject; // camera object
 
 	GraphicsNode graphicsNode;
-	
+
+	bool mouseLeftPressed = false;
+	bool mouseRightPressed = false;
+	bool mouseMiddlePressed = false;
 
 
 	// width and hieght of window
