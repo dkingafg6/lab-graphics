@@ -50,19 +50,21 @@ public:
 	TextureResource texture;
 
 
+
 private:
 
 	Display::Window* window;
-	GLuint program;
-	GLuint vertexShader;
-	GLuint pixelShader;
+	float lastMouseY; // set mous function to control with mouse 
+	float lastMouseZ;
+
+	mat4 translationMatrix; 
+	GraphicsNode graphicsNode; 
 
 	GLuint triangle;
-	Camera camera; // camera object
+	Camera cameraObject; // camera object
 	GraphicsNode* lightsphereNode; 
 
-	PointLightSourceNode pointLight; 
-	DirectionalLight direcLight; 
+	
 
 	bool pauseLightMovement; 
 	float lastTime;  

@@ -1,6 +1,17 @@
 #include "config.h"
 #include "render/PointLightSourceNode.h"
 
+
+
+PointLightSourceNode::PointLightSourceNode()
+{
+	// empty
+
+}
+PointLightSourceNode::~PointLightSourceNode()
+{
+	// empty
+}
 void PointLightSourceNode::Apply(GLuint shaderProgram)
 {
 

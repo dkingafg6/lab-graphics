@@ -17,16 +17,21 @@ using namespace std;
 class PointLightSourceNode 
 {
 public: 
+	PointLightSourceNode();
+
+	~PointLightSourceNode();
 	vec3 position; // pos for light in world space. 
 	vec3 color; // color for the light. 
 	float intensity;  // intencity of the light. 
 
 	// constructor.
-	PointLightSourceNode(const vec3& pos, const vec3& col, float intens)
-		: position(pos), color(col), intensity(intens){}
+	PointLightSourceNode(const vec3& position, const vec3& color, float intensity)
+		: position(position), color(color), intensity(intensity){}
 
 
-	void Apply(GLuint shaderProgram); 
+
+	void Apply(GLuint shaderProgram);
+	
 	
 
 
