@@ -15,14 +15,14 @@ SET(files_render_display
 	TextureResource.h
 	TextureResource.cpp 
 	WindowWrapper.h 
-    ShaderResource.cpp 
-    ShaderResource.h
-    GraphicsNode.cpp
+       	ShaderResource.cpp 
+       	ShaderResource.h
+      	GraphicsNode.cpp
 	GraphicsNode.h
-    PointLightSourceNode.cpp
-    PointLightSourceNode.h
-	DirectionalLight.cpp
-	DirectionalLight.h
+        PointLightSourceNode.cpp
+        PointLightSourceNode.h
+        DirectionalLight.cpp
+        DirectionalLight.h
 
 )
 
