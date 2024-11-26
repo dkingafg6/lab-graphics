@@ -17,6 +17,19 @@ void DirectionalLight::Apply(GLuint shaderProgram)
 	GLint colorLoc = glGetUniformLocation(shaderProgram, "directLight.color");
 	GLint intensityLoc = glGetUniformLocation(shaderProgram, "direcLight.intensity");
 
+
+	if (directionLoc == -1 || colorLoc == -1 || intensityLoc == -1)
+	{
+		std::cerr << "ERROR: Faild to find DirectionalLight uniform in shader." << std::endl; 
+		return; 
+
+	}
+
+
+
+
+
+
 	glUniform3fv(directionLoc, 1, (GLfloat*)&direction);
 	glUniform3fv(colorLoc, 1, (GLfloat*)&color);
 	glUniform1f(intensityLoc, intensity);
