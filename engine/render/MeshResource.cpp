@@ -2,7 +2,7 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
-//#include <tiny_obj_loader.h>
+
 
 
 

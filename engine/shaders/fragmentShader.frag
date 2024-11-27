@@ -1,11 +1,7 @@
 #version 430
 
-
-
-
-
-
-struct PointLight {
+struct PointLight
+{
     vec3 position;
     vec3 color;
     float intensity;

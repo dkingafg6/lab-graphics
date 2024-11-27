@@ -2,8 +2,7 @@
 # OBJFiles
 #--------------------------------------------------------------------------
 SET(files_OBJFiles
-		buddha.obj
-                cube.obj)
+		cube.obj)
 SOURCE_GROUP("OBJFiles" FILES ${files_OBJFiles})
 
 SET(files_pch ../config.h ../config.cc)

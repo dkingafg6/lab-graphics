@@ -52,25 +52,37 @@ void ShaderResource::loadShaderResource(const string& FilePath, GLenum TYPENAME)
 		this->program = glCreateProgram();
 	}
 	string shaderString = "";
-	ifstream shaderFile(FilePath);
-	if (shaderFile)
+	std::ifstream shaderFile(FilePath);
+	if (!shaderFile.is_open())
 	{
 		// convert shader file to string for read. 
-		shaderString.assign(istreambuf_iterator<char>(shaderFile), istreambuf_iterator<char>());
+		//shaderString.assign(istreambuf_iterator<char>(shaderFile), istreambuf_iterator<char>());
+		throw std::runtime_error("Fialed to open shader file: " + FilePath); 
 	}
-	else
+	/*else
 	{
 		printf(" Error file couldent't open ");
-	}
+	}*/
+	std::stringstream buffer; 
+	buffer << shaderFile.rdbuf(); 
+	std::string shaderSource = buffer.str(); 
 	shaderFile.close();
+
+	// debuging shader source 
+	std::cout << " Loaded shader source from " << FilePath << ":\n" << shaderSource << endl;
 
 	// create shader object  and  Error log
 	GLint shader = glCreateShader(TYPENAME);
+
+	// compile shader
 	const GLchar* shaderChar = shaderString.c_str();
+	//GLuint shader = glCreateShader(TYPENAME); 
 	GLint length = static_cast<GLint>(strlen(shaderChar));
 	glShaderSource(shader, 1, &shaderChar, &length);
 	glCompileShader(shader);
 
+
+	// check compilation errors
 	GLint shaderLogSize;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &shaderLogSize);
 	if (shaderLogSize > 0)
