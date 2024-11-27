@@ -2,6 +2,8 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
+#include "core/vec3.h"
+#include "core/vec2.h"
 
 
 
@@ -30,6 +32,9 @@ MeshResource::~MeshResource()
     Cleanup(); 
     
 }
+
+// static factory methode
+//static std::shared_ptr<MeshResource>CreateCube(float width, float height, float depth); 
 
 // Create the Cube mesh resource with static method
 MeshResource* MeshResource::CreateCube(float width, float height, float depth) 
@@ -74,6 +79,63 @@ void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
 {
     this->indices = Indices; 
 }
+
+void MeshResource::LoadOBJFiles(const std::string& filePath)
+{
+    std::string file;
+    std::ifstream objFile(filePath); 
+    if (!objFile.is_open())
+    {
+        throw std::runtime_error("Faile to open file: " + filePath); 
+
+    }
+    
+    std::string line; 
+    while (std::getline(objFile, line)) 
+    {
+        std::istringstream stream(line); 
+        std::string prefix;
+        stream >> prefix; 
+
+        if (prefix == "v") {  // Vertex position
+            MeshResource::Vertex vertex; 
+            stream >> vertex.x >> vertex.y >> vertex.z;
+            vertices.push_back(vertex);
+        }
+        else if (prefix == "vt") {  // Texture coordinate
+            TextureCoord texCoord;
+            stream >> texCoord.u >> texCoord.v;
+            texturCoords.push_back(texCoord);
+        }
+        else if (prefix == "vn") {  // Vertex normal
+            Normal normal;
+            stream >> normal.x >> normal.y >> normal.z;
+            normals.push_back(normal);
+        }
+        else if (prefix == "f") {  // Face
+            Face face;
+            std::string vertexInfo;
+            while (stream >> vertexInfo) {
+                std::istringstream vertexStream(vertexInfo);
+                std::string vertexIndex, textureIndex, normalIndex;
+
+
+                if (!vertexIndex.empty())
+                    face.vertexIndices.push_back(std::stoi(vertexIndex));
+                if (!textureIndex.empty())
+                    face.textureIndices.push_back(std::stoi(textureIndex));
+                if (!normalIndex.empty())
+                    face.normalIndices.push_back(std::stoi(normalIndex));
+            }
+            faces.push_back(face);
+        }
+    }
+
+    objFile.close();
+
+};
+
+
 
 
 // Method to create a vertex buffer object for the cube. 
@@ -319,3 +381,8 @@ void MeshResource::Cleanup()
     }
 
 }
+//
+//std::shared_ptr<MeshResource> CreateCube(float width, float height, float depth)
+//{
+//    return std::shared_ptr<MeshResource>();
+//}

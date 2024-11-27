@@ -21,7 +21,7 @@ public:
 	//constructors 
 	vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {} // all vectors to 0 
 	// all vectors with specific x, y, z,and w values. 
-	vec4(float _x, float _y, float _z, float _w = 1.0f) : x(_x), y(_y), z(_z), w(_w) {} // all vectors with
+	vec4(float x, float y, float z, float w = 1.0f) : x(x), y(y), z(z), w(w) {} // all vectors with
 	// copying another vec4 
 	vec4(const vec4& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 
