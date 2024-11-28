@@ -19,47 +19,51 @@ using namespace std;
 
 
 
-// sructure for vertices to create cube. 
-struct Vertex
-{
-	vec3 position;   // position x,y,z, 
-	vec3 color;      // color r,g,b,and a, 
-	vec2 texCoord;   // texture coordinates u and v, 
-	
-	float x, y, z;
-	
-};
-
-
-struct TextureCoord 
-{
-	float u, v; 
-
-
-};
-struct Normal
-{
-	float x, y, z; 
-
-};
-struct Face
-{
-	std::vector<int> vertexIndices; 
-	std::vector<int> textureIndices;
-	std::vector<int> normalIndices;
-	
-
-};
-
-std::vector<Vertex> vertices;
-std::vector<TextureCoord> texturCoords;
-std::vector<Normal> normals;
-std::vector<Face> faces;
-
 
 class MeshResource
 {
 public:
+
+
+	// sructure for vertices to create cube. 
+	struct Vertex
+	{
+		vec3 position;   // position x,y,z, 
+		vec3 color;      // color r,g,b,and a, 
+		vec2 texCoord;   // texture coordinates u and v, 
+
+		float x, y, z;
+
+	};
+
+
+	// texture coordinates
+	struct TextureCoord
+	{
+		float u, v;
+
+
+	};
+
+
+	struct Normal
+	{
+		vec3 x, y, z;
+
+	};
+
+
+
+	struct Face
+	{
+		std::vector<int> vertexIndices;
+		std::vector<int> textureIndices;
+		std::vector<int> normalIndices;
+
+
+	};
+
+
 	// for vertex data like position and col0rs.  
 	GLuint vertexBuffer;
 	// show the order of vertices to form primitives like triangles. 
@@ -67,13 +71,24 @@ public:
 
 	unsigned int indexSize;
 
+
+
+	// member variables 
+	std::vector<Vertex> vertices;
+	std::vector<TextureCoord> texturCoords;
+	std::vector<Normal> normals;
+	std::vector<Face> faces;
+
+
 	// show the order of vertices's to form primitives like triangles. 
 	MeshResource();
 	~MeshResource();
 
 	//void createVBO();
 
-	
+		// OBJ loading methos
+	//void LoadFromOBJ(const std::string& filePath); 
+
 
 	//void setupMesh();
 	//draw the mesh 
@@ -83,8 +98,6 @@ public:
 	static MeshResource* CreateCube(float width, float height, float depth);
 	std::shared_ptr<MeshResource> CreateCube_SharedPtr(float width, float height, float depth);
 
-	// OBJ loading methos
-	bool LoadFromOBJ(const std::string& filePath); 
 
 
 	void BindVBO();
@@ -111,6 +124,9 @@ public:
 	void CreateIBO();
 	void Draw();
 	
+
+
+
 	// method to rerurn the index count 
 	GLsizei GetIndexCount() const; 
 	//void setupMesh(); 
