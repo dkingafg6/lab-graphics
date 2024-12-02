@@ -68,20 +68,22 @@ public:
 		return *this; 
 	}
 	// check if two mat4 matrices are equal.
-	bool operator==(const mat4& rhs) const 
+	bool operator==(const mat4& rhs) const
 	{
 		for (int i = 0; i < 4; ++i)
 		{
-			if(m[i] != rhs.m[i]) return false; 
+			if (m[i] != rhs.m[i]) return false;
 		}
-		return true; 
+		return true;
 	}
 
 	// check if two mat4 matrices are not equal 
-	bool operator!=(const mat4& rhs) const 
+	bool operator!=(const mat4& rhs) const
 	{
-		return !(*this == rhs); 
+		return !(*this == rhs);
 	}
+
+
 
 	// provides access to matrix columns bu i 0 to 3
 	vec4& operator[](const uint32_t i) 
@@ -97,6 +99,9 @@ public:
 		throw std::out_of_range("Index out of range. valid range is [0, 3],");
 	}
 
+
+	
+
 	// multiples two mat4 matrices 
 	mat4 operator*(const mat4& rhs) const 
 	{
@@ -109,10 +114,10 @@ public:
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				result[i][j] = 0; 
+				result[i][j] = 0.0f; 
 				for (int k = 0; k < 4; k++) 
 				{
-					result[i][j] += this->m[k][j] * rhs[i][k];
+					result[i][j] += this->m[i][k] * rhs[k][j];
 
 				}
 
@@ -132,10 +137,11 @@ public:
 		vec4 result = vec4();
 		for (int i = 0; i < 4; i++)
 		{
-			for (int j = 0; j < 4; j++)
+			result[i] = dot(m[i], rhs); 
+			/*for (int j = 0; j < 4; j++)
 			{
 				result[i] += this->m[j][i] * rhs[j];
-			}
+			}*/
 		}
 
 		/*for (int i = 0; i < 4; i++)
@@ -156,6 +162,21 @@ public:
 			); 
 
 		}
+
+
+		// create scaling matrix 
+		static mat4 scaling(const vec3& scaleFactors)
+		{
+			return mat4(
+				vec4(scaleFactors.x, 0.0f, 0.0f, 0.0f),
+				vec4(0.0f, scaleFactors.y, 0.0f, 0.0f),
+				vec4(1.0f, 0.0f, scaleFactors.z, 0.0f),
+				vec4(1.0f, 0.0f, 0.0f, 1.0f)
+
+			);
+
+
+		}
 		// print the matrix 
 		friend std::ostream& operator<<(std::ostream& os, const mat4& mat) 
 		{
@@ -172,19 +193,6 @@ public:
 
 
 
-		// create scaling matrix 
-		static mat4 scaling(const vec3& scaleFactors)
-		{
-			return mat4(
-				vec4(scaleFactors.x, 0.0f, 0.0f, 0.0f),
-				vec4(0.0f, scaleFactors.y, 0.0f, 0.0f),
-				vec4(1.0f, 0.0f, scaleFactors.z, 0.0f),
-				vec4(1.0f, 0.0f, 0.0f, 1.0f)
-
-			);
-
-
-		}
 
 
 
@@ -203,6 +211,23 @@ public:
 		}
 
 
+		static mat4 perspective(float fovy, float aspect, float nearPlane, float farPlane)
+		{
+			float radians = fovy * (3.14159265358979323846f / 180.0f);
+			float tanHalfFovy = std::tan(radians / 2.0f);
+			//float tanHalfFovy = std::tan(fovy / 2.0f);
+
+			mat4 result;
+
+			result[0][0] = 1.0f / (aspect * tanHalfFovy);
+			result[1][1] = 1.0f / tanHalfFovy;
+			result[2][2] = -(farPlane + nearPlane) / (farPlane - nearPlane);
+			result[2][3] = -1.0f;
+			result[3][2] = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane);
+			result[3][3] = 0.0f;
+
+			return result; // the result of perspective projection matrx after proccecing: 
+		}
 
 
 		// static fun to create a rotation matrix for a rotation around the x axis. 
@@ -349,19 +374,6 @@ public:
 		}
 
 
-		static mat4 perspective(float fovy, float aspect, float near, float far)
-		{
-			float tanHalfFovy = std::tan(fovy / 2.0f);
-			mat4 result;
-			result[0][0] = 1.0f / (aspect * tanHalfFovy);
-			result[1][1] = 1.0f / tanHalfFovy;
-			result[2][2] = -(far + near) / (far - near);
-			result[2][3] = -1.0f;
-			result[3][2] = -(2.0f * far * near) / (far - near);
-			result[3][3] = 0.0f;
-
-			return result;
-		}
 
 		// lookAt matrix function
 		static mat4 lookat(const vec3& eye, const vec3& at, const vec3& up) {

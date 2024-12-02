@@ -19,7 +19,7 @@ public:
 
 
 	//constructors 
-	vec4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {} // all vectors to 0 
+	vec4() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) {} // all vectors to 0 
 	// all vectors with specific x, y, z,and w values. 
 	vec4(float x, float y, float z, float w = 1.0f) : x(x), y(y), z(z), w(w) {} // all vectors with
 	// copying another vec4 
@@ -167,7 +167,8 @@ public:
 	// overload the operator for printing a vec4 object to the ou
 	friend std::ostream& operator<<(std::ostream& os, const vec4& v) 
 	{
-		os << "(" << v.x << "," << v.y << "," << v.z << "," << v.w; ")";
+		os << "(" << v.x << "," << v.y << "," << v.z << "," << v.w << ")";
+	
 		return os; 
 
 	}
