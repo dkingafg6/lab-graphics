@@ -14,7 +14,7 @@ uniform mat4 projection;
 
 //out vec4 vertexColor; 
 out vec3 fragPos; // pos in world space. 
-
+out vec3 fragNormal; 
 //out vec4 Color;
 out vec2 TexCoord;
 
@@ -27,8 +27,8 @@ void main()
 	//TexCoord = texCoord;
 	fragPos = vec3(model * vec4(position, 1.0)); 
 
- 
-	TexCoord = texCoord;
+	fragNormal = mat3(transpose(inverse(model))) * normal;
 
+	TexCoord = texCoord; 
 	
 }
