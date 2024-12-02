@@ -157,7 +157,7 @@ namespace Example
 			//std::cout << " Successfully loaded OBJ files with " << meshResource.GetVertexCount() << " vertices . " << std::endl;
 
 			std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-			meshResource->LoadOBJFiles("../engine/OBJFiles/cube.obj");
+			meshResource->LoadOBJFiles("../engine/OBJFiles/OBJFiles/cube.obj");
 			//meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
 			// bind texture
 

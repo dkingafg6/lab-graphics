@@ -2,13 +2,14 @@
 
 #include <config.h>
 #include <GL/glew.h>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <fstream>
+#include <render/MeshResource.h>
 #include "core/vec3.h"
 #include "core/vec2.h"
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <vector>
+#include <string>
 #include <UserConsentVerifierInterop.h>
 
 
@@ -36,19 +37,18 @@ public:
 	};
 	struct Face
 	{
-		int vertexIndex;
-		int textureIndex;
-		int normalIndex;
+		unsigned int vertexIndex;
+		unsigned int textureIndex;
+		unsigned int normalIndex;
 	};
 
-	std::vector<Vertex> verticies;
-	std::vector<Face> faces;
 
-
+	GLuint vao; 
 	// for vertex data like position and col0rs.  
 	GLuint vertexBuffer;
 	// show the order of vertices to form primitives like triangles. 
 	GLuint indexBuffer;
+	GLuint IndexSize; 
 
 	unsigned int indexSize;
 
@@ -73,8 +73,14 @@ public:
 	// Stores vetex and index data for position, normal , texcoord and EBO
 	// Can be in private also
 
+
+	// data storage for vertices, normal texture coordinates and indices. 
+	std::vector<Vertex> verticies;
+	std::vector<Face> faces;
 	std::vector<vec3>position; 
+	std::vector<vec3>normals;
 	std::vector<vec2> uvs;
+	std::vector<vec2> texCoords;
 	std::vector<unsigned int> indices;
 
 	
@@ -86,11 +92,18 @@ public:
 	
 
 	// obj file loader 
-	void LoadOBJFiles(const std::string& filePath);
+	bool LoadOBJFiles(const std::string& filePath);
 	// creat a cube. 
 	void CreateVBO(float width, float height, float depth);
 	void CreateIBO();
 	void Draw();
+	
+
+	// help function for obj parsing. 
+	void ParseVertexData(const std::string& line); 
+	void ParseTextureData(const std::string& line);
+	void ParseNormalData(const std::string& line);
+	void ParseFaceData(const std::string& line);
 	
 
 
