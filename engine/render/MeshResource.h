@@ -31,37 +31,18 @@ public:
 		vec3 position;   // position x,y,z, 
 		vec3 color;      // color r,g,b,and a, 
 		vec2 texCoord;   // texture coordinates u and v, 
-
-		float x, y, z;
-
-	};
-
-
-	// texture coordinates
-	struct TextureCoord
-	{
-		float u, v;
-
+		vec3 normal;
 
 	};
-
-
-	struct Normal
-	{
-		vec3 x, y, z;
-
-	};
-
-
-
 	struct Face
 	{
-		std::vector<int> vertexIndices;
-		std::vector<int> textureIndices;
-		std::vector<int> normalIndices;
-
-
+		int vertexIndex;
+		int textureIndex;
+		int normalIndex;
 	};
+
+	std::vector<Vertex> verticies;
+	std::vector<Face> faces;
 
 
 	// for vertex data like position and col0rs.  
@@ -73,25 +54,11 @@ public:
 
 
 
-	// member variables 
-	std::vector<Vertex> vertices;
-	std::vector<TextureCoord> texturCoords;
-	std::vector<Normal> normals;
-	std::vector<Face> faces;
-
 
 	// show the order of vertices's to form primitives like triangles. 
 	MeshResource();
 	~MeshResource();
 
-	//void createVBO();
-
-		// OBJ loading methos
-	//void LoadFromOBJ(const std::string& filePath); 
-
-
-	//void setupMesh();
-	//draw the mesh 
 	
 
 	// create the vertices with pos and texture cooordinate for each face of the cube.
@@ -104,14 +71,15 @@ public:
 	void BindIBO();
 
 	// Stores vetex and index data for position, normal , texcoord and EBO
-	// Can be in private also. 
-	std::vector<vec3> vertices;
+	// Can be in private also
+
+	std::vector<vec3>position; 
 	std::vector<vec2> uvs;
 	std::vector<unsigned int> indices;
 
 	
 
-	void setVertices(const std::vector<vec3>& vertices); 
+	void setVertices(const std::vector<vec3>& position); 
 	void setUVs(const std::vector<vec2>& uvs);
 	void setIndices(const std::vector<unsigned int>& Indices);
 

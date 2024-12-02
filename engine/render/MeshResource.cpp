@@ -53,51 +53,58 @@ void MeshResource::LoadOBJFiles(const std::string& filePath)
         std::string prefix;
         stream >> prefix;
 
+
+        Vertex vertex;
+        
+        Face face; 
+
         if (prefix == "v") {  // Vertex position
             vec3 position;
             stream >> position.x >> position.y >> position.z;
-            Vertex vertex; 
             vertex.position = position;
-            vertices.push_back(vertex);
         }
         else if (prefix == "vt") {  // Texture coordinate
             vec2 texCoord;
             stream >> texCoord.x >> texCoord.y;
-            if (!vertices.empty())
+            if (!verticies.empty())
             {
-                vertices.back().texCoord = texCoord;
+                verticies.back().texCoord = texCoord;
 
             }
         }
         else if (prefix == "vn") {  // Vertex normal
-            vec2 normal; 
+            vec3 normal; 
             stream >> normal.x >> normal.y;
-         
-     
-            normals.push_back(normal); 
+            vertex.normal = normal;
            
          
         }
+  
+
         else if (prefix == "f") {  // Face
-            Face face;
+            
             std::string vertexInfo;
-            while (stream >> vertexInfo) {
+            while (stream >> vertexInfo)
+            {
                 std::istringstream vertexStream(vertexInfo);
-                std::string vertexIndex, textureIndex, normalIndex;
+                
 
-                std::getline(vertexStream, vertexIndexStr, '/'); 
-                std::getline(vertexStream, textureIndexStr, '/');
-                std::getline(vertexStream, normalIndexStr, '/');
+                    vertexStream >> face.vertexIndex; // Read vertex index
 
+                if (vertexStream.peek() == '/')
+                { // Check for '/' delimiter
+                    vertexStream.ignore(1); // Skip '/'
+                    if (vertexStream.peek() != '/') { // If there's no second '/', read texture index
+                        vertexStream >> face.textureIndex;
+                    }
+                    if (vertexStream.peek() == '/') { // Check for '/' delimiter again
+                        vertexStream.ignore(1); // Skip '/'
+                        vertexStream >> face.normalIndex; // Read normal index
+                    }
+                }
 
-
-                if (!vertexIndex.empty())
-                    face.vertexIndices.push_back(std::stoi(vertexIndex));
-                if (!textureIndex.empty())
-                    face.textureIndices.push_back(std::stoi(textureIndex));
-                if (!normalIndex.empty())
-                    face.normalIndices.push_back(std::stoi(normalIndex));
             }
+            verticies.push_back(vertex);
             faces.push_back(face);
         }
     }
@@ -382,9 +389,9 @@ std::shared_ptr<MeshResource> MeshResource::CreateCube_SharedPtr(float width, fl
 
 
 // set vertex data for mesh.
-void MeshResource::setVertices(const std::vector<vec3>& vertices)
+void MeshResource::setVertices(const std::vector<vec3>& position)
 {
-    this->vertices = vertices; 
+    this->position = position; 
 }
 
 // set UV coordinates for the mesh. 
