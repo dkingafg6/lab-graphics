@@ -75,7 +75,7 @@ void ShaderResource::loadShaderResource(const string& FilePath, GLenum TYPENAME)
 	GLint shader = glCreateShader(TYPENAME);
 
 	// compile shader
-	const GLchar* shaderChar = shaderString.c_str();
+	const GLchar* shaderChar = shaderSource.c_str();
 	//GLuint shader = glCreateShader(TYPENAME); 
 	GLint length = static_cast<GLint>(strlen(shaderChar));
 	glShaderSource(shader, 1, &shaderChar, &length);

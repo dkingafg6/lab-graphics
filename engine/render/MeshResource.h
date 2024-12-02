@@ -97,6 +97,7 @@ public:
 
 	// method to rerurn the index count 
 	GLsizei GetIndexCount() const; 
+	GLsizei GetVertexCount()const;
 	//void setupMesh(); 
 	
 	// clean up resource

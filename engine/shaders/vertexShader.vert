@@ -27,6 +27,16 @@ void main()
 	//TexCoord = texCoord;
 	fragPos = vec3(model * vec4(position, 1.0)); 
 
+
+	// the 3x3 normal matrix from the model matrix
+    mat4 inverseModel = inverse(model);
+    mat4 transposedModel = transpose(inverseModel);
+    mat3 normalMatrix = mat3(
+        transposedModel[0].xyz,
+        transposedModel[1].xyz,
+        transposedModel[2].xyz
+    );
+
 	fragNormal = mat3(transpose(inverse(model))) * normal;
 
 	TexCoord = texCoord; 

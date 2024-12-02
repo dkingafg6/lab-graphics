@@ -1,16 +1,10 @@
 #pragma once
-//------------------------------------------------------------------------------
-/**
-	Application class used for example application.
-	
-	(C) 2015-2022 Individual contributors, see AUTHORS file
-*/
-//------------------------------------------------------------------------------
 #include <GL/glew.h>
 #include "config.h"
 #include "exampleapp.h"
 #include <cstring>
 #include "render/MeshResource.h"
+#include "render/ShaderResource.h"
 #include "core/mat4.h"
 #include "core/vec2.h"
 #include "core/vec3.h"

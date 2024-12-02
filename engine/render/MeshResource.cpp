@@ -341,6 +341,16 @@ void MeshResource::Draw()
 
 
 
+GLsizei MeshResource::GetIndexCount() const
+{
+    return GLsizei();
+}
+
+GLsizei MeshResource::GetVertexCount() const
+{
+    return GLsizei();
+}
+
 void MeshResource::Cleanup()
 {
     if (vertexBuffer)

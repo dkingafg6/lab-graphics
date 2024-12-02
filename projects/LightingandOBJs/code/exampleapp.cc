@@ -1,7 +1,4 @@
-//------------------------------------------------------------------------------
-// exampleapp.cc
-// (C) 2015-2022 Individual contributors, see AUTHORS file
-//------------------------------------------------------------------------------
+
 #include "config.h"
 #include "math.h"
 #include <GL/glew.h>
@@ -145,13 +142,23 @@ namespace Example
 
 			shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
 			shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
+			
 
 			std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
 			//load texture
 			textureResource->loadFromFile("../engine/texture/lizard2.png");
+			//std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
+			/*if (!meshResource) 
+			{
+				std::cerr << " Failed to load OBJ files: cube.obj" << std::endl;
+				return false;
+
+			}*/
+			//std::cout << " Successfully loaded OBJ files with " << meshResource.GetVertexCount() << " vertices . " << std::endl;
 
 			std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-			meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
+			meshResource->LoadOBJFiles("../engine/OBJFiles/cube.obj");
+			//meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
 			// bind texture
 
 			this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
@@ -213,18 +220,7 @@ namespace Example
 
 		GraphicsNode graphicsNode(meshResource, shaderResource, textureResource);
 		//
-		//// get the location of texture uniform. 
-		//GLint textureLoc = glGetUniformLocation(this->program, "texture1");
-
-		//// bind texture to uniform 
-		//glUniform1i(textureLoc, 0);
-
-		//// get the location in the shader. 
-		//GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
-
-		//// get location form shader program 
-		//GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
-
+		
 
 
 
@@ -263,13 +259,6 @@ namespace Example
 			// handle the camera movement. 
 			cameraObject.processInput(this->window->GetGLFWwindow());
 
-			//graphicsNode.SetTransform( mat4::rotationz(time) * mat4::rotationx(time) ); // rotation matrix
-
-			//std::cout << "Rotation Matrix:\n";
-			//for (int i = 0; i < 4; ++i) {
-			//	std::cout << rotationMat[i][0] << " " << rotationMat[i][1] << " "
-			//		<< rotationMat[i][2] << " " << rotationMat[i][3] << "\n";
-			//}
 
 
 			GLuint TextureID = graphicsNode.GetTextureResource()->getTextureID();

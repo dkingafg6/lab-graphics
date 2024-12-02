@@ -37,6 +37,7 @@ public:
 	// destructor
 	~ShaderResource(); 
 	
+
 	
 	//// Load shader source file, compiles and vertex shader plus fragment shader after compile links them into a shader program. 
 	void loadShaderResource(const string& FilePath, GLenum TYPENAME);
