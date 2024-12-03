@@ -1,4 +1,4 @@
-#pragma once
+
 #include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
@@ -25,6 +25,10 @@ MeshResource::MeshResource()
 // Destructor
 MeshResource::~MeshResource()
 {
+    /*if (vao) glDeleteVertexArrays(1, &vao); 
+    if (vertexBuffer) glDeleteBuffers(1, &vertexBuffer); 
+    if (indexBuffer) glDeleteBuffers(1, &indexBuffer); */
+
     //glDeleteBuffers(1, &vertexBuffer); 
     //glDeleteBuffers(1, &indexBuffer);
     ////glDeleteVertexArrays(1, &vbo);
@@ -122,7 +126,7 @@ bool MeshResource::LoadOBJFiles(const std::string& filePath)
     objFile.close();
 
     std::cout << "OBJ file loaded: " 
-        << positions.size() << " vertices, "
+        << position.size() << " vertices, "
         << texCoords.size() << " Texture coordinates"
         << normals.size() << " normals, and "
         << indices.size() << " indices. " 
@@ -133,7 +137,7 @@ bool MeshResource::LoadOBJFiles(const std::string& filePath)
     CreateIBO(); 
     return true; 
 
-};
+}
 
 
 
@@ -368,14 +372,15 @@ void MeshResource::Draw()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
-std::vector<vec3> positions; 
 void MeshResource::ParseVertexData(const std::string& line)
 {
+
     std::istringstream stream(line); 
     std::string prefix; 
     vec3 position; 
-    stream >> prefix >> position.x >> position.y >> position.z;  
-    positions.push_back(position); 
+    stream >> prefix >> position.x >> position.y >> position.z; 
+    this->position.push_back(position); 
+    //this->positions.push_back(position); 
     
 }
 

@@ -1,6 +1,4 @@
 #pragma once
-
-#include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
 #include "core/vec3.h"
@@ -10,7 +8,6 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <UserConsentVerifierInterop.h>
 
 
 
