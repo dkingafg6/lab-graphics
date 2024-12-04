@@ -81,32 +81,76 @@ void ShaderResource::loadShaderResource(const string& FilePath, GLenum TYPENAME)
 	glShaderSource(shader, 1, &shaderChar, &length);
 	glCompileShader(shader);
 
-
+	GLint compileStatues; 
 	// check compilation errors
-	GLint shaderLogSize;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &shaderLogSize);
-	if (shaderLogSize > 0)
+	//GLint shaderLogSize;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatues);
+	if (compileStatues != GL_TRUE)
 	{
-		GLchar* buf = new GLchar[shaderLogSize];
-		glGetShaderInfoLog(shader, shaderLogSize, NULL, buf);
-		printf("[SHADER COMPILE ERROR]: %s ", buf);
-		delete[] buf;
+		GLint logSize; 
+
+		//GLchar* buf = new GLchar[shaderLogSize];
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH,&logSize);
+		std::vector<GLchar> log(logSize); 
+		glGetShaderInfoLog(shader, logSize, nullptr, log.data()); 
+		throw std::runtime_error(" shader compilation failed" + std::string(log.begin(), log.end())); 
+		//printf("[SHADER COMPILE ERROR]: %s ", buf);
+		//delete[] buf;
 	}
 
 
 	// create program object  
 	glAttachShader(this->program, shader);
-	glLinkProgram(this->program);
-	glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &shaderLogSize);
+	glDeleteShader(shader); 
+	//glLinkProgram(this->program);
 
-	if (shaderLogSize > 0)
+	glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &compileStatues);
+
+	if (compileStatues > 0)
 	{
-		GLchar* buf = new GLchar[shaderLogSize];
-		glGetProgramInfoLog(this->program, shaderLogSize, NULL, buf);
+		GLchar* buf = new GLchar[compileStatues];
+		glGetProgramInfoLog(this->program, compileStatues, NULL, buf);
 		printf("[PROGRAM LINK ERROR]: %s ", buf);
 		delete[] buf;
 	}
 	glDeleteShader(shader);
+
+}
+
+void ShaderResource::LinkProgram()
+{
+	glLinkProgram(this->program); 
+
+	// check linking error
+	GLint linkStatus; 
+	glGetProgramiv(this->program, GL_LINK_STATUS, &linkStatus);
+
+	if(linkStatus != GL_TRUE)
+	{
+		GLint logLength; 
+		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &logLength);
+		
+		std::vector<GLchar> log(logLength); 
+		glGetProgramInfoLog(this->program, logLength, nullptr, log.data());
+		throw runtime_error("Program linking failed." + std::string(log.begin(), log.end())); 
+	}
+
+	glValidateProgram(this->program);
+
+	// check linking error
+	GLint validateStatus;
+	glGetProgramiv(this->program, GL_VALIDATE_STATUS, &validateStatus);
+
+	if (validateStatus != GL_TRUE)
+	{
+		GLint logLength;
+		glGetProgramiv(this->program, GL_INFO_LOG_LENGTH, &logLength);
+
+		std::vector<GLchar> log(logLength);
+		glGetProgramInfoLog(this->program, logLength, nullptr, log.data());
+		throw runtime_error("Program linking failed." + std::string(log.begin(), log.end()));
+	}
+
 
 }
 
@@ -122,6 +166,8 @@ void ShaderResource::loadShaderResource(const string& FilePath, GLenum TYPENAME)
 		}
 		else 
 		{
+
+
 			assert(false && " Shader Program is not Exist "); 
 		}
 		

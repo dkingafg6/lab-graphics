@@ -42,87 +42,122 @@ MeshResource::~MeshResource()
 
 bool MeshResource::LoadOBJFiles(const std::string& filePath)
 {
-    //std::string file;
+    std::string file;
     std::ifstream objFile(filePath);
+    //std::string line = ""; 
     if (!objFile.is_open())
     {
-        std::cerr << "Faile to open OBJ file: " << filePath << std::endl;
+        cerr << "Error Faild to open OBJ file. " << filePath << endl;
         return false; 
+        //std::cout << " Error obj file not loading" << endl; 
+
+        
        
     }
 
     std::cout << "loadig OBJ file: " << filePath << std::endl;
     std::string line;
+
+    //while (std::getline(objFile, line))
+    //{
+    //    std::istringstream stream(line);
+    //    std::string prefix;
+    //    stream >> prefix;
+
+    //    Vertex vertex;
+    //    //Vertex vertex;
+    //    //
+    //    Face face; 
+
+    //    if (prefix == "v") 
+    //    {
+  
+    //       /* ParseVertexData(line); */
+    //        vec3 position;
+    //        stream >> position.x >> position.y >> position.z;
+    //        vertex.position = position;
+    //    }
+    //    else if (prefix == "vt") 
+    //    {  
+    //      
+    //        vec2 texCoord;
+    //        stream >> texCoord.x >> texCoord.y;
+    //        texCoord.x= 1.0f; 
+    //        texCoord.y = 0.0f;
+
+    //        
+    //    }
+    //    else if (prefix == "vn") 
+    //    {  // Vertex normal
+    //        
+    //        vec3 normal; 
+    //        stream >> normal.x >> normal.y, normal.z;
+    //        vertex.normal = normal;
+    //       
+    //     
+    //    }
+  
+
+    //    else if (prefix == "f") 
+    //    {  // Face
+    //        GLuint vertexIndex[3], texCoordIndex[3], normalIndex[3]; 
+    //        
+    //        std::string vertexInfo;
+    //        while (stream >> vertexInfo)
+    //        {
+    //            std::istringstream vertexStream(vertexInfo);
+    //            
+
+    //                vertexStream >> face.vertexIndex; // Read vertex index
+
+    //            if (vertexStream.peek() == '/')
+    //            { // Check for '/' delimiter
+    //                vertexStream.ignore(1); // Skip '/'
+    //                if (vertexStream.peek() != '/') { // If there's no second '/', read texture index
+    //                    vertexStream >> face.textureIndex;
+    //                }
+    //                if (vertexStream.peek() == '/') { // Check for '/' delimiter again
+    //                    vertexStream.ignore(1); // Skip '/'
+    //                    vertexStream >> face.normalIndex; // Read normal index
+    //                }
+    //            }
+
+    //        }
+    //        verticies.push_back(vertex);
+    //        //faces.push_back(face);
+    //    }
+    //}
+
+
+
     while (std::getline(objFile, line))
     {
         std::istringstream stream(line);
         std::string prefix;
         stream >> prefix;
 
-
+        Vertex vertex;
         //Vertex vertex;
         //
-        //Face face; 
+        Face face;
 
-        if (prefix == "v") 
-        {  // Vertex position
-            ParseVertexData(line); 
-            /*vec3 position;
-            stream >> position.x >> position.y >> position.z;
-            vertex.position = position;*/
+        if (prefix == "v")
+        {
+            ParseVertexData(line);  
         }
-        else if (prefix == "vt") 
-        {  // Texture coordinate
-            ParseTextureData(line); 
-            /*vec2 texCoord;
-            stream >> texCoord.x >> texCoord.y;*/
-            /*if (!verticies.empty())
-            {
-                verticies.back().texCoord = texCoord;
-
-            }*/
+        else if (prefix == "vt")
+        {
+            ParseTextureData(line);
         }
-        else if (prefix == "vn") 
-        {  // Vertex normal
-            ParseNormalData(line); 
-           /* vec3 normal; 
-            stream >> normal.x >> normal.y;
-            vertex.normal = normal;
-           
-         */
+        else if (prefix == "vn")
+        { 
+            ParseNormalData(line);
         }
-  
-
-        else if (prefix == "f") 
-        {  // Face
-            ParseFaceData(line); 
-            
-            //std::string vertexInfo;
-            //while (stream >> vertexInfo)
-            //{
-            //    std::istringstream vertexStream(vertexInfo);
-            //    
-
-            //        vertexStream >> face.vertexIndex; // Read vertex index
-
-            //    if (vertexStream.peek() == '/')
-            //    { // Check for '/' delimiter
-            //        vertexStream.ignore(1); // Skip '/'
-            //        if (vertexStream.peek() != '/') { // If there's no second '/', read texture index
-            //            vertexStream >> face.textureIndex;
-            //        }
-            //        if (vertexStream.peek() == '/') { // Check for '/' delimiter again
-            //            vertexStream.ignore(1); // Skip '/'
-            //            vertexStream >> face.normalIndex; // Read normal index
-            //        }
-            //    }
-
-            //}
-            //verticies.push_back(vertex);
-            //faces.push_back(face);
+        else if (prefix == "f")
+        {  
+            ParseFaceData(line);
         }
     }
-
     objFile.close();
 
     std::cout << "OBJ file loaded: " 
@@ -274,6 +309,33 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     glGenBuffers(1, &vertexBuffer);
     // Biding the VBO 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+
+
+    // Interleave positions, normals, and texCoords
+    vector<float> vertexData;
+    for (size_t i = 0; i < position.size(); ++i) {
+        vertexData.push_back(position[i].x);
+        vertexData.push_back(position[i].y);
+        vertexData.push_back(position[i].z);
+
+        if (i < normals.size()) {
+            vertexData.push_back(normals[i].x);
+            vertexData.push_back(normals[i].y);
+            vertexData.push_back(normals[i].z);
+        }
+        else {
+            vertexData.insert(vertexData.end(), { 0.0f, 0.0f, 0.0f });
+        }
+
+        if (i < texCoords.size()) {
+            vertexData.push_back(texCoords[i].x);
+            vertexData.push_back(texCoords[i].y);
+        }
+        else {
+            vertexData.insert(vertexData.end(), { 0.0f, 0.0f });
+        }
+    }
+
     // for VBO send the size of the float in array.
     // allocate buffer data for vertex pos.
     glBufferData(GL_ARRAY_BUFFER, position.size() * sizeof(vec3), position.data(), GL_STATIC_DRAW);
@@ -342,6 +404,8 @@ void MeshResource::CreateIBO()
 
 
 }
+
+
 
 
 void MeshResource::BindVBO()
@@ -521,7 +585,7 @@ void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
 //   
 //
 //    return false;
-//}
+//}fil
 
 
 //

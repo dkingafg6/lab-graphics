@@ -133,36 +133,38 @@ namespace Example
 
 		if (this->window->Open())
 		{
-			// set clear color to gray
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-			// create a cube from graphicsNode
-
-			std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
-
-			shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
-			shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
-			
-
-			std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
-			//load texture
-			textureResource->loadFromFile("../engine/texture/lizard2.png");
-			//std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-			/*if (!meshResource) 
+			// for att ensure robust error handling 
+			try 
 			{
-				std::cerr << " Failed to load OBJ files: cube.obj" << std::endl;
+				// set clear color to gray
+				glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+			
+				std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
+				shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
+				shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
+				shaderResource->LinkProgram();
+
+				std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
+				textureResource->loadFromFile("../engine/texture/lizard2.png");
+
+				std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
+				meshResource->LoadOBJFiles("../engine/OBJFiles/cube.obj");
+
+				this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
+
+				return true;
+			}
+			catch (const std::runtime_error& e)
+			{
+				std::cerr << "Initialization Error: " << e.what() << std::endl;
 				return false;
+			}
 
-			}*/
-			//std::cout << " Successfully loaded OBJ files with " << meshResource.GetVertexCount() << " vertices . " << std::endl;
+			// set clear color to gray
+			//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-			std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-			meshResource->LoadOBJFiles("../engine/OBJFiles/OBJFiles/cube.obj");
-			//meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
-			// bind texture
-
-			this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
-			return true;
+			//return true;
 		}
 		return false;
 	}
@@ -209,19 +211,22 @@ namespace Example
 
 		shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
 		shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
+		shaderResource->LinkProgram();
 
 		std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
 		//load texture
 		textureResource->loadFromFile("../engine/texture/lizard2.png");
 
 		std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-		meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
+		meshResource->LoadOBJFiles("../engine/OBJFiles/cube.obj");
+
 		// bind texture
 
-		GraphicsNode graphicsNode(meshResource, shaderResource, textureResource);
+		this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
 		//
 		
-
+		mat4 viewMatrix = cameraObject.getViewMatrix();
+		mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
 
 
 		float time = 0;
@@ -244,13 +249,18 @@ namespace Example
 			mat4 rotationMat = mat4::rotationy(this->translationMatrix[2][1]) * mat4::rotationz(this->translationMatrix[2][2]);
 			mat4 modelMatrix = translationMat * rotationMat;
 
+
+			// set transformation matrices for shader.
+			
+
 			this->graphicsNode.SetTransform(modelMatrix);
 
 			this->graphicsNode.Draw(cameraObject);
+			
 
 
-			mat4 viewMatrix = cameraObject.getViewMatrix();
-			mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
+			//mat4 viewMatrix = cameraObject.getViewMatrix();
+			//mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
 			mat4 gridMatrix = projectionMatrix * viewMatrix;
 
 			Render::Grid grid;

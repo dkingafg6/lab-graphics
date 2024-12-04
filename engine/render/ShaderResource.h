@@ -45,7 +45,7 @@ public:
 	// compiles one single shader return its ID. 
 	//GLint compileShader(GLenum shaderType, const char* shadersource);
 
-
+	void LinkProgram(); 
 	// connect this shader program for use in rendering. 
 	// OBS this function (UseProgram()) should call before any object render. 
 	// be sour that correct shaders are used. 
