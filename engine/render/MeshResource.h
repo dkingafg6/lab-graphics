@@ -90,6 +90,7 @@ public:
 
 	// obj file loader 
 	bool LoadOBJFiles(const std::string& filePath);
+	//void loadFromOBJ(const std::string& filename, float scale); 
 	// creat a cube. 
 	void CreateVBO(float width, float height, float depth);
 	void CreateIBO();

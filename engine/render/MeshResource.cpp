@@ -58,75 +58,75 @@ bool MeshResource::LoadOBJFiles(const std::string& filePath)
     std::cout << "loadig OBJ file: " << filePath << std::endl;
     std::string line;
 
-    //while (std::getline(objFile, line))
-    //{
-    //    std::istringstream stream(line);
-    //    std::string prefix;
-    //    stream >> prefix;
+    while (std::getline(objFile, line))
+    {
+        std::istringstream stream(line);
+        std::string prefix;
+        stream >> prefix;
 
-    //    Vertex vertex;
-    //    //Vertex vertex;
-    //    //
-    //    Face face; 
+        Vertex vertex;
+        //Vertex vertex;
+        //
+        Face face; 
 
-    //    if (prefix == "v") 
-    //    {
+        if (prefix == "v") 
+        {
   
-    //       /* ParseVertexData(line); */
-    //        vec3 position;
-    //        stream >> position.x >> position.y >> position.z;
-    //        vertex.position = position;
-    //    }
-    //    else if (prefix == "vt") 
-    //    {  
-    //      
-    //        vec2 texCoord;
-    //        stream >> texCoord.x >> texCoord.y;
-    //        texCoord.x= 1.0f; 
-    //        texCoord.y = 0.0f;
+           /* ParseVertexData(line); */
+            vec3 position;
+            stream >> position.x >> position.y >> position.z;
+            vertex.position = position;
+        }
+        else if (prefix == "vt") 
+        {  
+          
+            vec2 texCoord;
+            stream >> texCoord.x >> texCoord.y;
+            texCoord.x= 1.0f; 
+            texCoord.y = 0.0f;
 
-    //        
-    //    }
-    //    else if (prefix == "vn") 
-    //    {  // Vertex normal
-    //        
-    //        vec3 normal; 
-    //        stream >> normal.x >> normal.y, normal.z;
-    //        vertex.normal = normal;
-    //       
-    //     
-    //    }
+            
+        }
+        else if (prefix == "vn") 
+        {  // Vertex normal
+            
+            vec3 normal; 
+            stream >> normal.x >> normal.y, normal.z;
+            vertex.normal = normal;
+           
+         
+        }
   
 
-    //    else if (prefix == "f") 
-    //    {  // Face
-    //        GLuint vertexIndex[3], texCoordIndex[3], normalIndex[3]; 
-    //        
-    //        std::string vertexInfo;
-    //        while (stream >> vertexInfo)
-    //        {
-    //            std::istringstream vertexStream(vertexInfo);
-    //            
+        else if (prefix == "f") 
+        {  // Face
+            GLuint vertexIndex[3], texCoordIndex[3], normalIndex[3]; 
+            
+            std::string vertexInfo;
+            while (stream >> vertexInfo)
+            {
+                std::istringstream vertexStream(vertexInfo);
+                
 
-    //                vertexStream >> face.vertexIndex; // Read vertex index
+                    vertexStream >> face.vertexIndex; // Read vertex index
 
-    //            if (vertexStream.peek() == '/')
-    //            { // Check for '/' delimiter
-    //                vertexStream.ignore(1); // Skip '/'
-    //                if (vertexStream.peek() != '/') { // If there's no second '/', read texture index
-    //                    vertexStream >> face.textureIndex;
-    //                }
-    //                if (vertexStream.peek() == '/') { // Check for '/' delimiter again
-    //                    vertexStream.ignore(1); // Skip '/'
-    //                    vertexStream >> face.normalIndex; // Read normal index
-    //                }
-    //            }
+                if (vertexStream.peek() == '/')
+                { // Check for '/' delimiter
+                    vertexStream.ignore(1); // Skip '/'
+                    if (vertexStream.peek() != '/') { // If there's no second '/', read texture index
+                        vertexStream >> face.textureIndex;
+                    }
+                    if (vertexStream.peek() == '/') { // Check for '/' delimiter again
+                        vertexStream.ignore(1); // Skip '/'
+                        vertexStream >> face.normalIndex; // Read normal index
+                    }
+                }
 
-    //        }
-    //        verticies.push_back(vertex);
-    //        //faces.push_back(face);
-    //    }
-    //}
+            }
+            verticies.push_back(vertex);
+            //faces.push_back(face);
+        }
+    }
 
 
 
