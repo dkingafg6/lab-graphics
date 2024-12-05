@@ -86,7 +86,7 @@ public:
 	void setUVs(const std::vector<vec2>& uvs);
 	void setIndices(const std::vector<unsigned int>& Indices);
 
-	
+	//kkkkkkkkkkkkkkkkkkkk
 
 	// obj file loader 
 	bool LoadOBJFiles(const std::string& filePath);
