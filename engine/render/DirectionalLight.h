@@ -26,7 +26,7 @@ public:
 		
 	~DirectionalLight();
 
-	void Apply(GLuint shaderProgram); 
+	void Apply_BPH_shader(GLuint shaderProgram);
 
 private:
 

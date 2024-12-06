@@ -12,7 +12,7 @@ PointLightSourceNode::~PointLightSourceNode()
 {
 	// empty
 }
-void PointLightSourceNode::Apply(GLuint shaderProgram)
+void PointLightSourceNode::Apply_BPH_shader(GLuint shaderProgram)
 {
 
 	GLint positionLoc = glGetUniformLocation(shaderProgram, "pointLight.position");

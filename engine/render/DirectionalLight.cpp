@@ -11,7 +11,7 @@ DirectionalLight::DirectionalLight(const vec3& direc, const vec3& col, float int
 DirectionalLight::~DirectionalLight()
 {
 }
-void DirectionalLight::Apply(GLuint shaderProgram)
+void DirectionalLight::Apply_BPH_shader(GLuint shaderProgram)
 {
 	GLint directionLoc = glGetUniformLocation(shaderProgram, "direcLight.direction"); 
 	GLint colorLoc = glGetUniformLocation(shaderProgram, "directLight.color");
