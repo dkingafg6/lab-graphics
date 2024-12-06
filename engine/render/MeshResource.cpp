@@ -2,8 +2,6 @@
 #include <config.h>
 #include <GL/glew.h>
 #include <render/MeshResource.h>
-#include "core/vec3.h"
-#include "core/vec2.h"
 //#include "Vertex.h"
 
 
@@ -40,138 +38,132 @@ MeshResource::~MeshResource()
 
 
 
-bool MeshResource::LoadOBJFiles(const std::string& filePath)
+void MeshResource::LoadOBJFiles(const std::string& filePath)
 {
-    std::string file;
     std::ifstream objFile(filePath);
-    //std::string line = ""; 
+    std::string line = "";
+
+    //vertex
+    std::vector<vec3> tempVertices;
+    std::vector<vec3> tempTexCoords;
+    std::vector<vec3> tempNormals;
+
+    //faces
+    std::vector<Vertex> finalVertices;
+    std::vector<GLuint> vertexIndices;
+
     if (!objFile.is_open())
     {
         cerr << "Error Faild to open OBJ file. " << filePath << endl;
-        return false; 
-        //std::cout << " Error obj file not loading" << endl; 
-
-        
-       
     }
 
     std::cout << "loadig OBJ file: " << filePath << std::endl;
-    std::string line;
+   
 
     while (std::getline(objFile, line))
     {
+        std::cout << "Line: " << line << std::endl;
         std::istringstream stream(line);
         std::string prefix;
         stream >> prefix;
 
-        Vertex vertex;
-        //Vertex vertex;
-        //
-        Face face; 
-
         if (prefix == "v") 
         {
-  
-           /* ParseVertexData(line); */
             vec3 position;
+
             stream >> position.x >> position.y >> position.z;
-            vertex.position = position;
+            tempVertices.push_back(position);
         }
         else if (prefix == "vt") 
         {  
           
-            vec2 texCoord;
+            vec3 texCoord;
             stream >> texCoord.x >> texCoord.y;
-            texCoord.x= 1.0f; 
-            texCoord.y = 0.0f;
+            texCoord.y = 1.0f - texCoord.y; // invert v cordinate for openGL
+            texCoord.z = 0.0f;
+            tempTexCoords.push_back(texCoord);
 
-            
+
         }
         else if (prefix == "vn") 
         {  // Vertex normal
             
             vec3 normal; 
-            stream >> normal.x >> normal.y, normal.z;
-            vertex.normal = normal;
+            stream >> normal.x >> normal.y >> normal.z;
+            tempNormals.push_back(normal);
            
          
         }
   
 
-        else if (prefix == "f") 
+        else if (prefix == "f")
         {  // Face
-            GLuint vertexIndex[3], texCoordIndex[3], normalIndex[3]; 
-            
-            std::string vertexInfo;
-            while (stream >> vertexInfo)
+            int vertexIndex[3], texCoordIndex[3], normalIndex[3];
+
+
+            for (int i = 0; i < 3; i++)
             {
-                std::istringstream vertexStream(vertexInfo);
-                
 
-                    vertexStream >> face.vertexIndex; // Read vertex index
+                char slash; // to eat the '/' character
 
-                if (vertexStream.peek() == '/')
-                { // Check for '/' delimiter
-                    vertexStream.ignore(1); // Skip '/'
-                    if (vertexStream.peek() != '/') { // If there's no second '/', read texture index
-                        vertexStream >> face.textureIndex;
-                    }
-                    if (vertexStream.peek() == '/') { // Check for '/' delimiter again
-                        vertexStream.ignore(1); // Skip '/'
-                        vertexStream >> face.normalIndex; // Read normal index
-                    }
-                }
+                stream >> vertexIndex[i] >> slash >> texCoordIndex[i] >> slash >> normalIndex[i];
+
+                //// OBJ files use 1-based indexing so subtract 1
+                //vertexIndex[i]--;
+                //texCoordIndex[i]--;
+                //normalIndex[i]--;
 
             }
-            verticies.push_back(vertex);
-            //faces.push_back(face);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Vertex vertex;
+                vertex.position = tempVertices[vertexIndex[i] + tempVertices.size()];
+                vertex.texCoord = tempTexCoords[texCoordIndex[i] + tempTexCoords.size()];
+                vertex.color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+                vertex.normal = tempNormals[normalIndex[i] + tempNormals.size()];
+
+                finalVertices.push_back(vertex);
+                vertexIndices.push_back(finalVertices.size() - 1);
+            }
+            
         }
+        int done = 56;
+        
     }
 
-
-
-    while (std::getline(objFile, line))
-    {
-        std::istringstream stream(line);
-        std::string prefix;
-        stream >> prefix;
-
-        Vertex vertex;
-        //Vertex vertex;
-        //
-        Face face;
-
-        if (prefix == "v")
-        {
-            ParseVertexData(line);  
-        }
-        else if (prefix == "vt")
-        {
-            ParseTextureData(line);
-        }
-        else if (prefix == "vn")
-        { 
-            ParseNormalData(line);
-        }
-        else if (prefix == "f")
-        {  
-            ParseFaceData(line);
-        }
-    }
     objFile.close();
 
-    std::cout << "OBJ file loaded: " 
-        << position.size() << " vertices, "
-        << texCoords.size() << " Texture coordinates"
-        << normals.size() << " normals, and "
-        << indices.size() << " indices. " 
-        << std::endl;
+    indexSize = vertexIndices.size();
 
 
-    CreateVBO(0, 0, 0); // generate vbo, 
-    CreateIBO(); 
-    return true; 
+    // Generate and bind vertex buffer
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, finalVertices.size() * sizeof(Vertex), finalVertices.data(), GL_STATIC_DRAW);
 
+    // Generate and bind index buffer
+    glGenBuffers(1, &indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, vertexIndices.size() * sizeof(GLuint), vertexIndices.data(), GL_STATIC_DRAW);
+
+    //// Set vertex attributes
+    glEnableVertexAttribArray(0); // Position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
+
+    glEnableVertexAttribArray(1); // Color
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, color));
+
+    glEnableVertexAttribArray(2); // UV
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoord));
+
+    glEnableVertexAttribArray(3); // normals
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+
+    // Unbind VAO and buffers
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 
@@ -311,38 +303,6 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
 
-    // Interleave positions, normals, and texCoords
-    vector<float> vertexData;
-    for (size_t i = 0; i < position.size(); ++i) {
-        vertexData.push_back(position[i].x);
-        vertexData.push_back(position[i].y);
-        vertexData.push_back(position[i].z);
-
-        if (i < normals.size()) {
-            vertexData.push_back(normals[i].x);
-            vertexData.push_back(normals[i].y);
-            vertexData.push_back(normals[i].z);
-        }
-        else {
-            vertexData.insert(vertexData.end(), { 0.0f, 0.0f, 0.0f });
-        }
-
-        if (i < texCoords.size()) {
-            vertexData.push_back(texCoords[i].x);
-            vertexData.push_back(texCoords[i].y);
-        }
-        else {
-            vertexData.insert(vertexData.end(), { 0.0f, 0.0f });
-        }
-    }
-
-    // for VBO send the size of the float in array.
-    // allocate buffer data for vertex pos.
-    glBufferData(GL_ARRAY_BUFFER, position.size() * sizeof(vec3), position.data(), GL_STATIC_DRAW);
-    //glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
-   
-
-
     // position attribute 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)NULL); // position 
     //position.
@@ -394,14 +354,6 @@ void MeshResource::CreateIBO()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
     // for IBO send the size of the float in array. 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
-    indexSize = indices.size(); 
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); 
-
-    //indexSize = sizeof(indexes) / sizeof(indexes[0]); 
-
-
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 
 }
 
@@ -436,63 +388,6 @@ void MeshResource::Draw()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
-void MeshResource::ParseVertexData(const std::string& line)
-{
-
-    std::istringstream stream(line); 
-    std::string prefix; 
-    vec3 position; 
-    stream >> prefix >> position.x >> position.y >> position.z; 
-    this->position.push_back(position); 
-    //this->positions.push_back(position); 
-    
-}
-
-void MeshResource::ParseTextureData(const std::string& line)
-{
-
-    std::istringstream stream(line);
-    std::string prefix;
-    vec2 texCoord; 
-    stream >> prefix >> texCoord.x >> texCoord.y ;
-    texCoords.push_back(texCoord);
-}
-
-void MeshResource::ParseNormalData(const std::string& line)
-{
-
-    std::istringstream stream(line);
-    std::string prefix;
-    vec3 normal;
-    stream >> prefix >> normal.x >> normal.y >> normal.z;
-    normals.push_back(normal);
-}
-
-void MeshResource::ParseFaceData(const std::string& line)
-{
-
-    std::istringstream stream(line);
-    std::string prefix;
-    stream >> prefix; 
-
-    std::string vertexInfo; 
-
-    while( stream >> vertexInfo)
-    { 
-        std::istringstream vertexStream(vertexInfo);
-        unsigned int vertexIndex, texCoordIndex, normalIndex;
-        char slash;
-
-        vertexStream >> vertexIndex >> slash >> texCoordIndex >> slash >> normalIndex;
-
-
-        indices.push_back(vertexIndex -1); // obj indices 1-base change to 0-based. 
-        
-    }
-
-  
-   
-}
 
 
 
@@ -501,7 +396,8 @@ GLsizei MeshResource::GetIndexCount() const
     return GLsizei();
 }
 
-GLsizei MeshResource::GetVertexCount() const
+GLsizei MeshResource::GetVertexCount
+() const
 {
     return GLsizei();
 }
@@ -559,37 +455,3 @@ std::shared_ptr<MeshResource> MeshResource::CreateCube_SharedPtr(float width, fl
 
 }
 
-
-// set vertex data for mesh.
-void MeshResource::setVertices(const std::vector<vec3>& position)
-{
-    this->position = position; 
-}
-
-// set UV coordinates for the mesh. 
-void MeshResource::setUVs(const std::vector<vec2>& uvs)
-{
-    this->uvs = uvs; 
-}
-
-// set index data for the mesh. 
-void MeshResource::setIndices(const std::vector<unsigned int>& Indices)
-{
-    this->indices = Indices; 
-}
-
-  
-
-//void MeshResource::LoadFromOBJ(const std::string& filePath)
-//{
-//   
-//
-//    return false;
-//}fil
-
-
-//
-//std::shared_ptr<MeshResource> CreateCube(float width, float height, float depth)
-//{
-//    return std::shared_ptr<MeshResource>();
-//}
