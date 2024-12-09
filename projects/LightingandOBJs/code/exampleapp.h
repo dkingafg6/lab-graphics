@@ -57,7 +57,7 @@ private:
 
 	PointLightSourceNode pointLight;
 
-	bool pauseLightMovement; 
+	bool pauseLightMovement = false; 
 	float lastTime;  
 	 
 

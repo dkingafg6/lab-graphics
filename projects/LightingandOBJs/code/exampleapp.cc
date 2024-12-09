@@ -90,6 +90,15 @@ namespace Example
 		App::Open();
 
 		this->window = new Display::Window;
+		window->SetKeyPressFunction(([this](int32 key, int32 scancode, int32 action, int32 mods)
+			{
+				if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) // check if pace is pressed
+				{
+					pauseLightMovement = !pauseLightMovement; 
+				}
+				
+		
+			}));
 		window->SetMousePressFunction([this](int32 button, int32 action, int32 mods)
 			{
 				if (button == GLFW_MOUSE_BUTTON_LEFT)
@@ -127,7 +136,11 @@ namespace Example
 				}
 				this->lastMouseZ = z;
 				this->lastMouseY = y;
+
+
+			
 			});
+		
 
 
 
@@ -212,7 +225,7 @@ namespace Example
 		//initialize mouse callback for camera. 
 		GLFWwindow* glfwwindow = this->window->GetGLFWwindow();
 
-		this->pointLight.setPointlightPosition(vec3(graphicsNode2.transform[3].x, graphicsNode2.transform[3].y, graphicsNode2.transform[3].z));
+		
 
 
 		while (this->window->IsOpen())
@@ -223,11 +236,24 @@ namespace Example
 			this->window->Update();
 
 
-			time += 0.009f; // increment time on iteration. 
+			// updating the light rotation. 
+			if (pauseLightMovement)
+			{
+
+			}
+			else
+			{
+				this->pointLight.setPointlightPosition(vec3(graphicsNode2.transform[3].x, graphicsNode2.transform[3].y, graphicsNode2.transform[3].z));
+				time += 0.009f; // increment time on iteration. 
+			}
+			
+
+			
 
 			mat4 translationMat = mat4::translation(this->translationMatrix[3][0], this->translationMatrix[3][1], this->translationMatrix[3][2]);
 			mat4 rotationMat = mat4::rotationy(this->translationMatrix[2][1]) * mat4::rotationz(this->translationMatrix[2][2]);
 			mat4 automaticRotation = mat4::rotationy(time);
+			// ofset rotaion 
 			mat4 ofsetMat;
 			ofsetMat.m[3] = vec4(mat4().m[3].x + 2.0f, mat4().m[3].y, mat4().m[3].z, mat4().m[3].w);
 			mat4 modelMatrix = translationMat * rotationMat;

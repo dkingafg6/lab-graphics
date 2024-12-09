@@ -97,6 +97,7 @@ void GraphicsNode::Draw(Camera& camera, PointLightSourceNode& LightSource)
 
 	LightSource.ApplyToShader(shaderResource); 
 
+
 	meshResource->BindVBO();
 	meshResource->BindIBO();// update the camera based on mouse mouvement. 
 	glDrawElements(GL_TRIANGLES,meshResource->indexSize, GL_UNSIGNED_INT, (void*)NULL);// render and draw the cube.

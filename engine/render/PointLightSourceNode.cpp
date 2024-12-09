@@ -15,7 +15,7 @@ PointLightSourceNode::~PointLightSourceNode()
 {
 	// empty
 }
-void PointLightSourceNode::setPointlightPosition(vec3 position)
+void PointLightSourceNode::setPointlightPosition(vec3& position)
 {
 	this->position = position;
 }

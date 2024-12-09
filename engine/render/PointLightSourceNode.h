@@ -18,7 +18,7 @@ public:
 	PointLightSourceNode();
 	~PointLightSourceNode();
 
-	void setPointlightPosition(vec3 position);
+	void setPointlightPosition(vec3& position);
 	vec3 getPointLightPosition();
 
 	void setPointLightColor(vec3 color);
