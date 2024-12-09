@@ -227,8 +227,11 @@ namespace Example
 
 			mat4 translationMat = mat4::translation(this->translationMatrix[3][0], this->translationMatrix[3][1], this->translationMatrix[3][2]);
 			mat4 rotationMat = mat4::rotationy(this->translationMatrix[2][1]) * mat4::rotationz(this->translationMatrix[2][2]);
+			mat4 automaticRotation = mat4::rotationy(time);
+			mat4 ofsetMat;
+			ofsetMat.m[3] = vec4(mat4().m[3].x + 2.0f, mat4().m[3].y, mat4().m[3].z, mat4().m[3].w);
 			mat4 modelMatrix = translationMat * rotationMat;
-			mat4 modelMatrix2 = mat4();
+			mat4 modelMatrix2 = ofsetMat * automaticRotation;
 
 
 			// set transformation matrices for shader.
@@ -238,13 +241,10 @@ namespace Example
 			grid.Draw((GLfloat*)&gridMatrix);
 
 			this->graphicsNode.SetTransform(modelMatrix);
-			this->graphicsNode2.SetTransform(modelMatrix);
+			this->graphicsNode2.SetTransform(modelMatrix2);
 
 			this->graphicsNode.Draw(cameraObject, pointLight);
-			
-			
-
-
+			this->graphicsNode2.Draw(cameraObject, pointLight); 
 			
 			
 			// handle the camera movement. 
