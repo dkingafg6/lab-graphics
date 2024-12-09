@@ -133,38 +133,14 @@ namespace Example
 
 		if (this->window->Open())
 		{
-			// for att ensure robust error handling 
-			try 
-			{
-				// set clear color to gray
-				glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-			
-				std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
-				shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
-				shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
-				shaderResource->LinkProgram();
-
-				std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
-				textureResource->loadFromFile("../engine/texture/lizard2.png");
-
-				std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-				meshResource->LoadOBJFiles("../engine/OBJFiles/cube.obj");
-
-				this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
-
-				return true;
-			}
-			catch (const std::runtime_error& e)
-			{
-				std::cerr << "Initialization Error: " << e.what() << std::endl;
-				return false;
-			}
-
 			// set clear color to gray
-			//glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-			//return true;
+			// initi... the light source
+			
+
+
+			return true;
 		}
 		return false;
 	}
@@ -176,13 +152,6 @@ namespace Example
 
 		Core::App::Close();
 	}
-
-	/*void GLAPIENTRY ExampleApp::MessageCallback(GLenum, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-	{
-
-		printf("GL CALLBACK: %s Type: 0x%x, Severity: 0x%x, ID:  %d, Message: %s\n", (type == GL_DEBUG_TYPE_ERROR ? "* GL ERROR *" : ""), type, severity, id, message);
-
-	}*/
 
 	//------------------------------------------------------------------------------
 	/**
@@ -211,7 +180,6 @@ namespace Example
 
 		shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
 		shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
-		shaderResource->LinkProgram();
 
 		std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
 		//load texture
@@ -220,19 +188,30 @@ namespace Example
 		std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
 		meshResource->LoadOBJFiles("../engine/OBJFiles/cube.obj");
 
-		// bind texture
-
 		this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
-		//
-		
+
+		std::shared_ptr<ShaderResource> shaderResource2 = std::make_shared<ShaderResource>();
+		shaderResource2->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
+		shaderResource2->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
+
+		std::shared_ptr<TextureResource> textureResource2 = std::make_shared<TextureResource>();
+		//load texture
+		textureResource2->loadFromFile("../engine/texture/lizard1.png");
+
+		std::shared_ptr<MeshResource> meshResource2 = std::make_shared<MeshResource>();
+		meshResource2->LoadOBJFiles("../engine/OBJFiles/cube.obj");
+
+		this->graphicsNode2 = GraphicsNode(meshResource2, shaderResource2, textureResource2);
+
 		mat4 viewMatrix = cameraObject.getViewMatrix();
 		mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
-
 
 		float time = 0;
 
 		//initialize mouse callback for camera. 
 		GLFWwindow* glfwwindow = this->window->GetGLFWwindow();
+
+		this->pointLight.setPointlightPosition(vec3(graphicsNode2.transform[3].x, graphicsNode2.transform[3].y, graphicsNode2.transform[3].z));
 
 
 		while (this->window->IsOpen())
@@ -248,24 +227,25 @@ namespace Example
 			mat4 translationMat = mat4::translation(this->translationMatrix[3][0], this->translationMatrix[3][1], this->translationMatrix[3][2]);
 			mat4 rotationMat = mat4::rotationy(this->translationMatrix[2][1]) * mat4::rotationz(this->translationMatrix[2][2]);
 			mat4 modelMatrix = translationMat * rotationMat;
+			mat4 modelMatrix2 = mat4();
 
 
 			// set transformation matrices for shader.
+			// render the grid to draw 
 			
+			mat4 gridMatrix = projectionMatrix * viewMatrix;
+			grid.Draw((GLfloat*)&gridMatrix);
 
 			this->graphicsNode.SetTransform(modelMatrix);
+			this->graphicsNode2.SetTransform(modelMatrix);
 
 			this->graphicsNode.Draw(cameraObject);
 			
+			
 
 
-			//mat4 viewMatrix = cameraObject.getViewMatrix();
-			//mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
-			mat4 gridMatrix = projectionMatrix * viewMatrix;
-
-			Render::Grid grid;
-			// render the grid to draw 
-			grid.Draw((GLfloat*)&gridMatrix);
+			
+			
 			// handle the camera movement. 
 			cameraObject.processInput(this->window->GetGLFWwindow());
 

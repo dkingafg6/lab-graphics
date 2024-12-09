@@ -76,10 +76,6 @@ void Camera::move(const vec3 & delta)
 	//target += delta;
 }
 
-//void Camera::setFOV(float yaw, float pitch)
-//{
-//
-//}
 
 // send camera's matrix to shader. 
 void Camera::updateCameraMatrix(float FOVdeg, GLuint shaderProgram, const char* uniform)
@@ -95,18 +91,6 @@ void Camera::updateCameraMatrix(float FOVdeg, GLuint shaderProgram, const char* 
 	
 }
 
-//void Camera::setFOV(float yaw, float pitch)
-//{
-//
-//}
-
-
-
-
-//
-//void Camera::setFOV(float yaw, float pitch)
-//{
-//}
 
 // setters for fov aspect ratio, and clipping plans. 
 void Camera::setFOV(float newFOV)
@@ -125,19 +109,6 @@ void Camera::setClippingPlanes(float newNear, float newFar)
 	nearPlane = newNear;
 	farPlane = newFar;
 }
-
-/*oid Camera::SetKeyPressFunction(const std::function<void(int32, int32, int32, int32)>& func)
-{
-}
-
-void Camera::SetMousePressFunction(const std::function<void(int32, int32, int32)>& func)
-{
-}
-
-void Camera::SetMouseMoveFunction(const std::function<void(float64, float64)>& func)
-{
-	Window* window = (Window*)glfwGetWindowUserPointer(win); 
-}*/
 
 
 void Camera::mouse_callback(float64 xpos, float64 ypos)
@@ -185,11 +156,6 @@ void Camera::clamPicth()
 
 }
 
-//window.SetMouseMoveFunctin([this](float64 z, float y) 
-//	{
-//
-//	}
-// process Keyboard and mouse input;
 void Camera::processInput(GLFWwindow* window)
 {
 	const float cameraSpeed = speed; // adjust accordingly for movement speed

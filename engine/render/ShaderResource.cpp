@@ -3,10 +3,6 @@
 #include <config.h>
 #include "ShaderResource.h"
 
-using namespace std;
-
-
-
 ShaderResource::ShaderResource()
 {
 
@@ -113,6 +109,7 @@ void ShaderResource::loadShaderResource(const string& FilePath, GLenum TYPENAME)
 		printf("[PROGRAM LINK ERROR]: %s ", buf);
 		delete[] buf;
 	}
+	LinkProgram();
 	glDeleteShader(shader);
 
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include <GL/glew.h>
-#include "config.h"
 #include "exampleapp.h"
 #include <cstring>
 #include "render/MeshResource.h"
@@ -42,7 +41,7 @@ public:
 	// load picture 
 	
 	TextureResource texture;
-
+	
 
 
 private:
@@ -53,16 +52,13 @@ private:
 
 	mat4 translationMatrix; 
 	GraphicsNode graphicsNode; 
-
-	GLuint triangle;
+	GraphicsNode graphicsNode2;
 	Camera cameraObject; // camera object
-	GraphicsNode* lightsphereNode; 
 
-	
+	PointLightSourceNode pointLight;
 
 	bool pauseLightMovement; 
 	float lastTime;  
-	GLuint texrureID; 
 	 
 
 	bool mouseLeftPressed = false;
