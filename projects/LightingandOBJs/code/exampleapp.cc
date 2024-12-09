@@ -158,6 +158,7 @@ namespace Example
 	*/
 	void ExampleApp::Run()
 	{
+		
 		glEnable(GL_DEPTH_TEST); // enable depth testing for 3D rendering. 
 
 		// camera initialize 
@@ -239,7 +240,7 @@ namespace Example
 			this->graphicsNode.SetTransform(modelMatrix);
 			this->graphicsNode2.SetTransform(modelMatrix);
 
-			this->graphicsNode.Draw(cameraObject);
+			this->graphicsNode.Draw(cameraObject, pointLight);
 			
 			
 

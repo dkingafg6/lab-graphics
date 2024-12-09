@@ -12,6 +12,9 @@
 #include "render/ShaderResource.h"
 #include "render/WindowWrapper.h"
 #include "render/TextureResource.h"
+#include "render/PointLightSourceNode.h"
+
+
 
 // test for github
 
@@ -47,7 +50,7 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(Camera& camera);
+	void Draw(Camera& camera, PointLightSourceNode& LightSource);
 
 	mat4 transform;
 private:

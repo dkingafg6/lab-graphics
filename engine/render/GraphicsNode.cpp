@@ -84,8 +84,10 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw(Camera& camera)
+void GraphicsNode::Draw(Camera& camera, PointLightSourceNode& LightSource)
 { 
+
+
 	shaderResource->UseProgram();
 	shaderResource->SetUniformMatrix4fv("model", this->GetTransform());
 	shaderResource->SetUniformMatrix4fv("view", camera.getViewMatrix());
@@ -93,6 +95,7 @@ void GraphicsNode::Draw(Camera& camera)
 
 	textureResource->Bind();
 
+	LightSource.ApplyToShader(shaderResource); 
 
 	meshResource->BindVBO();
 	meshResource->BindIBO();// update the camera based on mouse mouvement. 
