@@ -19,7 +19,10 @@
 #include "render/DirectionalLight.h"
 
 namespace Example
+
+
 {
+
 class ExampleApp : public Core::App
 {
 public:

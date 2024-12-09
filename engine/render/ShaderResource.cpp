@@ -93,7 +93,7 @@ void ShaderResource::loadShaderResource(const string& FilePath, GLenum TYPENAME)
 		//printf("[SHADER COMPILE ERROR]: %s ", buf);
 		//delete[] buf;
 	}
-
+	
 
 	// create program object  
 	glAttachShader(this->program, shader);
