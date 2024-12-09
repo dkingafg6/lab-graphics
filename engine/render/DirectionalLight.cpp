@@ -4,34 +4,49 @@
 
 
 DirectionalLight::DirectionalLight(const vec3& direc, const vec3& col, float intens)
-	: direction(normalize(direc)), color(col), intensity(intens)
 {
-	// Constructor body (if needed)
+
+	direction = vec3(0.0f, 0.0f, 0.0f);
+	color = vec3(1.0f, 1.0f, 1.0f);
+	intensity = 1.0f;
+
+	
 }
-DirectionalLight::~DirectionalLight()
+
+void DirectionalLight::ApplyToShader(std::shared_ptr<ShaderResource> shaderProgram)
 {
-}
-void DirectionalLight::Apply_BPH_shader(GLuint shaderProgram)
-{
-	GLint directionLoc = glGetUniformLocation(shaderProgram, "direcLight.direction"); 
-	GLint colorLoc = glGetUniformLocation(shaderProgram, "directLight.color");
-	GLint intensityLoc = glGetUniformLocation(shaderProgram, "direcLight.intensity");
-
-
-	if (directionLoc == -1 || colorLoc == -1 || intensityLoc == -1)
-	{
-		std::cerr << "ERROR: Faild to find DirectionalLight uniform in shader." << std::endl; 
-		return; 
-
-	}
-
-
-
-
-
-
-	glUniform3fv(directionLoc, 1, (GLfloat*)&direction);
-	glUniform3fv(colorLoc, 1, (GLfloat*)&color);
-	glUniform1f(intensityLoc, intensity);
+	shaderProgram->UseProgram();
+	shaderProgram->setUniform3fv("pointLight.position", getPointLightPosition());
+	shaderProgram->setUniform3fv("pointLight.color", getPointLightColor());
+	shaderProgram->setUniform1f("pointLight.intensity", getPointLightIntensity());
 
 }
+
+
+void DirectionalLight::setPointlightPosition(vec3& position)
+{
+}
+
+vec3 DirectionalLight::getPointLightPosition()
+{
+	return vec3();
+}
+
+void DirectionalLight::setPointLightColor(vec3 color)
+{
+}
+
+vec3 DirectionalLight::getPointLightColor()
+{
+	return vec3();
+}
+
+void DirectionalLight::setPointLightIntensity(float lightIntensity)
+{
+}
+
+float DirectionalLight::getPointLightIntensity()
+{
+	return 0.0f;
+}
+

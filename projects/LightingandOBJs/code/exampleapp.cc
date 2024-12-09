@@ -237,7 +237,7 @@ namespace Example
 
 
 			// updating the light rotation. 
-			if (pauseLightMovement)
+  			if (pauseLightMovement)
 			{
 
 			}
