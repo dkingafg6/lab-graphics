@@ -13,6 +13,7 @@
 #include "render/WindowWrapper.h"
 #include "render/TextureResource.h"
 #include "render/PointLightSourceNode.h"
+#include "render/DirectionalLight.h"
 
 
 
@@ -50,7 +51,7 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(Camera& camera, PointLightSourceNode& LightSource);
+	void Draw(Camera& camera,  PointLightSourceNode& LightSource,  DirectionalLight& SunLight);
 
 	mat4 transform;
 private:

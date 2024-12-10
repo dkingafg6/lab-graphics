@@ -4,16 +4,22 @@
 
 DirectionalLight::DirectionalLight()
 {
-}
-
-DirectionalLight::DirectionalLight(const vec3& direc, const vec3& col, float intens)
-{
-
-	direction = vec3(0.0f, 0.0f, 0.0f);
-	color = vec3(1.0f, 1.0f, 1.0f);
+	direction = vec3(-0.5f, -1.0f, -0.5f);
+	color = vec3(1.0f, 0.9f, 0.8f);
 	intensity = 1.0f;
 
 
+
+}
+
+DirectionalLight::DirectionalLight(const vec3& direct, const vec3& col, float intens)
+{
+
+	direction = direct;
+	color = col;
+	intensity = intens;
+
+	
 }
 
 DirectionalLight::~DirectionalLight()
@@ -24,37 +30,37 @@ DirectionalLight::~DirectionalLight()
 void DirectionalLight::ApplyToShader(std::shared_ptr<ShaderResource> shaderProgram)
 {
 	shaderProgram->UseProgram();
-	shaderProgram->setUniform3fv("pointLight.direction", getPointLightDirection());
-	shaderProgram->setUniform3fv("pointLight.color", getPointLightColor());
-	shaderProgram->setUniform1f("pointLight.intensity", getPointLightIntensity());
+	shaderProgram->setUniform3fv("directionalLight.rotation", getDirectionalLightDirection());
+	shaderProgram->setUniform3fv("directionalLight.color", getDirectionalLightColor());
+	shaderProgram->setUniform1f("directionalLight.intensity", getDirectionalLightIntensity());
 
 }
 
-
-void DirectionalLight::setPointlightDirection(vec3& direction)
+void DirectionalLight::setDirectionalLightDirection(const vec3& direct)
 {
+	this->direction = direct; 
 }
 
-vec3 DirectionalLight::getPointLightDirection()
+vec3 DirectionalLight::getDirectionalLightDirection() const
 {
-	return vec3();
+	return this->direction; 
 }
 
-void DirectionalLight::setPointLightColor(vec3 color)
+void DirectionalLight::setDirectionalLightColor(const vec3& col)
 {
+	this->color = col; 
 }
 
-vec3 DirectionalLight::getPointLightColor()
+vec3 DirectionalLight::getDirectionalLightColor() const
 {
-	return vec3();
+	return this->color; 
 }
-
-void DirectionalLight::setPointLightIntensity(float lightIntensity)
+float DirectionalLight::setDirectionalLightIntensity(float intens)
 {
+	return this->intensity; 
 }
 
-float DirectionalLight::getPointLightIntensity()
+float DirectionalLight::getDirectionalLightIntensity() const
 {
 	return 0.0f;
 }
-

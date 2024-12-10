@@ -5,10 +5,9 @@
 
 PointLightSourceNode::PointLightSourceNode()
 {
-	position = vec3(0.0f, 0.0f, 0.0f);
+	position = vec3(2.0f, 2.0f, 2.0f);
 	color = vec3(1.0f, 1.0f, 1.0f);
 	intensity = 1.0f; 
-	
 
 }
 PointLightSourceNode::~PointLightSourceNode()
@@ -43,7 +42,7 @@ float PointLightSourceNode::getPointLightIntensity()
 	return this->intensity;
 }
 
-void PointLightSourceNode::ApplyToShader(std::shared_ptr<ShaderResource> shaderProgram)
+void PointLightSourceNode::ApplyToShader(std::shared_ptr<ShaderResource> shaderProgram) 
 {
 	shaderProgram->UseProgram();
 	shaderProgram->setUniform3fv("pointLight.position", getPointLightPosition());

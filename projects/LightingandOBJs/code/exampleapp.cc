@@ -142,6 +142,7 @@ namespace Example
 
 			
 			});
+
 		
 
 
@@ -152,7 +153,16 @@ namespace Example
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 			// initi... the light source
-			
+			pointLight.setPointlightPosition(vec3(2.0f, 2.0f, 2.0f)); // init...position 
+			pointLight.setPointLightColor(vec3(1.0f, 1.0f, 1.0f)); /// white light info 
+			pointLight.setPointLightIntensity(1.0f); 
+
+
+			// init...the directional Light. 
+			SunLight.setDirectionalLightDirection(vec3(0.0f, 1.0f, 0.0f)); // direction 
+			SunLight.setDirectionalLightColor(vec3(1.0f, 0.0f, 0.0f));  // sunlight 
+			SunLight.setDirectionalLightIntensity(1.0f); 
+
 
 
 			return true;
@@ -206,6 +216,8 @@ namespace Example
 
 		this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
 
+
+		// for Pointlight 
 		std::shared_ptr<ShaderResource> shaderResource2 = std::make_shared<ShaderResource>();
 		shaderResource2->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
 		shaderResource2->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
@@ -218,6 +230,7 @@ namespace Example
 		meshResource2->LoadOBJFiles("../engine/OBJFiles/cube.obj");
 
 		this->graphicsNode2 = GraphicsNode(meshResource2, shaderResource2, textureResource2);
+
 
 		mat4 viewMatrix = cameraObject.getViewMatrix();
 		mat4 projectionMatrix = cameraObject.getPerspectiveMatrix();
@@ -271,8 +284,12 @@ namespace Example
 			this->graphicsNode.SetTransform(modelMatrix);
 			this->graphicsNode2.SetTransform(modelMatrix2);
 
-			this->graphicsNode.Draw(cameraObject, pointLight);
-			this->graphicsNode2.Draw(cameraObject, pointLight); 
+
+			this->graphicsNode.Draw(cameraObject, pointLight, SunLight);
+			this->graphicsNode2.Draw(cameraObject, pointLight, SunLight); // .......PointlightSurceNode
+
+
+
 			
 			
 			// handle the camera movement. 

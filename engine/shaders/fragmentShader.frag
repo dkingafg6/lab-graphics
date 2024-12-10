@@ -5,9 +5,19 @@ struct PointLight
     vec3 position;
     vec3 color;
     float intensity;
+
+};
+
+struct DirectionLight
+{
+    vec3 rotation;
+    vec3 color;
+    float intensity;
 };
 
 uniform PointLight pointLight;
+uniform DirectionLight directionalLight;
+
 uniform sampler2D texture1;
 
 in vec3 fragPos;
@@ -15,6 +25,7 @@ in vec3 fragNormal;
 in vec2 TexCoord;
 
 out vec4 FragColor;
+
 
 void main()
 {
@@ -34,10 +45,21 @@ void main()
     // Combine lighting components
     vec3 lighting = ambient + diffuse;
 
+
+
+   vec3 dirLight =  normalize(directionalLight.rotation);
+   vec3 dirAmbient = 0.1 * directionalLight.color;
+   float dirDiff = max(dot(norm, dirLight), 0.0);
+   vec3 dirDiffuse = dirDiff * directionalLight.color * directionalLight.intensity;
+   vec3 dirLightning = dirAmbient + dirDiffuse;
+
+   vec3 totLightning = dirLightning + lighting;
+
     // Apply texture and lighting
     vec4 texColor = texture(texture1, TexCoord);
-    FragColor = vec4(lighting, 1.0) * texColor;
+    FragColor = vec4(totLightning, 1.0)  * texColor;
 }
+
 
 
 

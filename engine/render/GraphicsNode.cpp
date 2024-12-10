@@ -84,7 +84,7 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw(Camera& camera, PointLightSourceNode& LightSource)
+void GraphicsNode::Draw(Camera& camera,  PointLightSourceNode &LightSource,  DirectionalLight& SunLight)
 { 
 
 
@@ -94,8 +94,12 @@ void GraphicsNode::Draw(Camera& camera, PointLightSourceNode& LightSource)
 	shaderResource->SetUniformMatrix4fv("projection", camera.getPerspectiveMatrix());
 
 	textureResource->Bind();
+	// Pointlight uniform 
 
 	LightSource.ApplyToShader(shaderResource); 
+	// Directional Light (sun) uniform 
+	SunLight.ApplyToShader(shaderResource); 
+	
 
 
 	meshResource->BindVBO();

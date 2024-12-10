@@ -59,6 +59,7 @@ private:
 	Camera cameraObject; // camera object
 
 	PointLightSourceNode pointLight;
+	DirectionalLight SunLight; 
 
 	bool pauseLightMovement = false; 
 	float lastTime;  

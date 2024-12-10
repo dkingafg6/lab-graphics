@@ -409,21 +409,7 @@ void MeshResource::Cleanup()
     if (indexBuffer) glDeleteBuffers(1, &indexBuffer);
     vao = vertexBuffer = indexBuffer = 0;
     
-    
-    /*
-    if (vertexBuffer)
-    {
-        glDeleteBuffers(1, &vertexBuffer);
-        vertexBuffer = 0;
-
-    }
-
-    if (indexBuffer)
-    {
-        glDeleteBuffers(1, &indexBuffer);
-        indexBuffer = 0;
-
-    }*/
+   
 
 }
 

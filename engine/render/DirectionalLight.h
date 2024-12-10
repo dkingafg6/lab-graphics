@@ -21,21 +21,23 @@ public:
 
 	// constructor.
 	DirectionalLight();
-	DirectionalLight(const vec3& direc, const vec3& col, float intens);
+	DirectionalLight(const vec3& direct, const vec3& col, float intens);
 	~DirectionalLight();
 
 	void ApplyToShader(std::shared_ptr<ShaderResource> shaderProgram);
 
 
-	void setPointlightDirection(vec3& direction);
-	vec3 getPointLightDirection();
+	// Setters and Getters
+	void setDirectionalLightDirection(const vec3& direct);
+	vec3 getDirectionalLightDirection() const;
 
-	void setPointLightColor(vec3 color);
-	vec3 getPointLightColor();
+	void setDirectionalLightColor(const vec3& col);
+	vec3 getDirectionalLightColor() const;
 
-	void setPointLightIntensity(float lightIntensity);
-	float getPointLightIntensity();
+	float setDirectionalLightIntensity(float intens);
+	float getDirectionalLightIntensity() const;
 
+	
 
 
 private:
