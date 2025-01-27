@@ -4,6 +4,9 @@
 SET(files_shaders
 	vertexShader.vert
 	fragmentShader.frag
+	vertexShaderGraphic.vert
+	fragmentShaderGraphic.frag
+	
 )
 SOURCE_GROUP("shaders" FILES ${files_shaders})
 

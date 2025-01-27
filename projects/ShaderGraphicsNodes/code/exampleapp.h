@@ -59,13 +59,14 @@ private:
 	Display::Window* window;
 
 	Camera cameraObject; // camera object
-
 	GraphicsNode graphicsNode;
+
+	DirectionalLight sunLight;
+	PointLightSourceNode pointLight;
 
 	bool mouseLeftPressed = false;
 	bool mouseRightPressed = false;
 	bool mouseMiddlePressed = false;
-
 
 	// width and hieght of window
 	const int width = 800;

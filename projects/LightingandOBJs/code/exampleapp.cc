@@ -285,8 +285,8 @@ namespace Example
 			this->graphicsNode2.SetTransform(modelMatrix2);
 
 
-			this->graphicsNode.Draw(cameraObject, pointLight, SunLight);
-			this->graphicsNode2.Draw(cameraObject, pointLight, SunLight); // .......PointlightSurceNode
+			this->graphicsNode.Draw(cameraObject, pointLight, SunLight, true);
+			this->graphicsNode2.Draw(cameraObject, pointLight, SunLight, true); // .......PointlightSurceNode
 
 
 

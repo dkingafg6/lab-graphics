@@ -23,15 +23,6 @@ MeshResource::MeshResource()
 // Destructor
 MeshResource::~MeshResource()
 {
-    /*if (vao) glDeleteVertexArrays(1, &vao); 
-    if (vertexBuffer) glDeleteBuffers(1, &vertexBuffer); 
-    if (indexBuffer) glDeleteBuffers(1, &indexBuffer); */
-
-    //glDeleteBuffers(1, &vertexBuffer); 
-    //glDeleteBuffers(1, &indexBuffer);
-    ////glDeleteVertexArrays(1, &vbo);
-    //// meshresource shuold clean when the object is destroyed. 
-    //printf("Cleanup called in MeshResouce \n");
     Cleanup(); 
     
 }
@@ -156,9 +147,6 @@ void MeshResource::LoadOBJFiles(const std::string& filePath)
 
     glEnableVertexAttribArray(2); // UV
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoord));
-
-    glEnableVertexAttribArray(3); // normals
-    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
 
     // Unbind VAO and buffers
     glBindVertexArray(0);
@@ -299,9 +287,8 @@ void MeshResource::CreateVBO(float width, float height, float depth)
 
     // Generate and bind vertex buffer /VBOS
     glGenBuffers(1, &vertexBuffer);
-    // Biding the VBO 
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-
+    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
     // position attribute 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (GLvoid*)NULL); // position 
@@ -316,8 +303,6 @@ void MeshResource::CreateVBO(float width, float height, float depth)
     // uv.
     glEnableVertexAttribArray(2);
 
-    // unbind the VBO
-    //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 }
 
@@ -355,6 +340,8 @@ void MeshResource::CreateIBO()
     // for IBO send the size of the float in array. 
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexes), indexes, GL_STATIC_DRAW);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 }
 
 
@@ -363,6 +350,7 @@ void MeshResource::CreateIBO()
 void MeshResource::BindVBO()
 {
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+
 }
 
 void MeshResource::BindIBO()
@@ -429,15 +417,15 @@ MeshResource* MeshResource::CreateCube(float width, float height, float depth)
 
 }
 
-std::shared_ptr<MeshResource> MeshResource::CreateCube_SharedPtr(float width, float height, float depth)
-{
-    // allocate a new meshResource object. 
-    shared_ptr<MeshResource> mesh = std::make_shared<MeshResource>();
-    // create both vertex and index buffer object for the cube. 
+shared_ptr<MeshResource> MeshResource::CreateCube_SharedPtr(float width, float height, float depth)
+{// Allocate a new MeshResource object
+    auto mesh = std::make_shared<MeshResource>();
+
+    // Create both vertex and index buffer objects for the cube
     mesh->CreateVBO(width, height, depth);
     mesh->CreateIBO();
-    return mesh;   // return the create mesh resource. 
 
-
+    // Return the shared pointer
+    return mesh;
 }
 

@@ -51,7 +51,7 @@ public:
 	void Scale(const vec3& scalingFactors); // scaling the object vex(x,y,z) axis. 
 
 	//Add a draw function that will bind the resource objects, apply the transform and finally render the object.
-	void Draw(Camera& camera,  PointLightSourceNode& LightSource,  DirectionalLight& SunLight);
+	void Draw(Camera& camera,  PointLightSourceNode& LightSource,  DirectionalLight& SunLight,  bool isUsingLight);
 
 	mat4 transform;
 private:

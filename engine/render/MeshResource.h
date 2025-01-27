@@ -55,7 +55,7 @@ public:
 
 	// create the vertices with pos and texture cooordinate for each face of the cube.
 	static MeshResource* CreateCube(float width, float height, float depth);
-	std::shared_ptr<MeshResource> CreateCube_SharedPtr(float width, float height, float depth);
+	shared_ptr<MeshResource> CreateCube_SharedPtr(float width, float height, float depth);
 
 
 

@@ -84,7 +84,7 @@ void GraphicsNode::Scale(const vec3& scalingFactors)
 
 }
 
-void GraphicsNode::Draw(Camera& camera,  PointLightSourceNode &LightSource,  DirectionalLight& SunLight)
+void GraphicsNode::Draw(Camera& camera,  PointLightSourceNode &LightSource,  DirectionalLight& SunLight , bool isUsingLight)
 { 
 
 
@@ -95,16 +95,23 @@ void GraphicsNode::Draw(Camera& camera,  PointLightSourceNode &LightSource,  Dir
 
 	textureResource->Bind();
 	// Pointlight uniform 
+	if (isUsingLight)
+	{
+		LightSource.ApplyToShader(shaderResource);
+		// Directional Light (sun) uniform 
+		SunLight.ApplyToShader(shaderResource);
 
-	LightSource.ApplyToShader(shaderResource); 
-	// Directional Light (sun) uniform 
-	SunLight.ApplyToShader(shaderResource); 
-	
-
-
+	}
 	meshResource->BindVBO();
-	meshResource->BindIBO();// update the camera based on mouse mouvement. 
-	glDrawElements(GL_TRIANGLES,meshResource->indexSize, GL_UNSIGNED_INT, (void*)NULL);// render and draw the cube.
+	meshResource->BindIBO();
+
+
+
+	glDrawElements(GL_TRIANGLES, meshResource->indexSize, GL_UNSIGNED_INT, (void*)NULL);// render and draw the cube.
+
 	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 
 }

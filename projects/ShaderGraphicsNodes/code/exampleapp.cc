@@ -139,22 +139,8 @@ namespace Example
 			// set clear color to gray
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
-			// create a cube from graphicsNode
 
-			std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
 
-			shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
-			shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
-
-			std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
-			//load texture
-			textureResource->loadFromFile("../engine/texture/lizard2.png");
-
-			std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
-			meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
-			// bind texture
-
-			this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource); 
 			return true;
 		}
 		return false;
@@ -192,40 +178,24 @@ namespace Example
 			// near plan and far clipping 
 			0.1f,
 			100.0f);
+	
 
-		// the camera's pussibily during setup 
-		Render::Grid grid;
-		
 		// create a cube from graphicsNode
 
 		std::shared_ptr<ShaderResource> shaderResource = std::make_shared<ShaderResource>();
 
-		shaderResource->loadShaderResource("../engine/shaders/vertexShader.vert", GL_VERTEX_SHADER);
-		shaderResource->loadShaderResource("../engine/shaders/fragmentShader.frag", GL_FRAGMENT_SHADER);
+		shaderResource->loadShaderResource("../engine/shaders/vertexShaderGraphic.vert", GL_VERTEX_SHADER);
+		shaderResource->loadShaderResource("../engine/shaders/fragmentShaderGraphic.frag", GL_FRAGMENT_SHADER);
 
 		std::shared_ptr<TextureResource> textureResource = std::make_shared<TextureResource>();
 		//load texture
 		textureResource->loadFromFile("../engine/texture/lizard2.png");
 
-		std::shared_ptr<MeshResource> meshResource = std::make_shared<MeshResource>();
+		std::shared_ptr<MeshResource> meshResource = make_shared<MeshResource>();
 		meshResource = meshResource->CreateCube_SharedPtr(1.0f, 1.0f, 1.0f);
 		// bind texture
 
-		GraphicsNode graphicsNode(meshResource, shaderResource, textureResource);
-		//
-		//// get the location of texture uniform. 
-		//GLint textureLoc = glGetUniformLocation(this->program, "texture1");
-
-		//// bind texture to uniform 
-		//glUniform1i(textureLoc, 0);
-
-		//// get the location in the shader. 
-		//GLint camMatrixLoc = glGetUniformLocation(this->program, "camMatrix");
-
-		//// get location form shader program 
-		//GLint rotationLoc = glGetUniformLocation(this->program, "rotation");
-
-	
+		this->graphicsNode = GraphicsNode(meshResource, shaderResource, textureResource);
 
 
 		float time = 0; 
@@ -250,7 +220,7 @@ namespace Example
 
 			this->graphicsNode.SetTransform(modelMatrix); 
 
-			this->graphicsNode.Draw(cameraObject); 
+			this->graphicsNode.Draw(cameraObject, pointLight, sunLight, false);
 
 		
 			mat4 viewMatrix = cameraObject.getViewMatrix();
@@ -258,7 +228,7 @@ namespace Example
 			mat4 gridMatrix = projectionMatrix * viewMatrix;
 
 			Render::Grid grid; 
-			// render the grid to draw 
+			// render the grid to draw s
 			grid.Draw((GLfloat*)&gridMatrix);
 			// handle the camera movement. 
 			cameraObject.processInput(this->window->GetGLFWwindow());
