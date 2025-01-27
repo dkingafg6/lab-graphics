@@ -247,6 +247,7 @@ namespace Example
 		
 			double xpos;
 			double ypos;
+			// testing Github
 
 			if (this->mouseRightPressed)
 			{
